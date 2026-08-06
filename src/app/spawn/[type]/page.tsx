@@ -392,13 +392,15 @@ export default async function SpawnPage({ params }: PageProps) {
             </div>
 
             {/* Interactive 3D Model Display Column */}
-            <div className="w-full lg:w-[450px] aspect-square bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex items-center justify-center shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
+            <div className="w-full lg:w-[450px] min-h-[530px] bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-stretch shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
               <SpawnCanvas type={type} />
               
-              <div className="absolute bottom-4 left-4 bg-white px-2.5 py-1.5 rounded-lg border border-[#e6e4dc]/80 pointer-events-none text-[9px] font-mono text-[#4e8c4a] select-none z-10 flex items-center gap-1.5 shadow-sm">
-                <span className="w-1.5 h-1.5 bg-[#4e8c4a] rounded-full animate-ping" />
-                Bioluminescent WebGL Render
-              </div>
+              {type !== "commercial-spawn" && (
+                <div className="absolute bottom-4 left-4 bg-white px-2.5 py-1.5 rounded-lg border border-[#e6e4dc]/80 pointer-events-none text-[9px] font-mono text-[#4e8c4a] select-none z-10 flex items-center gap-1.5 shadow-sm">
+                  <span className="w-1.5 h-1.5 bg-[#4e8c4a] rounded-full animate-ping" />
+                  Bioluminescent WebGL Render
+                </div>
+              )}
             </div>
 
           </div>
