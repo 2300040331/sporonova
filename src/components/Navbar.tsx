@@ -110,13 +110,8 @@ export default function Navbar() {
           >
             Home
           </Link>
-          <Link
-            href="/about"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            About Us
-          </Link>
+
+          {/* Products Section */}
           <div className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
             <span className="block text-[9px] font-mono text-gray-400 uppercase tracking-widest">Products</span>
             {productsList.map((p) => (
@@ -130,12 +125,27 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+
           <Link
             href="/process"
             onClick={() => setIsOpen(false)}
             className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
           >
             Production Process
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setIsOpen(false)}
+            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+          >
+            About Us
+          </Link>
+          <Link
+            href="/#why-choose-us"
+            onClick={() => setIsOpen(false)}
+            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+          >
+            Why Choose Us
           </Link>
           <Link
             href="/knowledge"
