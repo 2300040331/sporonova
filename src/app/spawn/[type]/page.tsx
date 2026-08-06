@@ -392,7 +392,7 @@ export default async function SpawnPage({ params }: PageProps) {
             </div>
 
             {/* Interactive 3D Model Display Column */}
-            <div className="w-full lg:w-[450px] min-h-[530px] bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-stretch shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
+            <div className="w-full lg:w-[450px] min-h-[530px] lg:min-h-0 lg:aspect-square bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-stretch lg:flex-row lg:items-center lg:justify-center shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
               <SpawnCanvas type={type} />
               
               {type !== "commercial-spawn" && (
