@@ -300,7 +300,7 @@ export default function GrainJarCanvas({ hideSidebar = false }: { hideSidebar?: 
             Click Model to {isCrossSection ? "Reassemble" : "Reveal Grains"}
           </div>
 
-          <div className="absolute bottom-4 left-4 bg-obsidian-black/85 p-4 rounded-xl border border-white/10 max-w-[280px] pointer-events-none transition-all duration-300 opacity-0 group-hover:opacity-100 z-10">
+          <div className="hidden md:block absolute bottom-4 left-4 bg-obsidian-black/85 p-4 rounded-xl border border-white/10 max-w-[280px] pointer-events-none transition-all duration-300 opacity-0 group-hover:opacity-100 z-10">
             <span className="text-[10px] text-bio-green font-mono uppercase block mb-0.5">Physical Substrate</span>
             <h4 className="text-white font-display font-semibold text-xs mb-1">Wheat-Mycelium Grid</h4>
             <p className="text-gray-400 text-[10px] leading-relaxed">

@@ -10,6 +10,13 @@
   --color-text-charcoal: #333333;
   --color-slate-grey: #666666;
 
+  /* Bioluminescent & Obsidian Dark Theme Colors */
+  --color-obsidian-black: #0c0f17;
+  --color-obsidian-gray: #1b1e2a;
+  --color-obsidian-dark: #070911;
+  --color-bio-teal: #00f2fe;
+  --color-bio-green: #39ff14;
+
   --font-sans: var(--font-inter), sans-serif;
   --font-display: var(--font-outfit), sans-serif;
 
