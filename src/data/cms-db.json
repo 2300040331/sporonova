@@ -1,0 +1,712 @@
+{
+  "header": {
+    "logoUrl": "/logo_transparent.png",
+    "logoAlt": "SPORONOVA",
+    "logoHeight": 56,
+    "backgroundColor": "#ffffff",
+    "textColor": "#1c3c24",
+    "hoverColor": "#4e8c4a",
+    "ctaText": "Contact Us",
+    "ctaLink": "/contact",
+    "sticky": true,
+    "navLinks": [
+      {
+        "name": "Home",
+        "href": "/",
+        "order": 1
+      },
+      {
+        "name": "Production Process",
+        "href": "/process",
+        "order": 2
+      },
+      {
+        "name": "About Us",
+        "href": "/about",
+        "order": 3
+      },
+      {
+        "name": "Why Choose Us",
+        "href": "/#why-choose-us",
+        "order": 4
+      },
+      {
+        "name": "Knowledge Center",
+        "href": "/knowledge",
+        "order": 5
+      }
+    ],
+    "productsDropdown": [
+      {
+        "name": "Liquid Spawn",
+        "href": "/spawn/liquid-spawn"
+      },
+      {
+        "name": "Grain Spawn",
+        "href": "/spawn/grain-spawn"
+      },
+      {
+        "name": "Mother Culture",
+        "href": "/spawn/mother-culture"
+      },
+      {
+        "name": "Commercial Spawn",
+        "href": "/spawn/commercial-spawn"
+      }
+    ]
+  },
+  "footer": {
+    "logoUrl": "/logo_transparent.png",
+    "description": "India's leading mushroom spawn manufacturer. Providing certified liquid spawn, grain spawn, and mother cultures alongside technical training for commercial growers.",
+    "address": "Koni, Bilaspur, Chhattisgarh 495009",
+    "email": "sales@sporonova.com",
+    "phone": "+91 72072 08419",
+    "whatsapp": "+917207208419",
+    "copyrightText": "© 2026 SporoNova Biotech. All rights reserved.",
+    "backgroundColor": "#112217",
+    "textColor": "#a3b899",
+    "socialLinks": {
+      "facebook": "https://facebook.com/sporonova",
+      "twitter": "https://twitter.com/sporonova",
+      "linkedin": "https://linkedin.com/company/sporonova",
+      "instagram": "https://instagram.com/sporonova"
+    },
+    "quickLinks": [
+      {
+        "name": "Home",
+        "href": "/"
+      },
+      {
+        "name": "Products",
+        "href": "/#products"
+      },
+      {
+        "name": "Process",
+        "href": "/process"
+      },
+      {
+        "name": "About Us",
+        "href": "/about"
+      },
+      {
+        "name": "Knowledge Center",
+        "href": "/knowledge"
+      },
+      {
+        "name": "Contact",
+        "href": "/contact"
+      },
+      {
+        "name": "Privacy Policy",
+        "href": "/privacy"
+      },
+      {
+        "name": "Terms of Service",
+        "href": "/terms"
+      }
+    ]
+  },
+  "homepage": {
+    "hero": {
+      "badge": "SPORONOVA • AGRICULTURAL SPAWN MANUFACTUREr",
+      "headingText": "Premium Mushroom Spawn for Better Harvests",
+      "headingColor": "#ffffff",
+      "headingSize": "text-4xl md:text-5xl lg:text-6xl",
+      "subtitleText": "We produce high-quality mushroom spawn using scientific methods, helping farmers, entrepreneurs, research institutions, and commercial growers achieve consistent and healthy mushroom production.",
+      "subtitleColor": "rgba(255, 255, 255, 0.8)",
+      "ctaPrimaryText": "EXPLORE OUR PRODUCTS →",
+      "ctaPrimaryLink": "/#products",
+      "ctaSecondaryText": "TALK TO AN EXPERT",
+      "ctaSecondaryLink": "/contact",
+      "heroImage": "/hero_mushrooms.jpg",
+      "backgroundImage": "/hero_bg_pattern.svg",
+      "showModel": false
+    },
+    "stats": [
+      {
+        "value": "14+",
+        "label": "Mushroom Varieties",
+        "sublabel": "Including Shiitake & more",
+        "icon": "Leaf"
+      },
+      {
+        "value": "50%",
+        "label": "Higher Yield",
+        "sublabel": "Compared to grain spawn",
+        "icon": "Award"
+      },
+      {
+        "value": "3 Months",
+        "label": "Shelf Life",
+        "sublabel": "At 4°C temperature",
+        "icon": "Clock"
+      },
+      {
+        "value": "100%",
+        "label": "Organic & Chemical Free",
+        "sublabel": "Pure & safe cultivation",
+        "icon": "Shield"
+      }
+    ],
+    "valuesSectionBadge": "Quality Assurance Protocols",
+    "valuesSectionTitle": "Why Growers Choose SporoNova",
+    "valuesSectionSubtitle": "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields.",
+    "industriesSectionTitle": "Empowering Agritech Across Sectors",
+    "credentialsSectionTitle": "Accreditations & Institutional Trust",
+    "testimonialsSectionTitle": "Trusted by Commercial Growers Across India"
+  },
+  "products": [
+    {
+      "id": "liquid-spawn",
+      "name": "Liquid Spawn Broth",
+      "category": "Industrial Inoculant",
+      "desc": "Active vegetative mycelium cells suspended in sterilized liquid sugar broth, optimized for bioreactor inoculation.",
+      "href": "/spawn/liquid-spawn",
+      "status": "Published",
+      "featured": true,
+      "thumbnail": "/liquid_spawn_bottle.png",
+      "images": [
+        "/liquid_spawn_bottle.png"
+      ],
+      "specifications": {
+        "Storage": "2°C - 4°C",
+        "ShelfLife": "90 Days",
+        "Purity": "99.9%"
+      },
+      "sortOrder": 1
+    },
+    {
+      "id": "grain-spawn",
+      "name": "Grain Spawn Jars/Bags",
+      "category": "Carrier Matrix",
+      "desc": "Sterilized cereal grains (wheat, millet) fully colonized by pure mycelium, standard for bulk agricultural beds.",
+      "href": "/spawn/grain-spawn",
+      "status": "Published",
+      "featured": true,
+      "thumbnail": "/grain_jar.png",
+      "images": [
+        "/grain_jar.png"
+      ],
+      "specifications": {
+        "Grain": "Wheat/Millet",
+        "Moisture": "48%",
+        "ExpansionRatio": "1:20"
+      },
+      "sortOrder": 2
+    },
+    {
+      "id": "mother-culture",
+      "name": "Mother Culture Slants",
+      "category": "Genomic Isolate (G0)",
+      "desc": "Pure strain mycelium isolated on agar media slants inside glass tubes, serving as the primary genetic starting point.",
+      "href": "/spawn/mother-culture",
+      "status": "Published",
+      "featured": true,
+      "thumbnail": "/mother_culture.png",
+      "images": [
+        "/mother_culture.png"
+      ],
+      "specifications": {
+        "Media": "PDA Slant",
+        "Generation": "G0 Primary",
+        "StrainID": "SN-SHI-01"
+      },
+      "sortOrder": 3
+    },
+    {
+      "id": "commercial-spawn",
+      "name": "Commercial Spawn Packs",
+      "category": "Bulk Production (G2)",
+      "desc": "Mass-production colonized grain bags distributed directly to commercial growers for direct substrate inoculation.",
+      "href": "/spawn/commercial-spawn",
+      "status": "Published",
+      "featured": true,
+      "thumbnail": "/grain_jar.png",
+      "images": [
+        "/grain_jar.png"
+      ],
+      "specifications": {
+        "Package": "2.5kg Polybag",
+        "Filter": "0.2 Micron",
+        "TargetYield": "1.2kg/bag"
+      },
+      "sortOrder": 4
+    }
+  ],
+  "categories": [
+    {
+      "id": "industrial",
+      "name": "Industrial Inoculants",
+      "slug": "industrial",
+      "desc": "Liquid broths for automated bioreactors"
+    },
+    {
+      "id": "carrier",
+      "name": "Carrier Matrix",
+      "slug": "carrier",
+      "desc": "Colonized grains for bed inoculation"
+    },
+    {
+      "id": "genomic",
+      "name": "Genomic Isolates",
+      "slug": "genomic",
+      "desc": "Mother cultures & genetic starter slants"
+    }
+  ],
+  "values": [
+    {
+      "title": "Premium Quality",
+      "desc": "Genetically verified rhizomorphic strains yielding dense flushes.",
+      "tag": "GENOMIC PURITY",
+      "metric": "99.8%"
+    },
+    {
+      "title": "Scientific Production",
+      "desc": "Standardized laboratory parameters with precise autoclave logs.",
+      "tag": "HEPA CLASS 100",
+      "metric": "121°C / 15 PSI"
+    },
+    {
+      "title": "Low Contamination",
+      "desc": "Class 100 HEPA cleanroom filtration shields all transfers.",
+      "tag": "BIOSECURITY",
+      "metric": "< 0.01% RISK"
+    },
+    {
+      "title": "Consistent Performance",
+      "desc": "Rigorous testing guarantees reliable, reproducible spawn batches.",
+      "tag": "REPRODUCIBLE",
+      "metric": "100% PASS"
+    },
+    {
+      "title": "Expert Support",
+      "desc": "On-site cultivation guidance and substrate recipe optimization.",
+      "tag": "24/7 ADVISORY",
+      "metric": "FIELD CERTIFIED"
+    },
+    {
+      "title": "Certified Laboratory",
+      "desc": "State-accredited facilities compliant with standard biosecurity.",
+      "tag": "ISO 9001:2015",
+      "metric": "GMP VALIDATED"
+    },
+    {
+      "title": "Fast Distribution",
+      "desc": "Temperature-regulated cold chain ensures mycelial dormancy.",
+      "tag": "COLD CHAIN",
+      "metric": "2°C - 4°C VAULT"
+    },
+    {
+      "title": "Research & Innovation",
+      "desc": "Continuous strain breeding trials and growth optimization experiments.",
+      "tag": "STRAIN R&D",
+      "metric": "14+ VARIETIES"
+    }
+  ],
+  "industries": [
+    {
+      "name": "Rural Farmers",
+      "desc": "Empowering growers with high-yield grain spawn and training."
+    },
+    {
+      "name": "Commercial Farms",
+      "desc": "Bulk liquid broth volumes for automated substrate bags."
+    },
+    {
+      "name": "Research Institutions",
+      "desc": "Providing genomic mother cultures and genetic tracing."
+    },
+    {
+      "name": "Universities",
+      "desc": "Supplying slants and sterile agar plates for botanical study."
+    },
+    {
+      "name": "Government Projects",
+      "desc": "Managing national cooperative horticulture aid packages."
+    },
+    {
+      "name": "NGO Projects",
+      "desc": "Partnering for micro-grant community food security programs."
+    },
+    {
+      "name": "Export Partners",
+      "desc": "International shipping certified cold-chain spawn logistics."
+    }
+  ],
+  "credentials": [
+    {
+      "title": "DMR Certified",
+      "status": "(Under Process)",
+      "desc": "Directorate of Mushroom Research certification validates scientific rigour of our spawn production protocols."
+    },
+    {
+      "title": "NHB Certified",
+      "status": "(Under Process)",
+      "desc": "National Horticulture Board certification for horticultural produce quality standards."
+    },
+    {
+      "title": "GMP Standard Lab",
+      "status": "Fully Operational",
+      "desc": "Good Manufacturing Practice compliant facility ensuring consistent, contamination-free liquid spawn production."
+    },
+    {
+      "title": "ISO Standard",
+      "status": "Compliant",
+      "desc": "International quality management standards embedded across production and quality control processes."
+    },
+    {
+      "title": "12 Years Experience",
+      "status": "Expert Team",
+      "desc": "Highly specialised team with over a decade of hands-on mushroom cultivation and spawn production expertise."
+    },
+    {
+      "title": "14 Varieties",
+      "status": "incl. Shiitake",
+      "desc": "Comprehensive portfolio covering shiitake, oyster, lion's mane and other high-value commercial species."
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "Switching to SporoNova's liquid spawn broth allowed us to double our weekly bag inoculation capacity. The colonization lag time decreased by four days, giving us massive savings on autoclave fuels.",
+      "author": "Dr. Aris Thorne",
+      "role": "Director, Peak Fungi Farms"
+    },
+    {
+      "quote": "Our district farming cooperative has distributed SporoNova's grain spawn packs to over 400 rural women growers. The biological efficiency and yield consistency have secured steady household incomes.",
+      "author": "R. Srinivasan",
+      "role": "NGO Cooperative Coordinator"
+    },
+    {
+      "quote": "As a research laboratory, genetic purity is paramount. SporoNova's G0 mother culture slants exhibit exceptional sectoring traits and zero mutation drift across scaling generations.",
+      "author": "Prof. Elaine Vance",
+      "role": "Department of Biotechnology, SVU"
+    }
+  ],
+  "deliverables": [
+    {
+      "label": "Liquid Spawn Supply",
+      "desc": "Consistent supply of certified shiitake liquid spawn to all enrolled farmers"
+    },
+    {
+      "label": "Training & Capacity Building",
+      "desc": "Structured on-farm and classroom training modules in local languages"
+    },
+    {
+      "label": "Technical Support",
+      "desc": "On-call expert support during all cultivation cycles for 12 months"
+    },
+    {
+      "label": "Market Linkage",
+      "desc": "Facilitation of buyer connections, FPO formation, and export channels"
+    },
+    {
+      "label": "Documentation & Reporting",
+      "desc": "Quarterly impact reports with yield, BE%, and income data for all partners"
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "What is the shelf life of Liquid Spawn Broth?",
+      "answer": "When stored in refrigeration between 2°C to 4°C, our liquid spawn broth maintains peak viability for up to 90 days.",
+      "category": "Storage & Handling"
+    },
+    {
+      "id": "faq-2",
+      "question": "How is contamination prevented during shipping?",
+      "answer": "All containers use biosecure 0.2-micron breathable membrane filters and temperature-monitored cold chain packaging.",
+      "category": "Logistics"
+    },
+    {
+      "id": "faq-3",
+      "question": "Do you provide strain documentation?",
+      "answer": "Yes, every batch is accompanied by a Certificate of Analysis (COA) specifying genomic strain ID, purity index, and autoclave logs.",
+      "category": "Quality Control"
+    }
+  ],
+  "about": {
+    "heroTitle": "Science and Commitment Behind Every Kernel",
+    "heroSubtitle": "ABOUT SPORONOVA",
+    "whoWeAreTitle": "Science and Commitment Behind Every Kernel",
+    "whoWeAreParagraph1": "For over a decade, SporoNova has partnered with commercial cultivators, horticulture boards, and rural cooperatives to modernize mycology cultivation. We ensure pure mycelial expansion by sourcing tested substrate grains, balancing media pH, and verifying strain genetics under strict laboratory clearance.",
+    "whoWeAreParagraph2": "SporoNova operates certified agricultural inoculation cleanrooms, utilizing advanced biological protocols to preserve genetic lines. We focus on providing high-yield, disease-resistant spawn formulas that guarantee crops flush predictably.",
+    "whoWeAreImage": "/about_mushrooms.jpg",
+    "visionTitle": "Our Vision",
+    "visionDesc": "To establish India as a global leader in high-efficiency sustainable mushroom cultivation through biosecure biotechnology.",
+    "missionTitle": "Our Mission",
+    "missionDesc": "Deliver genetically superior liquid spawn and grain starter matrices while supporting regional growers with technical education.",
+    "qualityTitle": "Quality Policy",
+    "qualityDesc": "Every culture slant and liquid jar undergoes 100% microscopical and PCR testing before dispatch."
+  },
+  "processSteps": [
+    {
+      "id": "step-1",
+      "stepNumber": 1,
+      "title": "Genomic Isolation (G0)",
+      "subtitle": "Pure Culture Selection",
+      "description": "Wild fruitbody tissue isolation on sterile PDA agar slants under laminar flow.",
+      "icon": "Dna",
+      "image": "/mother_culture.png",
+      "details": [
+        "Agar slant cloning",
+        "Microscopic validation",
+        "Cryo storage preservation"
+      ]
+    },
+    {
+      "id": "step-2",
+      "stepNumber": 2,
+      "title": "Liquid Bioreactor (G1)",
+      "subtitle": "Mycelial Biomass Expansion",
+      "description": "Inoculating sterile nutrient broth inside aerated stainless steel bioreactors.",
+      "icon": "FlaskConical",
+      "image": "/liquid_spawn_bottle.png",
+      "details": [
+        "Submerged liquid ferment",
+        "DO & pH control",
+        "96-hour rapid growth"
+      ]
+    },
+    {
+      "id": "step-3",
+      "stepNumber": 3,
+      "title": "Grain Matrix Inoculation (G2)",
+      "subtitle": "Solid Substrate Colonization",
+      "description": "Autoclaved grain bags inoculated with liquid broth under cleanroom air.",
+      "icon": "Wheat",
+      "image": "/grain_jar.png",
+      "details": [
+        "121°C / 15 PSI autoclave",
+        "HEPA Class 100 transfer",
+        "Rhizomorphic run log"
+      ]
+    },
+    {
+      "id": "step-4",
+      "stepNumber": 4,
+      "title": "Cold Chain Logistics",
+      "subtitle": "Temperature Controlled Dispatch",
+      "description": "Chilled transport keeping mycelium dormant until grower bed inoculation.",
+      "icon": "Truck",
+      "image": "/growing_kit.png",
+      "details": [
+        "2°C to 4°C refrigerated van",
+        "Thermal tracking sensors",
+        "48-hour express delivery"
+      ]
+    }
+  ],
+  "whyChooseUsCards": [
+    {
+      "id": "card-1",
+      "title": "HEPA Class 100 Cleanroom",
+      "description": "Zero contamination environment protecting all transfer protocols.",
+      "icon": "ShieldCheck",
+      "highlight": "< 0.01% Risk"
+    },
+    {
+      "id": "card-2",
+      "title": "High Biological Efficiency",
+      "description": "Rhizomorphic mycelium ensuring 100%+ yield per bag flush.",
+      "icon": "TrendingUp",
+      "highlight": "100%+ BE"
+    },
+    {
+      "id": "card-3",
+      "title": "Complete Cold Chain Security",
+      "description": "Refrigerated logistics preserving viability during transit.",
+      "icon": "Snowflake",
+      "highlight": "2°C - 4°C Monitored"
+    },
+    {
+      "id": "card-4",
+      "title": "Scientific Field Advisory",
+      "description": "Direct access to mycologists for substrate recipe and climate control.",
+      "icon": "UserCheck",
+      "highlight": "24/7 Advisory"
+    }
+  ],
+  "knowledgeCenter": [
+    {
+      "id": "kc-1",
+      "title": "Liquid Spawn vs Grain Spawn: Commercial Yield Analysis",
+      "type": "Article",
+      "category": "Technical Guide",
+      "summary": "A comprehensive breakdown of inoculation lag times, cost efficiency, and bag throughput.",
+      "content": "Detailed comparison showing liquid spawn broth saves 4 days colonization time...",
+      "date": "2026-07-15",
+      "author": "Dr. Aris Thorne"
+    },
+    {
+      "id": "kc-2",
+      "title": "Shiitake Cultivation Protocol PDF",
+      "type": "Download",
+      "category": "Cultivation Guide",
+      "summary": "Step-by-step substrate formulation, incubation parameters, and fruiting climate guide.",
+      "content": "Official SporoNova Shiitake Manual covering sawdust block sterilization...",
+      "date": "2026-06-20",
+      "author": "SporoNova Technical Team",
+      "fileUrl": "/downloads/shiitake_guide.pdf"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal-1",
+      "url": "/liquid_spawn_bottle.png",
+      "title": "Bioreactor Liquid Spawn Broth",
+      "category": "Laboratory"
+    },
+    {
+      "id": "gal-2",
+      "url": "/grain_jar.png",
+      "title": "Colonized Wheat Grain Bags",
+      "category": "Production"
+    },
+    {
+      "id": "gal-3",
+      "url": "/mother_culture.png",
+      "title": "G0 Agar Culture Slants",
+      "category": "Genomics"
+    }
+  ],
+  "media": [
+    {
+      "id": "med-1",
+      "filename": "logo_transparent.png",
+      "url": "/logo_transparent.png",
+      "size": "45 KB",
+      "mimeType": "image/png",
+      "altText": "SporoNova Logo",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-2",
+      "filename": "liquid_spawn_bottle.png",
+      "url": "/liquid_spawn_bottle.png",
+      "size": "120 KB",
+      "mimeType": "image/png",
+      "altText": "Liquid Spawn Broth",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-3",
+      "filename": "grain_jar.png",
+      "url": "/grain_jar.png",
+      "size": "180 KB",
+      "mimeType": "image/png",
+      "altText": "Grain Spawn Jar",
+      "uploadedAt": "2026-08-01"
+    }
+  ],
+  "seo": {
+    "home": {
+      "metaTitle": "SporoNova | Premium Mushroom Spawn & Cultivation Solutions",
+      "metaDescription": "India's leading mushroom spawn manufacturer. Certified liquid spawn, grain spawn, and mother cultures.",
+      "keywords": "mushroom spawn, liquid spawn, grain spawn, mushroom cultivation",
+      "canonicalUrl": "https://sporonova.com",
+      "ogImage": "/logo_transparent.png"
+    },
+    "about": {
+      "metaTitle": "About Us | SporoNova Biotech",
+      "metaDescription": "Learn about SporoNova's Class 100 HEPA cleanroom laboratory and scientific agritech leadership.",
+      "keywords": "about sporonova, mushroom laboratory, agritech india",
+      "canonicalUrl": "https://sporonova.com/about",
+      "ogImage": "/about_lab.png"
+    },
+    "process": {
+      "metaTitle": "Production Process | SporoNova Biotech",
+      "metaDescription": "Four-step biosecure process: Genomic isolation, bioreactor expansion, grain matrix inoculation, cold chain logistics.",
+      "keywords": "spawn production process, bioreactor mycelium",
+      "canonicalUrl": "https://sporonova.com/process",
+      "ogImage": "/liquid_spawn_bottle.png"
+    }
+  },
+  "settings": {
+    "siteName": "SporoNova Biotech",
+    "primaryColor": "#1F5E38",
+    "secondaryColor": "#2E7D32",
+    "accentColor": "#4e8c4a",
+    "backgroundColor": "#f8f7f3",
+    "textColor": "#333333",
+    "fontFamilyHeading": "Outfit, sans-serif",
+    "fontFamilyBody": "Inter, sans-serif",
+    "containerWidth": "1280px",
+    "sectionPadding": "64px",
+    "borderRadius": "16px"
+  },
+  "users": [
+    {
+      "id": "usr-super-admin",
+      "name": "Super Admin",
+      "email": "admin@sporonova.com",
+      "passwordHash": "$2a$10$6R6xGZ4n7A9T8h2K5Y9Q0.X1u2v3w4x5y6z7a8b9c0d1e2f3g4h5i",
+      "role": "Super Admin",
+      "status": "Active",
+      "createdAt": "2026-08-07T00:00:00.000Z",
+      "lastLogin": "2026-08-07T08:43:18.252Z"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "sub-1",
+      "name": "Vikram Sharma",
+      "email": "vikram@agrifarms.in",
+      "phone": "+91 98765 43210",
+      "inquiryType": "Request Bulk Spawn Quote",
+      "title": "Bulk Spawn Quotation Request",
+      "message": "We require 500 liters of liquid spawn broth for our commercial facility in Pune.",
+      "createdAt": "2026-08-06T10:30:00Z",
+      "status": "New"
+    }
+  ],
+  "analytics": {
+    "pageViews": 14850,
+    "uniqueVisitors": 6240,
+    "productDownloads": 890,
+    "topPages": [
+      {
+        "page": "/",
+        "views": 8200
+      },
+      {
+        "page": "/spawn/liquid-spawn",
+        "views": 2400
+      },
+      {
+        "page": "/process",
+        "views": 1850
+      },
+      {
+        "page": "/about",
+        "views": 1400
+      },
+      {
+        "page": "/contact",
+        "views": 1000
+      }
+    ],
+    "deviceBreakdown": [
+      {
+        "device": "Mobile",
+        "percentage": 58
+      },
+      {
+        "device": "Desktop",
+        "percentage": 38
+      },
+      {
+        "device": "Tablet",
+        "percentage": 4
+      }
+    ]
+  },
+  "backups": [
+    {
+      "id": "bak-1",
+      "filename": "sporonova_backup_2026-08-01.json",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "size": "2.4 MB",
+      "type": "Automated Daily"
+    }
+  ]
+}
