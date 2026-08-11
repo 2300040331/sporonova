@@ -156,6 +156,8 @@ export interface CMSData {
     date: string;
     author: string;
     fileUrl?: string;
+    readTime?: string;
+    complexity?: string;
   }>;
   gallery: Array<{ id: string; url: string; title: string; category: string }>;
   media: Array<{

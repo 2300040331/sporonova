@@ -39,12 +39,17 @@ export default function KnowledgeCenterCMSPage() {
     setItems([
       ...items,
       {
-        id: `kc-${Date.now()}`,
+        id: `new-article-${Date.now()}`,
         title: "New Knowledge Base Article",
         type: "Article",
         category: "Cultivation Guide",
         summary: "Article overview summary.",
-        url: "/knowledge/new-article",
+        content: "Write the article contents here.",
+        date: new Date().toISOString().split("T")[0],
+        author: "SporoNova Research",
+        readTime: "5 min read",
+        complexity: "Basic",
+        url: "",
       },
     ]);
   };
@@ -109,7 +114,7 @@ export default function KnowledgeCenterCMSPage() {
                 <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Article Title</label>
                 <input
                   type="text"
-                  value={item.title}
+                  value={item.title || ""}
                   onChange={(e) => {
                     const updated = [...items];
                     updated[idx].title = e.target.value;
@@ -123,7 +128,7 @@ export default function KnowledgeCenterCMSPage() {
                   <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Category</label>
                   <input
                     type="text"
-                    value={item.category}
+                    value={item.category || ""}
                     onChange={(e) => {
                       const updated = [...items];
                       updated[idx].category = e.target.value;
@@ -135,7 +140,7 @@ export default function KnowledgeCenterCMSPage() {
                 <div>
                   <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Type</label>
                   <select
-                    value={item.type}
+                    value={item.type || "Article"}
                     onChange={(e) => {
                       const updated = [...items];
                       updated[idx].type = e.target.value;
@@ -153,11 +158,56 @@ export default function KnowledgeCenterCMSPage() {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Complexity</label>
+                <select
+                  value={item.complexity || "Basic"}
+                  onChange={(e) => {
+                    const updated = [...items];
+                    updated[idx].complexity = e.target.value;
+                    setItems(updated);
+                  }}
+                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                >
+                  <option value="Basic">Basic</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Read Time (e.g. 5 min read)</label>
+                <input
+                  type="text"
+                  value={item.readTime || ""}
+                  onChange={(e) => {
+                    const updated = [...items];
+                    updated[idx].readTime = e.target.value;
+                    setItems(updated);
+                  }}
+                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Path Slug / Link ID (e.g. what-are-mushrooms)</label>
+                <input
+                  type="text"
+                  value={item.id || ""}
+                  onChange={(e) => {
+                    const updated = [...items];
+                    updated[idx].id = e.target.value;
+                    setItems(updated);
+                  }}
+                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+                />
+              </div>
+            </div>
+
             <div>
               <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Summary / Excerpt</label>
               <textarea
                 rows={2}
-                value={item.summary}
+                value={item.summary || ""}
                 onChange={(e) => {
                   const updated = [...items];
                   updated[idx].summary = e.target.value;
@@ -168,16 +218,17 @@ export default function KnowledgeCenterCMSPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Path Slug / Link</label>
-              <input
-                type="text"
-                value={item.url}
+              <label className="block text-xs font-semibold text-[#2c5e37] uppercase tracking-wider mb-1">Full Article Content (Text / Paragraphs)</label>
+              <textarea
+                rows={6}
+                value={item.content || ""}
                 onChange={(e) => {
                   const updated = [...items];
-                  updated[idx].url = e.target.value;
+                  updated[idx].content = e.target.value;
                   setItems(updated);
                 }}
-                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+                className="w-full px-4 py-3 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium leading-relaxed"
+                placeholder="Write the full content of the article here..."
               />
             </div>
           </div>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BookOpen, Search, Star, Layers, Activity, ShieldCheck, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getCMSData } from "@/lib/cms-store";
 
 interface ArticleMeta {
   id: string;
@@ -81,6 +82,9 @@ const ARTICLES: ArticleMeta[] = [
 ];
 
 export default function KnowledgeHub() {
+  const data = getCMSData();
+  const ARTICLES = (data.knowledgeCenter || []) as any[];
+
   return (
     <>
       <Navbar />

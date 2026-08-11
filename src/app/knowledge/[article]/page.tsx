@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Clock, BookOpen, ShieldAlert, Sparkles, GraduationCap } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { getCMSData } from "@/lib/cms-store";
 
 interface ArticleDetail {
   id: string;
@@ -113,7 +114,53 @@ interface PageProps {
 
 export default async function ArticlePage({ params }: PageProps) {
   const { article } = await params;
-  const detail = ARTICLE_DETAILS[article];
+  const data = getCMSData();
+  
+  // Find article in CMS data first
+  const dbArticle = data.knowledgeCenter?.find(
+    (item) => item.id === article
+  );
+
+  const staticDetail = ARTICLE_DETAILS[article];
+
+  const detail = dbArticle
+    ? {
+        title: dbArticle.title,
+        category: dbArticle.category,
+        readTime: dbArticle.readTime || "5 min read",
+        content: (
+          <div className="space-y-6 text-sm sm:text-base font-semibold text-gray-800 leading-relaxed whitespace-pre-wrap">
+            {dbArticle.content.split("\n\n").map((para, pIdx) => {
+              // Highlight headers starting with "Did You Know?" or specific keywords if needed
+              if (para.startsWith("Did You Know?")) {
+                return (
+                  <div key={pIdx} className="bg-[#f5f3ef]/50 border border-[#e6e4dc] p-6 rounded-2xl mt-6">
+                    <h4 className="text-[#4e8c4a] font-display font-bold text-xs uppercase flex items-center gap-1.5 mb-2">
+                      <Sparkles className="w-4 h-4" /> Did You Know?
+                    </h4>
+                    <p className="text-xs sm:text-sm font-semibold text-gray-700 leading-relaxed">
+                      {para.replace("Did You Know?\n", "").replace("Did You Know?", "")}
+                    </p>
+                  </div>
+                );
+              }
+              if (para.startsWith("Key Characteristics") || para.startsWith("The Mycelial Communications Grid") || para.startsWith("The Mathematical Equation")) {
+                return (
+                  <h3 key={pIdx} className="text-gray-950 font-display text-lg md:text-xl font-bold pt-4 border-b border-gray-100 pb-2">
+                    {para}
+                  </h3>
+                );
+              }
+              return (
+                <p key={pIdx}>
+                  {para}
+                </p>
+              );
+            })}
+          </div>
+        )
+      }
+    : staticDetail;
 
   const isFallback = !detail;
   const displayTitle = isFallback
