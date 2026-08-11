@@ -68,7 +68,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Homepage", href: "/admin/homepage", icon: Home },
     { name: "Header", href: "/admin/header", icon: Menu },
-    { name: "Navigation", href: "/admin/navigation", icon: Compass },
     { name: "Products", href: "/admin/products", icon: Package },
     { name: "Categories", href: "/admin/categories", icon: Layers },
     { name: "Production Process", href: "/admin/production-process", icon: Cpu },
