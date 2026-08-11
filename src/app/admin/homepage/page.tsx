@@ -110,7 +110,7 @@ export default function HomepageCMSPage() {
       partnerships: partnershipsForm,
       deliverables: deliverablesForm,
       industries: industriesForm,
-      successNumbers: successNumbersForm,
+      successNumbers: statsForm.map((s: any) => ({ value: s.value, label: s.label })),
       testimonials: testimonialsForm,
     };
 
@@ -162,7 +162,7 @@ export default function HomepageCMSPage() {
       <div className="flex flex-wrap border-b border-[#e2e8e0] gap-1">
         {[
           { id: "hero", label: "Hero & Stats" },
-          { id: "about", label: "About & Stats" },
+          { id: "about", label: "About Us" },
           { id: "values", label: "Why Choose Us" },
           { id: "credentials", label: "Credentials" },
           { id: "partnerships", label: "Partnerships" },
@@ -359,42 +359,7 @@ export default function HomepageCMSPage() {
               />
             </div>
 
-            <div className="border-t border-[#e2e8e0] pt-6 space-y-4">
-              <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Achievements Counters (Success Numbers Row)</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {successNumbersForm.map((item, idx) => (
-                  <div key={idx} className="border border-[#e2e8e0] p-4 rounded-xl bg-[#f9fbf8] space-y-2">
-                    <span className="text-[10px] text-gray-500 font-mono font-bold">Counter #{idx + 1}</span>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37]">Metric Value</label>
-                      <input
-                        type="text"
-                        value={item.value || ""}
-                        onChange={(e) => {
-                          const updated = [...successNumbersForm];
-                          updated[idx].value = e.target.value;
-                          setSuccessNumbersForm(updated);
-                        }}
-                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37]">Metric Label</label>
-                      <input
-                        type="text"
-                        value={item.label || ""}
-                        onChange={(e) => {
-                          const updated = [...successNumbersForm];
-                          updated[idx].label = e.target.value;
-                          setSuccessNumbersForm(updated);
-                        }}
-                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+
           </div>
         )}
 

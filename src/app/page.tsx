@@ -175,12 +175,14 @@ export default function Homepage() {
   const credentialsList = data?.credentials && data.credentials.length > 0 ? data.credentials : CREDENTIALS;
   const deliverablesList = data?.deliverables && data.deliverables.length > 0 ? data.deliverables : DELIVERABLES;
   const industriesList = data?.industries && data.industries.length > 0 ? data.industries : INDUSTRIES;
-  const successNumbersList = (data as any)?.successNumbers && (data as any).successNumbers.length > 0 ? (data as any).successNumbers : [
-    { value: "14+", label: "Mushroom Varieties" },
-    { value: "100+ MT", label: "Annual Production" },
-    { value: "1000+", label: "Farmers Served" },
-    { value: "12+", label: "Years Experience" }
-  ];
+  const statsList = (data?.homepage as any)?.stats && (data?.homepage as any).stats.length > 0
+    ? (data?.homepage as any).stats
+    : [
+        { value: "14+", label: "Mushroom Varieties", sublabel: "Including Shiitake & more", icon: "Leaf" },
+        { value: "50%", label: "Higher Yield", sublabel: "Compared to grain spawn", icon: "Award" },
+        { value: "3 Months", label: "Shelf Life", sublabel: "At 4°C temperature", icon: "Clock" },
+        { value: "100%", label: "Organic & Chemical Free", sublabel: "Pure & safe cultivation", icon: "Shield" },
+      ];
   const partnershipsList = (data as any)?.partnerships && (data as any).partnerships.length > 0 ? (data as any).partnerships : [
     {
       title: "Government of Tripura",
@@ -358,12 +360,7 @@ export default function Homepage() {
         <section className="px-6 relative z-20">
           <div className="max-w-7xl mx-auto -mt-12 bg-white rounded-3xl border border-[#e6e4dc]/80 shadow-lg p-6 md:py-8 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
-            {((data?.homepage as any)?.stats || [
-              { value: "14+", label: "Mushroom Varieties", sublabel: "Including Shiitake & more", icon: "Leaf" },
-              { value: "50%", label: "Higher Yield", sublabel: "Compared to grain spawn", icon: "Award" },
-              { value: "3 Months", label: "Shelf Life", sublabel: "At 4°C temperature", icon: "Clock" },
-              { value: "100%", label: "Organic & Chemical Free", sublabel: "Pure & safe cultivation", icon: "Shield" },
-            ]).map((st: any, idx: number) => {
+            {statsList.map((st: any, idx: number) => {
               const IconComp = idx === 0 ? Leaf : idx === 1 ? Award : idx === 2 ? Clock : Shield;
               return (
                 <div key={idx} className="flex items-start gap-4">
@@ -969,7 +966,7 @@ export default function Homepage() {
         {/* SUCCESS NUMBERS */}
         <section className="py-20 bg-[#1c3c24] text-white px-6 shadow-md">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
-            {successNumbersList.map((stat: any, idx: number) => (
+            {statsList.map((stat: any, idx: number) => (
               <div key={idx} className="space-y-1 pt-4 md:pt-0">
                 <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">{stat.value}</span>
                 <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">{stat.label}</span>
