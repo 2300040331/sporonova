@@ -576,3 +576,13 @@ export default async function SpawnPage({ params }: PageProps) {
     </>
   );
 }
+
+export async function generateStaticParams() {
+  return [
+    { type: "liquid-spawn" },
+    { type: "grain-spawn" },
+    { type: "mother-culture" },
+    { type: "commercial-spawn" },
+    { type: "growing-kits" },
+  ];
+}

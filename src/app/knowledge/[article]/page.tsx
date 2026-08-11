@@ -169,3 +169,16 @@ export default async function ArticlePage({ params }: PageProps) {
     </>
   );
 }
+
+export async function generateStaticParams() {
+  return [
+    { article: "what-are-mushrooms" },
+    { article: "mycelium" },
+    { article: "spores" },
+    { article: "spawn" },
+    { article: "biological-efficiency" },
+    { article: "substrate" },
+    { article: "contamination" },
+    { article: "sterilization" },
+  ];
+}
