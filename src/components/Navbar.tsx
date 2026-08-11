@@ -46,55 +46,69 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center group">
           <img
-            src="/logo_transparent.png"
-            alt="SPORONOVA"
+            src={header?.logoUrl || "/logo_transparent.png"}
+            alt={header?.logoAlt || "SPORONOVA"}
             className="h-14 w-auto hover:scale-[1.02] transition-all"
           />
         </Link>
  
         {/* Desktop Nav Links */}
         <nav className="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-[#1c3c24]">
-          <Link href="/" className="hover:text-[#4e8c4a] transition-colors py-2">Home</Link>
-          
-          {/* Products Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setShowProductsDropdown(true)}
-            onMouseLeave={() => setShowProductsDropdown(false)}
-          >
-            <button className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2">
-              Products <ChevronDown className="w-3.5 h-3.5 text-[#4e8c4a]" />
-            </button>
-            {showProductsDropdown && (
-              <div className="absolute top-full left-0 w-52 pt-2 z-50">
-                <div className="bg-white border border-[#e6e4dc] rounded-2xl shadow-xl py-2.5">
-                  {productsList.map((p) => (
-                    <Link
-                      key={p.name}
-                      href={p.href}
-                      className="block px-5 py-2.5 text-[11px] font-bold text-[#1c3c24] hover:bg-[#f9faf7] hover:text-[#4e8c4a] transition-colors"
-                    >
-                      {p.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
- 
-          <Link href="/process" className="hover:text-[#4e8c4a] transition-colors py-2">Production Process</Link>
-          <Link href="/about" className="hover:text-[#4e8c4a] transition-colors py-2">About Us</Link>
-          <Link href="/#why-choose-us" className="hover:text-[#4e8c4a] transition-colors py-2">Why Choose Us</Link>
-          <Link href="/knowledge" className="hover:text-[#4e8c4a] transition-colors py-2">Knowledge Center</Link>
+          {(header?.navLinks || [
+            { name: "Home", href: "/" },
+            { name: "Production Process", href: "/process" },
+            { name: "About Us", href: "/about" },
+            { name: "Why Choose Us", href: "/#why-choose-us" },
+            { name: "Knowledge Center", href: "/knowledge" },
+          ]).map((link: any, idx: number) => {
+            if (idx === 0) {
+              return (
+                <React.Fragment key={link.name}>
+                  <Link href={link.href} className="hover:text-[#4e8c4a] transition-colors py-2">{link.name}</Link>
+                  
+                  {/* Products Dropdown */}
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setShowProductsDropdown(true)}
+                    onMouseLeave={() => setShowProductsDropdown(false)}
+                  >
+                    <button className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-bold text-[11px]">
+                      Products <ChevronDown className="w-3.5 h-3.5 text-[#4e8c4a]" />
+                    </button>
+                    {showProductsDropdown && (
+                      <div className="absolute top-full left-0 w-52 pt-2 z-50">
+                        <div className="bg-white border border-[#e6e4dc] rounded-2xl shadow-xl py-2.5">
+                          {productsList.map((p) => (
+                            <Link
+                              key={p.name}
+                              href={p.href}
+                              className="block px-5 py-2.5 text-[11px] font-bold text-[#1c3c24] hover:bg-[#f9faf7] hover:text-[#4e8c4a] transition-colors"
+                            >
+                              {p.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </React.Fragment>
+              );
+            }
+            return (
+              <Link key={link.name} href={link.href} className="hover:text-[#4e8c4a] transition-colors py-2">
+                {link.name}
+              </Link>
+            );
+          })}
         </nav>
  
         {/* Action Button & Contact Info */}
         <div className="hidden lg:flex items-center">
           <Link
-            href="/contact"
+            href={header?.ctaLink || "/contact"}
             className="flex items-center gap-2 px-6 py-3 bg-[#1c3c24] text-[10px] font-bold uppercase tracking-wider text-white rounded-full hover:bg-[#4e8c4a] hover:scale-[1.02] transition-all shadow-md shadow-[#1c3c24]/10"
           >
-            Contact Us <ArrowRight className="w-3.5 h-3.5" />
+            {header?.ctaText || "Contact Us"} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
  
@@ -111,71 +125,67 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-[#e6e4dc] shadow-md py-6 px-6 space-y-4 animate-slideDown">
-          <Link
-            href="/"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            Home
-          </Link>
+          {(header?.navLinks || [
+            { name: "Home", href: "/" },
+            { name: "Production Process", href: "/process" },
+            { name: "About Us", href: "/about" },
+            { name: "Why Choose Us", href: "/#why-choose-us" },
+            { name: "Knowledge Center", href: "/knowledge" },
+          ]).map((link: any, idx: number) => {
+            if (idx === 0) {
+              return (
+                <React.Fragment key={link.name}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+                  >
+                    {link.name}
+                  </Link>
 
-          {/* Products Section */}
-          <div className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
-            <span className="block text-[9px] font-mono text-gray-400 uppercase tracking-widest">Products</span>
-            {productsList.map((p) => (
+                  {/* Products Section */}
+                  <div className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
+                    <span className="block text-[9px] font-mono text-gray-400 uppercase tracking-widest">Products</span>
+                    {productsList.map((p) => (
+                      <Link
+                        key={p.name}
+                        href={p.href}
+                        onClick={() => setIsOpen(false)}
+                        className="block text-[10px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+                      >
+                        {p.name}
+                      </Link>
+                    ))}
+                  </div>
+                </React.Fragment>
+              );
+            }
+            return (
               <Link
-                key={p.name}
-                href={p.href}
+                key={link.name}
+                href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="block text-[10px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+                className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
               >
-                {p.name}
+                {link.name}
               </Link>
-            ))}
-          </div>
-
+            );
+          })}
+          
           <Link
-            href="/process"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            Production Process
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            About Us
-          </Link>
-          <Link
-            href="/#why-choose-us"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            Why Choose Us
-          </Link>
-          <Link
-            href="/knowledge"
-            onClick={() => setIsOpen(false)}
-            className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-          >
-            Knowledge Center
-          </Link>
-          <Link
-            href="/contact"
+            href={header?.ctaLink || "/contact"}
             onClick={() => setIsOpen(false)}
             className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#4e8c4a] text-[10px] font-bold uppercase tracking-widest text-white rounded-xl w-full justify-center"
           >
-            Contact Us <ArrowRight className="w-3.5 h-3.5" />
+            {header?.ctaText || "Contact Us"} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       )}
     </header>
-
+ 
     {/* Floating WhatsApp Button */}
     <a
-      href="https://wa.me/917207208419"
+      href={`https://wa.me/${data?.contact?.whatsappNumber || "917207208419"}`}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer"
