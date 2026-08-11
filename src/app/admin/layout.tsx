@@ -28,6 +28,7 @@ import {
   LogOut,
   X,
   ExternalLink,
+  Mail,
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -79,6 +80,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
     { name: "FAQs", href: "/admin/faqs", icon: HelpCircle },
     { name: "Contact Forms", href: "/admin/forms", icon: Inbox },
+    { name: "Contact Details", href: "/admin/contact", icon: Mail },
     { name: "SEO", href: "/admin/seo", icon: Search },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
     { name: "Users", href: "/admin/users", icon: Users, superAdminOnly: true },

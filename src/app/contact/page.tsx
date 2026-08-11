@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Phone, MapPin, Mail, ClipboardList, ArrowLeft, Download } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useCMS } from "@/lib/cms-context";
 
 export const INQUIRY_MAPPINGS: Record<string, { title: string; message: string }> = {
   "Request Product Catalogue": {
@@ -36,6 +37,7 @@ export const INQUIRY_MAPPINGS: Record<string, { title: string; message: string }
 };
 
 function ContactContent() {
+  const { data } = useCMS();
   const searchParams = useSearchParams();
   const inquiryParam = searchParams.get("inquiry");
   const productParam = searchParams.get("product");
@@ -143,7 +145,7 @@ function ContactContent() {
       alert("Please select an inquiry type.");
       return;
     }
-    const phoneNumber = "917207208419";
+    const phoneNumber = data?.contact?.whatsappNumber || "917207208419";
     const text = `*Name:* ${encodeURIComponent(formData.name || "N/A")}%0A*Email:* ${encodeURIComponent(formData.email || "N/A")}%0A*Inquiry Type:* ${encodeURIComponent(formData.inquiryType)}%0A*Title:* ${encodeURIComponent(formData.title || "N/A")}%0A*Message:* ${encodeURIComponent(formData.message || "N/A")}`;
 
     window.open(`https://wa.me/${phoneNumber}?text=${text}`, "_blank");
@@ -164,13 +166,13 @@ function ContactContent() {
 
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block font-extrabold">
-              SporoNova Contact & Technical Center
+              {data?.contact?.badge || "SporoNova Contact & Technical Center"}
             </span>
             <h1 className="font-display text-4xl md:text-5xl font-black text-[#1c3c24] leading-tight">
-              Get In Touch With Our Team
+              {data?.contact?.title || "Get In Touch With Our Team"}
             </h1>
             <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
-              Request product catalogues, official technical PDF datasheets, bulk spawn pricing, or expert cultivation support.
+              {data?.contact?.subtitle || "Request product catalogues, official technical PDF datasheets, bulk spawn pricing, or expert cultivation support."}
             </p>
             <div className="w-16 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
           </div>
@@ -199,10 +201,10 @@ function ContactContent() {
           <div className="lg:col-span-4 bg-white border border-[#e6e4dc] p-8 rounded-[2rem] flex flex-col justify-between space-y-8 shadow-sm">
             <div className="space-y-6">
               <h3 className="text-[#1c3c24] font-display text-xl font-extrabold tracking-tight">
-                Get in Touch
+                {data?.contact?.getInTouchTitle || "Get in Touch"}
               </h3>
               <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
-                Request a product catalogue, ask about bulk discounts, or get custom recommendations for your specific growth setup.
+                {data?.contact?.getInTouchParagraph || "Request a product catalogue, ask about bulk discounts, or get custom recommendations for your specific growth setup."}
               </p>
             </div>
 
@@ -213,7 +215,7 @@ function ContactContent() {
                 </div>
                 <div>
                   <span className="text-[9px] text-gray-400 block font-mono font-bold uppercase">PHONE & WHATSAPP SUPPORT</span>
-                  <span className="text-xs font-bold text-gray-700 block">+91 7207208419</span>
+                  <span className="text-xs font-bold text-gray-700 block">{data?.contact?.phone || "+91 7207208419"}</span>
                 </div>
               </div>
 
@@ -223,7 +225,7 @@ function ContactContent() {
                 </div>
                 <div>
                   <span className="text-[9px] text-gray-400 block font-mono font-bold uppercase">LABORATORY HEADQUARTERS</span>
-                  <span className="text-xs font-bold text-gray-700 block leading-tight">Koni, Bilaspur, Chhattisgarh 495009</span>
+                  <span className="text-xs font-bold text-gray-700 block leading-tight">{data?.contact?.address || "Koni, Bilaspur, Chhattisgarh 495009"}</span>
                 </div>
               </div>
 
@@ -233,14 +235,14 @@ function ContactContent() {
                 </div>
                 <div>
                   <span className="text-[9px] text-gray-400 block font-mono font-bold uppercase">EMAIL INQUIRIES</span>
-                  <span className="text-xs font-bold text-gray-700 block">sales@sporonova.com</span>
+                  <span className="text-xs font-bold text-gray-700 block">{data?.contact?.email || "sales@sporonova.com"}</span>
                 </div>
               </div>
             </div>
 
             <div className="border-t border-gray-100 pt-4">
               <span className="text-[9px] text-gray-400 font-mono tracking-widest block uppercase font-bold">
-                ISO & GMP Accredited Facility
+                {data?.contact?.footerTag || "ISO & GMP Accredited Facility"}
               </span>
             </div>
           </div>
@@ -325,7 +327,7 @@ function ContactContent() {
           {/* Right Column - Map Embed */}
           <div className="lg:col-span-4 rounded-[2rem] overflow-hidden border border-[#e6e4dc] shadow-sm relative min-h-[300px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3696.8524458312014!2d82.1388031!3d22.1129528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a280b2a265691f1%3A0xc3f605a9c9f2b86d!2sKoni%2C%20Bilaspur%2C%20Chhattisgarh%20495009!5e0!3m2!1sen!2sin!4v1783234000000!5m2!1sen!2sin"
+              src={data?.contact?.mapIframeUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3696.8524458312014!2d82.1388031!3d22.1129528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a280b2a265691f1%3A0xc3f605a9c9f2b86d!2sKoni%2C%20Bilaspur%2C%20Chhattisgarh%20495009!5e0!3m2!1sen!2sin!4v1783234000000!5m2!1sen!2sin"}
               className="absolute inset-0 w-full h-full border-0"
               allowFullScreen={false}
               loading="lazy"

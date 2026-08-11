@@ -143,6 +143,19 @@ export interface CMSData {
     techBadges?: Array<{ label: string }>;
     aboutGallery?: Array<{ url: string; title: string }>;
   };
+  contact: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    getInTouchTitle: string;
+    getInTouchParagraph: string;
+    phone: string;
+    address: string;
+    email: string;
+    footerTag: string;
+    whatsappNumber: string;
+    mapIframeUrl: string;
+  };
   processSteps: Array<{
     id: string;
     stepNumber: number;
@@ -951,7 +964,19 @@ const INITIAL_DATA: CMSData = {
     sectionPadding: "64px",
     borderRadius: "16px",
   },
-  users: [],
+  contact: {
+    badge: "SporoNova Contact & Technical Center",
+    title: "Get In Touch With Our Team",
+    subtitle: "Request product catalogues, official technical PDF datasheets, bulk spawn pricing, or expert cultivation support.",
+    getInTouchTitle: "Get in Touch",
+    getInTouchParagraph: "Request a product catalogue, ask about bulk discounts, or get custom recommendations for your specific growth setup.",
+    phone: "+91 7207208419",
+    address: "Koni, Bilaspur, Chhattisgarh 495009",
+    email: "sales@sporonova.com",
+    footerTag: "ISO & GMP ACCREDITED FACILITY",
+    whatsappNumber: "917207208419",
+    mapIframeUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3696.8524458312014!2d82.1388031!3d22.1129528!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a280b2a265691f1%3A0xc3f605a9c9f2b86d!2sKoni%2C%20Bilaspur%2C%20Chhattisgarh%20495009!5e0!3m2!1sen!2sin!4v1783234000000!5m2!1sen!2sin"
+  },
   contacts: [
     { id: "sub-1", name: "Vikram Sharma", email: "vikram@agrifarms.in", phone: "+91 98765 43210", inquiryType: "Request Bulk Spawn Quote", title: "Bulk Spawn Quotation Request", message: "We require 500 liters of liquid spawn broth for our commercial facility in Pune.", createdAt: "2026-08-06T10:30:00Z", status: "New" },
   ],
@@ -972,6 +997,7 @@ const INITIAL_DATA: CMSData = {
       { device: "Tablet", percentage: 4 },
     ],
   },
+  users: [],
   backups: [
     { id: "bak-1", filename: "sporonova_backup_2026-08-01.json", createdAt: "2026-08-01T00:00:00Z", size: "2.4 MB", type: "Automated Daily" },
   ],
