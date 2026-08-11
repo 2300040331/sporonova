@@ -79,7 +79,7 @@ export default function ProductsCMSPage() {
   };
 
   const handleToggleStatus = async (product: any) => {
-    const newStatus = product.status === "Published" ? "Hidden" : "Published";
+    const newStatus = (product.status === "Published" ? "Hidden" : "Published") as "Published" | "Draft" | "Hidden";
     const updatedProducts = data.products.map((p) =>
       p.id === product.id ? { ...p, status: newStatus } : p
     );

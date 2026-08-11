@@ -17,7 +17,7 @@ export default function ProcessCMSPage() {
     );
   }
 
-  const [steps, setSteps] = useState(data?.processSteps || []);
+  const [steps, setSteps] = useState<any[]>(data?.processSteps || []);
 
   React.useEffect(() => {
     if (data?.processSteps) {

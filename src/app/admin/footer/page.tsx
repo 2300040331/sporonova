@@ -8,7 +8,7 @@ export default function FooterCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [footerForm, setFooterForm] = useState(data?.footer || {});
+  const [footerForm, setFooterForm] = useState<any>(data?.footer || {});
 
   useEffect(() => {
     if (data?.footer) {

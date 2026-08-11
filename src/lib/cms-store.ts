@@ -75,6 +75,8 @@ export interface CMSData {
     };
     valuesSectionTitle: string;
     valuesSectionSubtitle: string;
+    valuesSectionBadge?: string;
+    stats?: any[];
     industriesSectionTitle: string;
     credentialsSectionTitle: string;
     testimonialsSectionTitle: string;

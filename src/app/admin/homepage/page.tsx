@@ -17,7 +17,7 @@ export default function HomepageCMSPage() {
   const [activeTab, setActiveTab] = useState<"hero" | "values" | "credentials" | "testimonials">("hero");
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [heroForm, setHeroForm] = useState(data?.homepage?.hero || {});
+  const [heroForm, setHeroForm] = useState<any>(data?.homepage?.hero || {});
 
   useEffect(() => {
     if (data?.homepage?.hero) {

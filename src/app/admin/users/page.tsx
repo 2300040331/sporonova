@@ -45,7 +45,7 @@ export default function UsersCMSPage() {
   };
 
   const handleToggleUserStatus = async (user: any) => {
-    const newStatus = user.status === "Active" ? "Inactive" : "Active";
+    const newStatus = (user.status === "Active" ? "Inactive" : "Active") as "Active" | "Inactive";
     const updated = data.users.map((u) => (u.id === user.id ? { ...u, status: newStatus } : u));
     await updateData({ users: updated });
   };

@@ -8,7 +8,7 @@ export default function HeaderCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [headerForm, setHeaderForm] = useState(data?.header || {});
+  const [headerForm, setHeaderForm] = useState<any>(data?.header || {});
 
   useEffect(() => {
     if (data?.header) {

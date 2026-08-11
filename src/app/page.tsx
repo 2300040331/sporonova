@@ -318,12 +318,12 @@ export default function Homepage() {
         <section className="px-6 relative z-20">
           <div className="max-w-7xl mx-auto -mt-12 bg-white rounded-3xl border border-[#e6e4dc]/80 shadow-lg p-6 md:py-8 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             
-            {(data?.homepage?.stats || [
+            {((data?.homepage as any)?.stats || [
               { value: "14+", label: "Mushroom Varieties", sublabel: "Including Shiitake & more", icon: "Leaf" },
               { value: "50%", label: "Higher Yield", sublabel: "Compared to grain spawn", icon: "Award" },
               { value: "3 Months", label: "Shelf Life", sublabel: "At 4°C temperature", icon: "Clock" },
               { value: "100%", label: "Organic & Chemical Free", sublabel: "Pure & safe cultivation", icon: "Shield" },
-            ]).map((st, idx) => {
+            ]).map((st: any, idx: number) => {
               const IconComp = idx === 0 ? Leaf : idx === 1 ? Award : idx === 2 ? Clock : Shield;
               return (
                 <div key={idx} className="flex items-start gap-4">
@@ -573,15 +573,15 @@ export default function Homepage() {
             <div className="md:col-span-8 space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#4e8c4a]/10 border border-[#4e8c4a]/30 text-[#4e8c4a] text-[10px] font-mono font-extrabold uppercase tracking-widest">
                 <span className="w-2 h-2 rounded-full bg-[#4e8c4a] animate-ping" />
-                {data?.homepage?.valuesSectionBadge || "Quality Assurance Protocols"}
+                {(data?.homepage as any)?.valuesSectionBadge || "Quality Assurance Protocols"}
               </div>
               <h2 className="font-display text-3xl md:text-5xl font-black tracking-tight text-[#1c3c24] leading-tight">
-                {data?.homepage?.valuesSectionTitle || "Why Growers Choose SporoNova"}
+                {(data?.homepage as any)?.valuesSectionTitle || "Why Growers Choose SporoNova"}
               </h2>
             </div>
             <div className="md:col-span-4">
               <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
-                {data?.homepage?.valuesSectionSubtitle || "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields."}
+                {(data?.homepage as any)?.valuesSectionSubtitle || "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields."}
               </p>
             </div>
           </motion.div>
@@ -705,8 +705,8 @@ export default function Homepage() {
                     <div className="space-y-4">
                       <div className="flex items-center gap-4">
                         <div className="p-3.5 bg-[#f9faf7] border border-[#e6e4dc] group-hover:bg-[#1c3c24] group-hover:border-[#1c3c24] group-hover:text-white transition-all duration-300 rounded-2xl shrink-0 shadow-xs">
-                          {React.isValidElement(cred.icon) ? (
-                            React.cloneElement(cred.icon as React.ReactElement, {
+                          {React.isValidElement((cred as any).icon) ? (
+                            React.cloneElement((cred as any).icon as React.ReactElement<any>, {
                               className: "w-5 h-5 text-[#4e8c4a] group-hover:text-[#7baa6b] transition-colors",
                             })
                           ) : (
