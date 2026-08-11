@@ -95,6 +95,24 @@ export interface CMSData {
     specifications: Record<string, string>;
     pdfUrl?: string;
     sortOrder: number;
+    scientificName?: string;
+    introduction?: string;
+    history?: string;
+    principle?: string;
+    composition?: string[];
+    advantages?: string[];
+    disadvantages?: string[];
+    applications?: string[];
+    process?: string[];
+    labSpecs?: string[];
+    storage?: string;
+    shelfLife?: string;
+    transport?: string;
+    qualityTesting?: string[];
+    commercialUses?: string;
+    govApplications?: string;
+    faqs?: Array<{ q: string; a: string }>;
+    papers?: Array<{ title: string; author: string; journal: string }>;
   }>;
   categories: Array<{ id: string; name: string; slug: string; desc: string }>;
   values: Array<{ title: string; desc: string; tag: string; metric: string }>;
@@ -299,7 +317,7 @@ const INITIAL_DATA: CMSData = {
   products: [
     {
       id: "liquid-spawn",
-      name: "Liquid Spawn Broth",
+      name: "Liquid Spawn",
       category: "Industrial Inoculant",
       desc: "Active vegetative mycelium cells suspended in sterilized liquid sugar broth, optimized for bioreactor inoculation.",
       href: "/spawn/liquid-spawn",
@@ -309,10 +327,66 @@ const INITIAL_DATA: CMSData = {
       images: ["/liquid_spawn_bottle.png"],
       specifications: { Storage: "2°C - 4°C", ShelfLife: "90 Days", Purity: "99.9%" },
       sortOrder: 1,
+      scientificName: "Mycelial Biomass Broth",
+      introduction: "Active vegetative mycelium cells propagated inside a sterile liquid sugar solution, providing exponential inoculation surface coordinates.",
+      history: "First pioneered in university research laboratories during the 1970s, liquid fermentation revolutionized commercial button mushroom yields by automating inoculant distribution.",
+      principle: "Mycelium requires carbon, nitrogen, and minerals. In a liquid medium, gentle aeration breaks expanding cell clusters into microscopic fragments, each acting as an individual inoculation hub.",
+      composition: [
+        "Distilled Water (Pure H2O baseline)",
+        "Organic Light Malt Extract (Carbon carbohydrate source)",
+        "Bacteriological Yeast Extract (Nitrogen protein source)",
+        "Magnesium Sulfate (Critical cell division mineral)"
+      ],
+      advantages: [
+        "Exponentially faster colonization (90% decrease in lag phase)",
+        "100% inoculation nodes covering the entire carrier matrix",
+        "Bioreactor scaling reduces lab labor overheads",
+        "Direct sterile needle syringe injection blocks mold spores"
+      ],
+      disadvantages: [
+        "Short shelf life (must be chilled and used within 3 weeks)",
+        "Requires advanced cleanroom testing to verify micro-contaminants",
+        "Liquid turbidity makes visual contamination checks difficult"
+      ],
+      applications: [
+        "Inoculating G1 grain master spawn jars",
+        "Direct bioreactor biomass scale-up runs",
+        "Automated commercial bagging line injections"
+      ],
+      process: [
+        "Liquid Media Preparation: Dissolving sugars and nutrients at 45 minutes",
+        "Autoclave Sterilization: Steaming at 121°C, 15 PSI for 25 minutes",
+        "Cooling cycle: Ambient laminar cooling to 25°C for 6 hours",
+        "Inoculation: Technicians inject G0 mother agar culture in HEPA hood",
+        "Agitation & Aeration: Incubate on orbital shaker tables for 5 days"
+      ],
+      labSpecs: [
+        "Class 100 sterile laminar air bench",
+        "Orbital shaker incubator table",
+        "Phase-contrast scientific microscope (1000x magnification)"
+      ],
+      storage: "Preserved inside clean air-filtered cold-vault refrigeration (2°C - 3.5°C). Do not freeze.",
+      shelfLife: "21 Days maximum peak viability.",
+      transport: "Certified logistics cold chain cargo (cold boxes at 4°C). Overnight air dispatch recommended.",
+      qualityTesting: [
+        "Agar sector plate testing: verifying clean growth margins",
+        "Liquid turbidity verification: checking for bacterial cloudiness",
+        "Laser particle count check: monitoring mycelial density threshold"
+      ],
+      commercialUses: "Primary inoculant for massive white button and oyster commercial farms globally.",
+      govApplications: "Distributed to municipal automated farms under state-backed horticulture technology grants.",
+      faqs: [
+        { q: "Why does liquid spawn grow faster than grain spawn?", a: "Liquid spawn contains millions of tiny suspended hyphal fragments per milliliter, which spread instantly across the substrate, whereas grain spawn inoculates only at direct grain contact points." },
+        { q: "How do you detect contamination in liquid spawn?", a: "By testing sample drops on petri plates (agar plating) and checking for yeast or bacterial growth patterns under phase-contrast microscopes." }
+      ],
+      papers: [
+        { title: "Liquid Fermentation of Pleurotus Strains in Stirred Bioreactors", author: "Dr. Kenji Sato et al.", journal: "Journal of Applied Mycology, 2023" },
+        { title: "Comparative Yield Analysis of Liquid vs. Grain Spawn Inoculations", author: "H. Patel, R. Miller", journal: "Biotech Agriculture quarterly, 2025" }
+      ]
     },
     {
       id: "grain-spawn",
-      name: "Grain Spawn Jars/Bags",
+      name: "Grain Spawn",
       category: "Carrier Matrix",
       desc: "Sterilized cereal grains (wheat, millet) fully colonized by pure mycelium, standard for bulk agricultural beds.",
       href: "/spawn/grain-spawn",
@@ -322,10 +396,64 @@ const INITIAL_DATA: CMSData = {
       images: ["/grain_jar.png"],
       specifications: { Grain: "Wheat/Millet", Moisture: "48%", ExpansionRatio: "1:20" },
       sortOrder: 2,
+      scientificName: "Cereal Grain Vegetative Inoculant",
+      introduction: "Sterilized cereal grains hydrated and colonized by pure mycelium, forming robust vegetative carrier kernels.",
+      history: "Developed in the 1930s by agricultural scientist Senden, substituting wild compost spawn with sterile, grain-based carriers, establishing modern mushroom farming.",
+      principle: "Grains act as both nutrition storehouses and physical anchors. When mixed with bulk substrates, each colonized grain acts as a center of biological mycelium expansion.",
+      composition: [
+        "Hydrated cereal grains (Wheat, Millet, or Rye grass kernels)",
+        "Calcium Sulfate (Gypsum: acts as anti-clumping agent)",
+        "Calcium Carbonate (Chalk: balances substrate pH levels)"
+      ],
+      advantages: [
+        "Long shelf life (refrigerated up to 3 months)",
+        "High carbohydrate storage provides energy to colonize poor soils",
+        "Easy visual detection of competitive molds or bacterial wet-spot",
+        "Physically easy to shake and disperse evenly throughout bulk compost"
+      ],
+      disadvantages: [
+        "Attracts rodents and insect pests in outdoor environments",
+        "Longer preparation cycle (requires grain boiling, drying, and soaking)",
+        "Higher raw material costs (cereal grains prices rise seasonally)"
+      ],
+      applications: [
+        "Direct inoculation of pasteurized agricultural straw bags",
+        "Inoculating commercial mushroom compost beds",
+        "Home cultivation setups in indoor grow chambers"
+      ],
+      process: [
+        "Grain Hydration: Boiling cereal grains for 35 minutes to achieve 50% humidity",
+        "Chalk/Gypsum Addition: Mixing powders to adjust pH and block clumping",
+        "Autoclave Sterilization: Heating at 121°C (15 PSI) for 90 minutes",
+        "Inoculation: Injecting active liquid spawn or transferring agar slants",
+        "Incubation: Climate room storage for 14 days with manual shaking"
+      ],
+      labSpecs: [
+        "Heavy duty autoclaves with vacuum extraction",
+        "Bulk grain boiling and rinsing stations",
+        "Temperature controlled high-airflow incubation bays"
+      ],
+      storage: "Clean refrigerated vaults (2°C - 4°C). Keep bags upright to prevent filter contamination.",
+      shelfLife: "90 Days maximum refrigeration storage.",
+      transport: "Refrigerated freight logistics trucks. Insulate bags to avoid condensation buildup.",
+      qualityTesting: [
+        "Visual bag mold check: looking for green Aspergillus or black Pin-mold",
+        "Smell analysis: rejecting bags with sour bacterial scent",
+        "Vigor bounce test: verifying rapid recovery after bag shaking"
+      ],
+      commercialUses: "The standard inoculant for commercial Oyster, Shiitake, and Button mushroom farming worldwide.",
+      govApplications: "Distributed bulk spawn to rural cooperative agricultural training centers under microfinance projects.",
+      faqs: [
+        { q: "Which grain is best for spawn production?", a: "Millet is ideal due to its small grain size, which provides more inoculation points per kilogram. Wheat is preferred for larger mushrooms due to higher nutrient volumes." },
+        { q: "What is the purpose of gypsum in grain spawn?", a: "Gypsum prevents individual grains from sticking together into a solid block, making it easy to break and shake the bag." }
+      ],
+      papers: [
+        { title: "Influence of Cereal Grains on Vegetative Mycelium Expansion Rate", author: "Dr. Sarah Jenkins", journal: "Applied Agricultural Mycology, 2024" }
+      ]
     },
     {
       id: "mother-culture",
-      name: "Mother Culture Slants",
+      name: "Mother Culture",
       category: "Genomic Isolate (G0)",
       desc: "Pure strain mycelium isolated on agar media slants inside glass tubes, serving as the primary genetic starting point.",
       href: "/spawn/mother-culture",
@@ -335,10 +463,65 @@ const INITIAL_DATA: CMSData = {
       images: ["/mother_culture.png"],
       specifications: { Media: "PDA Slant", Generation: "G0 Primary", StrainID: "SN-SHI-01" },
       sortOrder: 3,
+      scientificName: "Genomic Agar Sub-Culture (G0)",
+      introduction: "Pure mycelial strains isolated on sterile agar media slants inside borosilicate tubes, serving as the primary genetic repository.",
+      history: "Agar slant preservation was adapted from standard bacteriological methods in the early 20th century to prevent strain degeneration and mutation drift.",
+      principle: "Mycelium is cultivated on a solid nutrient agar matrix. By slowing metabolic activity at low temperatures, pure genetic lines are preserved without cell division fatigue.",
+      composition: [
+        "Bacteriological Agar-Agar (Solidifying agent)",
+        "Light Malt Extract (Nutrient carbohydrate source)",
+        "Peptone (Nitrogen and amino acid building blocks)",
+        "Yeast Extract (Vitamin B complex source)"
+      ],
+      advantages: [
+        "Maintains original genetic purity with zero mutation drift",
+        "Long-term viability storage (up to 12 months under chill)",
+        "Ideal for strain breeding and international genetic exchange",
+        "Provides clear visual verification of sectoring growth margins"
+      ],
+      disadvantages: [
+        "Requires advanced cleanroom micro-dissection skills",
+        "Extremely slow initial expansion rates",
+        "Highly vulnerable to spore contamination during initial inoculation"
+      ],
+      applications: [
+        "Inoculating G1 master grain jars or liquid broth inoculants",
+        "Preserving rare regional wild mycology collections",
+        "Long-term strain banking in university research centers"
+      ],
+      process: [
+        "Agar Media Preparation: Melt malt agar solution at 95°C for 20 minutes",
+        "Pressure Autoclaving: Sterilize at 121°C, 15 PSI for 20 minutes",
+        "Slant Tube Pouring: Dispense and angle tubes under HEPA hood to solidify",
+        "Aseptic Inoculation: Transfer mycelium tissue margins to agar face",
+        "Incubation: Store at 24°C for 7 days to verify clean colony growth"
+      ],
+      labSpecs: [
+        "Class 100 sterile laminar air bench hood",
+        "Inoculation flame loop sanitizer",
+        "Digital temperature-controlled incubator vault"
+      ],
+      storage: "Preserved inside clean air-filtered cold vaults at 2°C - 4°C. Keep tubes upright.",
+      shelfLife: "12 Months maximum storage before slant transfer.",
+      transport: "Insulated shipping tubes with thermal cold packs. Overnight air express recommended.",
+      qualityTesting: [
+        "Rhizomorphic margin check: verifying concentric growth rings",
+        "Mutation sector check: identifying and discarding fuzzy mutations",
+        "Sub-plating check: testing on potato dextrose agar plates"
+      ],
+      commercialUses: "Genetic backup for large scale commercial mushroom production networks.",
+      govApplications: "Strain archives for agricultural research agencies and public biotechnology universities.",
+      faqs: [
+        { q: "Why are slants used instead of petri dishes for long-term storage?", a: "Petri dishes dry out quickly due to air gaps, whereas capped test tubes retain moisture and protect agar media from dehydration for up to a year." },
+        { q: "What is genetic sectoring?", a: "Sectoring is when a section of mycelium mutates and grows at a different rate or texture. These sectors must be discarded to keep the genetic line pure." }
+      ],
+      papers: [
+        { title: "Preservation and Maintenance of Basidiomycete Cults on Agar Slants", author: "Dr. L. Vance, et al.", journal: "Applied Biotechnology Review, 2024" }
+      ]
     },
     {
       id: "commercial-spawn",
-      name: "Commercial Spawn Packs",
+      name: "Commercial Spawn",
       category: "Bulk Production (G2)",
       desc: "Mass-production colonized grain bags distributed directly to commercial growers for direct substrate inoculation.",
       href: "/spawn/commercial-spawn",
@@ -348,6 +531,61 @@ const INITIAL_DATA: CMSData = {
       images: ["/grain_jar.png"],
       specifications: { Package: "2.5kg Polybag", Filter: "0.2 Micron", TargetYield: "1.2kg/bag" },
       sortOrder: 4,
+      scientificName: "Bulk Substrate Inoculant (G2/G3)",
+      introduction: "Fully colonized bulk grain or sawdust matrices packaged inside heavy-duty breathable filter bags, optimized for direct agricultural bed inoculation.",
+      history: "Bulk spawn packaging evolved in the 1980s with the introduction of autoclavable polypropylene bags featuring integrated micro-filter patches, allowing gas exchange while blocking mold spores.",
+      principle: "To colonize large volumes of substrate efficiently, spawn must be robust. Commercial spawn provides massive volume and inoculation points, allowing rapid colonizing of compost or straw.",
+      composition: [
+        "Sterilized organic millet or sorghum seeds",
+        "Lignocellulosic hardwood sawdust matrix (for wood lovers)",
+        "Agricultural gypsum (Anti-clumping mineral)",
+        "Calcium carbonate (pH balancer)"
+      ],
+      advantages: [
+        "Cost-effective bulk packaging for large scale commercial farms",
+        "High inoculation point density due to millet seed distribution",
+        "Sustained nutrition block to boost flush yield weights",
+        "Bags are easy to shake and distribute evenly throughout bulk compost"
+      ],
+      disadvantages: [
+        "High bulk freight shipping costs due to heavy package weights",
+        "Lower shelf life compared to G1 master spawn",
+        "Vulnerable to tearing during shipping or bed mixing"
+      ],
+      applications: [
+        "Direct inoculation of pasteurized agricultural straw bags",
+        "Inoculating commercial mushroom compost beds (Button mushrooms)",
+        "Supplying agricultural cooperations under bulk farming programs"
+      ],
+      process: [
+        "Bulk grain boiling: Hydrate seeds to 48% moisture contents",
+        "Bag Filling & Sealing: Pack into filter bags and seal under clean airflow",
+        "Sterilization: Autoclave bags at 121°C for 2.5 hours",
+        "HEPA cooling: Rest bags in positive-pressure clean rooms for 12 hours",
+        "Inoculation: Inject G1 master spawn into bags and seal"
+      ],
+      labSpecs: [
+        "Large-capacity horizontal sterilizer autoclaves",
+        "Bulk grain mixers and bag filling lines",
+        "Temperature-controlled high-airflow incubation bays"
+      ],
+      storage: "Store in clean cold storage vaults (2°C - 3.5°C). Keep bags stacked upright with proper airflow space.",
+      shelfLife: "60 Days peak viability under refrigeration.",
+      transport: "Refrigerated freight logistics cargo at 4°C. Avoid humidity condensation.",
+      qualityTesting: [
+        "Visual bag inspection: check for green molds or yellow bacterial exudate",
+        "Bounce test: verify raw vegetative recovery within 48 hours after bag shake",
+        "Sector agar sub-plating test: check samples on petri dishes"
+      ],
+      commercialUses: "Bulk spawn distribution for industrial button & oyster cultivators.",
+      govApplications: "Supplying state mushroom multiplication projects and national rural cooperatives.",
+      faqs: [
+        { q: "Can I use commercial spawn to make more spawn?", a: "We do not recommend expanding commercial spawn (G2) further, as third-generation scaling increases the risk of contamination and genetic mutation drift." },
+        { q: "How much commercial spawn is needed for inoculation?", a: "Standard inoculation rate is 2% to 5% spawn weight to wet substrate weight, depending on the mushroom variety." }
+      ],
+      papers: [
+        { title: "Yield and Biological Efficiency of Commercial Spawn Matrices", author: "H. Patel, R. Miller", journal: "Agricultural Biotechnology Quarterly, 2025" }
+      ]
     },
   ],
   categories: [

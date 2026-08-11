@@ -1,9 +1,12 @@
-import React from "react";
+"use client";
+
+import React, { use } from "react";
 import Link from "next/link";
 import { ArrowLeft, Clock, ShieldAlert, Sparkles, Thermometer, FileText, Download, HelpCircle, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SpawnCanvas from "@/components/SpawnCanvas";
+import { useCMS } from "@/lib/cms-context";
 
 interface SpawnDetail {
   id: string;
@@ -330,9 +333,37 @@ interface PageProps {
   params: Promise<{ type: string }>;
 }
 
-export default async function SpawnPage({ params }: PageProps) {
-  const { type } = await params;
-  const detail = SPAWN_DETAILS[type];
+export default function SpawnPage({ params }: PageProps) {
+  const { type } = use(params);
+  const { data } = useCMS();
+  
+  const cmsProduct = data?.products?.find((p: any) => p.id === type);
+  
+  const detail = cmsProduct
+    ? {
+        id: cmsProduct.id,
+        name: cmsProduct.name,
+        scientificName: cmsProduct.scientificName || cmsProduct.category || "",
+        introduction: cmsProduct.introduction || cmsProduct.desc || "",
+        history: cmsProduct.history || "",
+        principle: cmsProduct.principle || "",
+        composition: cmsProduct.composition || [],
+        advantages: cmsProduct.advantages || [],
+        disadvantages: cmsProduct.disadvantages || [],
+        applications: cmsProduct.applications || [],
+        process: cmsProduct.process || [],
+        labSpecs: cmsProduct.labSpecs || [],
+        storage: cmsProduct.storage || cmsProduct.specifications?.Storage || "",
+        shelfLife: cmsProduct.shelfLife || cmsProduct.specifications?.ShelfLife || "",
+        transport: cmsProduct.transport || "",
+        qualityTesting: cmsProduct.qualityTesting || [],
+        commercialUses: cmsProduct.commercialUses || "",
+        govApplications: cmsProduct.govApplications || "",
+        faqs: cmsProduct.faqs || [],
+        papers: cmsProduct.papers || [],
+      }
+    : SPAWN_DETAILS[type];
+
   const isFallback = !detail;
   
   const displayTitle = isFallback
