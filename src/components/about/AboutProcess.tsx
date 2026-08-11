@@ -11,6 +11,7 @@ import {
   Truck,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCMS } from "@/lib/cms-context";
 
 const processSteps = [
   {
@@ -58,6 +59,19 @@ const processSteps = [
 ];
 
 export default function AboutProcess() {
+  const { data } = useCMS();
+  const rawSteps = data?.about?.processSteps || [];
+  const iconsList = [Search, FlaskConical, Microscope, Factory, ClipboardCheck, Package, Truck];
+  
+  const activeSteps = rawSteps.length > 0
+    ? rawSteps.map((s: any, idx: number) => ({
+        id: s.stepNumber || idx + 1,
+        title: s.title,
+        desc: s.description,
+        Icon: iconsList[idx % iconsList.length]
+      }))
+    : processSteps;
+
   return (
     <section className="relative bg-[#f9faf7] py-24 overflow-hidden">
       {/* Header */}
@@ -86,34 +100,37 @@ export default function AboutProcess() {
         <div className="flex gap-6 px-6 md:px-12 overflow-x-auto pb-4 scrollbar-hide md:cursor-grab md:active:cursor-grabbing"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
         >
-          {processSteps.map((step, index) => (
-            <motion.div
-              key={step.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative flex-shrink-0 w-[280px] md:w-[320px]"
-            >
-              {/* Card */}
-              <div className="bg-white border border-[#e6e4dc] rounded-3xl p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-full bg-[#4e8c4a]/10 flex items-center justify-center shrink-0">
-                    <step.Icon className="w-7 h-7 text-[#4e8c4a]" strokeWidth={1.5} />
+          {activeSteps.map((step: any, index: number) => {
+            const Icon = step.Icon;
+            return (
+              <motion.div
+                key={step.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="relative flex-shrink-0 w-[280px] md:w-[320px]"
+              >
+                {/* Card */}
+                <div className="bg-white border border-[#e6e4dc] rounded-3xl p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-full bg-[#4e8c4a]/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-7 h-7 text-[#4e8c4a]" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-4xl font-display font-black text-[#e6e4dc]">
+                      0{step.id}
+                    </span>
                   </div>
-                  <span className="text-4xl font-display font-black text-[#e6e4dc]">
-                    0{step.id}
-                  </span>
+                  <h3 className="font-display font-bold text-lg text-[#1c3c24] mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-605 text-sm leading-relaxed">
+                    {step.desc}
+                  </p>
                 </div>
-                <h3 className="font-display font-bold text-lg text-[#1c3c24] mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

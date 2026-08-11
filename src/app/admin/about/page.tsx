@@ -11,14 +11,21 @@ import {
   FlaskConical, 
   Award, 
   Users, 
-  BookOpen 
+  BookOpen,
+  HelpCircle,
+  TrendingUp,
+  Sliders,
+  Image as ImageIcon,
+  CheckSquare
 } from "lucide-react";
 
 export default function AboutUsCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState<"intro" | "journey" | "science" | "quality" | "partners">("intro");
+  const [activeTab, setActiveTab] = useState<
+    "intro" | "journey" | "science" | "whyChoose" | "process" | "techBadges" | "quality" | "partners" | "gallery"
+  >("intro");
 
   const [aboutForm, setAboutForm] = useState<any>({
     heroTitle: "",
@@ -31,6 +38,10 @@ export default function AboutUsCMSPage() {
     scienceCards: [],
     qualityCards: [],
     partnershipCards: [],
+    whyChooseCards: [],
+    processSteps: [],
+    techBadges: [],
+    aboutGallery: [],
   });
 
   useEffect(() => {
@@ -42,37 +53,14 @@ export default function AboutUsCMSPage() {
         whoWeAreParagraph1: data.about.whoWeAreParagraph1 || "",
         whoWeAreParagraph2: data.about.whoWeAreParagraph2 || "",
         whoWeAreImage: data.about.whoWeAreImage || "",
-        journeySteps: data.about.journeySteps || [
-          { stepNumber: 1, title: "Research Begins", description: "Started with a vision to modernize mushroom cultivation through scientific methods" },
-          { stepNumber: 2, title: "Laboratory Development", description: "Established GMP-compliant cleanroom facilities with advanced biological protocols" },
-          { stepNumber: 3, title: "Advanced Liquid Spawn Technology", description: "Pioneered liquid spawn broth technology for faster colonization" },
-          { stepNumber: 4, title: "Commercial Production", description: "Scaled operations to serve commercial farmers across multiple states" },
-          { stepNumber: 5, title: "Government Collaborations", description: "Partnered with JICA, NHB, and state horticulture departments" },
-          { stepNumber: 6, title: "National Expansion", description: "Expanded distribution network to 200+ farmers across India" },
-          { stepNumber: 7, title: "Future Global Growth", description: "Building next-generation spawn solutions with AI-powered quality control" },
-        ],
-        scienceCards: data.about.scienceCards || [
-          { id: "sci-1", title: "Pure Mycelium Culture", description: "Isolated on sterile agar media slants and verified through phase contrast microscopic analysis for complete genetic authenticity.", badge: "Verified Standard" },
-          { id: "sci-2", title: "Liquid Spawn Technology", description: "Active vegetative mycelium suspended in sterile liquid broth, engineered for 4x faster substrate colonization.", badge: "Verified Standard" },
-          { id: "sci-3", title: "Genetic Stability", description: "Multi-generation testing and strain preservation prevent genetic degeneration across commercial multiplication cycles.", badge: "Verified Standard" },
-          { id: "sci-4", title: "Laboratory Verification", description: "Rigorous quality inspection including microscopic sectoring checks and bio-efficiency purity validation.", badge: "Verified Standard" },
-          { id: "sci-5", title: "Contamination Control", description: "Class 100 HEPA-filtered cleanrooms equipped with positive atmospheric pressure and continuous UV sterilization.", badge: "Verified Standard" },
-          { id: "sci-6", title: "Cold Chain Storage", description: "Strict temperature-regulated cold chain distribution maintains mycelial dormancy until direct farm inoculation.", badge: "Verified Standard" },
-        ],
-        qualityCards: data.about.qualityCards || [
-          { title: "GMP Laboratory", description: "Good Manufacturing Practice compliant facility ensuring contamination-free production" },
-          { title: "ISO Standards", description: "International quality management standards across all processes" },
-          { title: "DMR Certification", description: "Directorate of Mushroom Research validated protocols" },
-          { title: "NHB Certification", description: "National Horticulture Board quality standards compliance" },
-          { title: "Scientific Validation", description: "Rigorous strain verification and biological efficiency testing" },
-        ],
-        partnershipCards: data.about.partnershipCards || [
-          { title: "Government Institutions", description: "Working with state horticulture departments and JICA for farmer empowerment programs." },
-          { title: "Research Organizations", description: "Collaborating with ICAR-DMR and biotechnology research institutes." },
-          { title: "Agricultural Universities", description: "Supplying research-grade cultures and training materials to academic institutions." },
-          { title: "Farmer Cooperatives", description: "Supporting FPO formation and providing technical assistance to farming communities." },
-          { title: "International Development Partners", description: "Partnering with global organizations for sustainable agricultural development." },
-        ],
+        journeySteps: data.about.journeySteps || [],
+        scienceCards: data.about.scienceCards || [],
+        qualityCards: data.about.qualityCards || [],
+        partnershipCards: data.about.partnershipCards || [],
+        whyChooseCards: data.about.whyChooseCards || [],
+        processSteps: data.about.processSteps || [],
+        techBadges: data.about.techBadges || [],
+        aboutGallery: data.about.aboutGallery || [],
       });
     }
   }, [data]);
@@ -80,7 +68,7 @@ export default function AboutUsCMSPage() {
   if (isLoading || !data) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-[#1c3c24] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -113,13 +101,13 @@ export default function AboutUsCMSPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto pb-16">
+    <div className="space-y-6 max-w-7xl mx-auto pb-16">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-[#e2e8e0] p-6 rounded-3xl shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-[#1c3c24] tracking-tight">About Us CMS Editor</h1>
-          <p className="text-xs text-gray-600 mt-1 font-medium">
-            Customize every text, timeline step, technology card, accreditation, and partnership on the About page.
+          <p className="text-xs text-gray-650 mt-1 font-medium">
+            Customize every section, heading, metric, list item, and image displayed on the About Us page.
           </p>
         </div>
 
@@ -134,67 +122,50 @@ export default function AboutUsCMSPage() {
             disabled={saving}
             className="flex items-center gap-2 px-6 py-3 bg-[#1c3c24] hover:bg-[#2c5e37] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow transition-all cursor-pointer"
           >
-            <Save className="w-4 h-4" /> Save All Changes
+            <Save className="w-4 h-4" /> Save About Changes
           </button>
         </div>
       </div>
 
       {/* Tabs Bar */}
-      <div className="flex flex-wrap items-center gap-2 bg-[#f0f5ef] border border-[#d2e4d0] p-2 rounded-2xl">
-        <button
-          onClick={() => setActiveTab("intro")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === "intro" ? "bg-[#1c3c24] text-white shadow-sm" : "text-[#2d5034] hover:text-[#1c3c24]"
-          }`}
-        >
-          <BookOpen className="w-3.5 h-3.5" /> Hero & Who We Are
-        </button>
-
-        <button
-          onClick={() => setActiveTab("journey")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === "journey" ? "bg-[#1c3c24] text-white shadow-sm" : "text-[#2d5034] hover:text-[#1c3c24]"
-          }`}
-        >
-          <Compass className="w-3.5 h-3.5" /> Journey Timeline ({aboutForm.journeySteps?.length || 0})
-        </button>
-
-        <button
-          onClick={() => setActiveTab("science")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === "science" ? "bg-[#1c3c24] text-white shadow-sm" : "text-[#2d5034] hover:text-[#1c3c24]"
-          }`}
-        >
-          <FlaskConical className="w-3.5 h-3.5" /> Our Science ({aboutForm.scienceCards?.length || 0})
-        </button>
-
-        <button
-          onClick={() => setActiveTab("quality")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === "quality" ? "bg-[#1c3c24] text-white shadow-sm" : "text-[#2d5034] hover:text-[#1c3c24]"
-          }`}
-        >
-          <Award className="w-3.5 h-3.5" /> Quality & Accreditation ({aboutForm.qualityCards?.length || 0})
-        </button>
-
-        <button
-          onClick={() => setActiveTab("partners")}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === "partners" ? "bg-[#1c3c24] text-white shadow-sm" : "text-[#2d5034] hover:text-[#1c3c24]"
-          }`}
-        >
-          <Users className="w-3.5 h-3.5" /> Partnerships ({aboutForm.partnershipCards?.length || 0})
-        </button>
+      <div className="flex flex-wrap items-center gap-1 bg-[#f0f5ef] border border-[#d2e4d0] p-2 rounded-2xl">
+        {[
+          { id: "intro", label: "Intro & Hero", icon: BookOpen },
+          { id: "journey", label: "Timeline Journey", icon: Compass },
+          { id: "science", label: "Our Science", icon: FlaskConical },
+          { id: "whyChoose", label: "Why Choose Us", icon: HelpCircle },
+          { id: "process", label: "Our Process", icon: Sliders },
+          { id: "techBadges", label: "Tech Showcase", icon: CheckSquare },
+          { id: "quality", label: "Quality Assurance", icon: Award },
+          { id: "partners", label: "Partnerships", icon: Users },
+          { id: "gallery", label: "Photo Gallery", icon: ImageIcon },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                activeTab === tab.id
+                  ? "bg-[#1c3c24] text-white shadow-sm font-bold"
+                  : "text-[#2d5034] hover:bg-white/50 hover:text-[#1c3c24]"
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {tab.label} ({aboutForm[tab.id === "intro" ? "aboutGallery" : tab.id === "whyChoose" ? "whyChooseCards" : tab.id === "process" ? "processSteps" : tab.id === "techBadges" ? "techBadges" : tab.id === "gallery" ? "aboutGallery" : tab.id + "Cards"]?.length || aboutForm[tab.id + "Steps"]?.length || 0})
+            </button>
+          );
+        })}
       </div>
 
       {/* TAB 1: HERO & WHO WE ARE */}
       {activeTab === "intro" && (
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
-          <h2 className="text-lg font-bold text-[#1c3c24] border-b border-[#e2e8e0] pb-3">Hero & Header Content</h2>
+          <h2 className="text-base font-bold text-[#1c3c24] border-b border-[#e2e8e0] pb-3">Hero & Header Content</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
                 Badge / Subtitle Tag
               </label>
               <input
@@ -207,7 +178,7 @@ export default function AboutUsCMSPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
                 Hero Main Title
               </label>
               <input
@@ -220,11 +191,11 @@ export default function AboutUsCMSPage() {
             </div>
           </div>
 
-          <h2 className="text-lg font-bold text-white border-b border-white/10 pb-3 pt-4">Who We Are Section</h2>
+          <h2 className="text-base font-bold text-[#1c3c24] border-b border-[#e2e8e0] pb-3 pt-4">Who We Are Section</h2>
 
           <div>
-            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-              Who We Are Section Title
+            <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+              Section Title
             </label>
             <input
               type="text"
@@ -235,38 +206,38 @@ export default function AboutUsCMSPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
               First Paragraph
             </label>
             <textarea
               rows={3}
               value={aboutForm.whoWeAreParagraph1 || ""}
               onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreParagraph1: e.target.value })}
-              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs"
+              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
               Second Paragraph
             </label>
             <textarea
               rows={3}
               value={aboutForm.whoWeAreParagraph2 || ""}
               onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreParagraph2: e.target.value })}
-              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs"
+              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+            <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
               Section Image URL
             </label>
             <input
               type="text"
               value={aboutForm.whoWeAreImage || ""}
               onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreImage: e.target.value })}
-              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono"
+              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
             />
           </div>
         </div>
@@ -277,7 +248,7 @@ export default function AboutUsCMSPage() {
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
             <div>
-              <h2 className="text-lg font-bold text-[#1c3c24]">The SporoNova Journey (Timeline Steps)</h2>
+              <h2 className="text-base font-bold text-[#1c3c24]">The SporoNova Journey (Timeline Steps)</h2>
               <p className="text-xs text-gray-500 font-medium">Edit step titles and historical milestone descriptions.</p>
             </div>
             <button
@@ -294,7 +265,7 @@ export default function AboutUsCMSPage() {
 
           <div className="space-y-4">
             {aboutForm.journeySteps?.map((step: any, index: number) => (
-              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-2xl space-y-3 relative group">
+              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-2xl space-y-3 relative">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3 w-full">
                     <span className="w-8 h-8 rounded-full bg-[#1c3c24] text-white font-bold text-xs flex items-center justify-center shrink-0">
@@ -310,10 +281,10 @@ export default function AboutUsCMSPage() {
                   </div>
                   <button
                     onClick={() => removeArrayItem("journeySteps", index)}
-                    className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 cursor-pointer"
+                    className="text-red-505 hover:text-red-750 p-2 rounded-lg hover:bg-red-50 cursor-pointer"
                     title="Delete step"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-4 h-4 text-red-500" />
                   </button>
                 </div>
 
@@ -337,8 +308,8 @@ export default function AboutUsCMSPage() {
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
             <div>
-              <h2 className="text-lg font-bold text-[#1c3c24]">Our Science (Technology Cards)</h2>
-              <p className="text-xs text-gray-500 font-medium">Manage the 6 technical microbiology cards on the About page.</p>
+              <h2 className="text-base font-bold text-[#1c3c24]">Our Science (Technology Cards)</h2>
+              <p className="text-xs text-gray-500 font-medium">Manage the technical microbiology cards on the About page.</p>
             </div>
             <button
               onClick={() => addArrayItem("scienceCards", {
@@ -392,12 +363,169 @@ export default function AboutUsCMSPage() {
         </div>
       )}
 
-      {/* TAB 4: QUALITY & ACCREDITATION */}
+      {/* TAB 4: WHY CHOOSE US (BENTO GRID) */}
+      {activeTab === "whyChoose" && (
+        <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
+            <div>
+              <h2 className="text-base font-bold text-[#1c3c24]">Why SporoNova (Bento Cards)</h2>
+              <p className="text-xs text-gray-500 font-medium">Manage the 8 core bento grid blocks explaining benefits.</p>
+            </div>
+            <button
+              onClick={() => addArrayItem("whyChooseCards", {
+                title: "New Value Proposition",
+                description: "Describe the benefit details here..."
+              })}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#1c3c24] hover:bg-[#2c5e37] text-white text-xs font-bold rounded-xl cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Benefit Card
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {aboutForm.whyChooseCards?.map((card: any, index: number) => (
+              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-2xl space-y-3 relative">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[10px] font-mono text-[#2c5e37] uppercase font-bold">
+                    Benefit Card 0{index + 1}
+                  </span>
+                  <button
+                    onClick={() => removeArrayItem("whyChooseCards", index)}
+                    className="text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50 cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] text-[#2c5e37] uppercase font-mono font-bold mb-1">Title</label>
+                  <input
+                    type="text"
+                    value={card.title || ""}
+                    onChange={(e) => updateArrayItem("whyChooseCards", index, "title", e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] text-[#2c5e37] uppercase font-mono font-bold mb-1">Description</label>
+                  <textarea
+                    rows={2}
+                    value={card.description || ""}
+                    onChange={(e) => updateArrayItem("whyChooseCards", index, "description", e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: OUR PROCESS */}
+      {activeTab === "process" && (
+        <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
+            <div>
+              <h2 className="text-base font-bold text-[#1c3c24]">Our Process (Timeline Steps)</h2>
+              <p className="text-xs text-gray-500 font-medium">Manage the horizontal scrolling steps for spawn dispatching.</p>
+            </div>
+            <button
+              onClick={() => addArrayItem("processSteps", {
+                stepNumber: (aboutForm.processSteps?.length || 0) + 1,
+                title: "New Process Step",
+                description: "Describe this stage in detail..."
+              })}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#1c3c24] hover:bg-[#2c5e37] text-white text-xs font-bold rounded-xl cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Process Step
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {aboutForm.processSteps?.map((step: any, index: number) => (
+              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-2xl space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 w-full">
+                    <span className="w-8 h-8 rounded-full bg-[#1c3c24] text-white font-bold text-xs flex items-center justify-center shrink-0">
+                      {step.stepNumber || index + 1}
+                    </span>
+                    <input
+                      type="text"
+                      value={step.title || ""}
+                      onChange={(e) => updateArrayItem("processSteps", index, "title", e.target.value)}
+                      placeholder="Step Title"
+                      className="w-full px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <button
+                    onClick={() => removeArrayItem("processSteps", index)}
+                    className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div>
+                  <textarea
+                    rows={2}
+                    value={step.description || ""}
+                    onChange={(e) => updateArrayItem("processSteps", index, "description", e.target.value)}
+                    placeholder="Describe step details..."
+                    className="w-full px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 6: TECH SHOWCASE BADGES */}
+      {activeTab === "techBadges" && (
+        <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
+            <div>
+              <h2 className="text-base font-bold text-[#1c3c24]">Tools of Innovation (Technology Badges)</h2>
+              <p className="text-xs text-gray-500 font-medium">Manage floating tags shown in the dynamic tech circle.</p>
+            </div>
+            <button
+              onClick={() => addArrayItem("techBadges", {
+                label: "New Technology Tag"
+              })}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#1c3c24] hover:bg-[#2c5e37] text-white text-xs font-bold rounded-xl cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Tag Badge
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {aboutForm.techBadges?.map((badge: any, index: number) => (
+              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-xl flex items-center justify-between gap-3">
+                <input
+                  type="text"
+                  value={badge.label || ""}
+                  onChange={(e) => updateArrayItem("techBadges", index, "label", e.target.value)}
+                  className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                />
+                <button
+                  onClick={() => removeArrayItem("techBadges", index)}
+                  className="text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 7: QUALITY & ACCREDITATION */}
       {activeTab === "quality" && (
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
             <div>
-              <h2 className="text-lg font-bold text-[#1c3c24]">Quality Assurance & Certifications</h2>
+              <h2 className="text-base font-bold text-[#1c3c24]">Quality Assurance & Certifications</h2>
               <p className="text-xs text-gray-500 font-medium">Manage GMP, ISO, DMR, and NHB compliance badges.</p>
             </div>
             <button
@@ -451,12 +579,12 @@ export default function AboutUsCMSPage() {
         </div>
       )}
 
-      {/* TAB 5: PARTNERSHIPS */}
+      {/* TAB 8: PARTNERSHIPS */}
       {activeTab === "partners" && (
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
           <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
             <div>
-              <h2 className="text-lg font-bold text-[#1c3c24]">Partnerships & Collaborations</h2>
+              <h2 className="text-base font-bold text-[#1c3c24]">Partnerships & Collaborations</h2>
               <p className="text-xs text-gray-500 font-medium">Edit government, ICAR-DMR, university, and cooperative partnerships.</p>
             </div>
             <button
@@ -503,6 +631,68 @@ export default function AboutUsCMSPage() {
                     onChange={(e) => updateArrayItem("partnershipCards", index, "description", e.target.value)}
                     className="w-full px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
                   />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 9: GALLERY */}
+      {activeTab === "gallery" && (
+        <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 space-y-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
+            <div>
+              <h2 className="text-base font-bold text-[#1c3c24]">About Gallery (Masonry Pictures)</h2>
+              <p className="text-xs text-gray-500 font-medium">Manage images and hover descriptions inside the gallery.</p>
+            </div>
+            <button
+              onClick={() => addArrayItem("aboutGallery", {
+                url: "/about_header.jpg",
+                title: "New Gallery Picture"
+              })}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#1c3c24] hover:bg-[#2c5e37] text-white text-xs font-bold rounded-xl cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> Add Photo
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {aboutForm.aboutGallery?.map((img: any, index: number) => (
+              <div key={index} className="bg-[#f8faf7] border border-[#e2e8e0] p-4 rounded-2xl space-y-3 flex gap-4">
+                <img
+                  src={img.url || "/about_header.jpg"}
+                  alt={img.title}
+                  className="w-20 h-20 object-cover rounded-xl border border-gray-200 bg-white"
+                />
+                <div className="w-full space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-[#2c5e37] uppercase font-bold">Image #{index + 1}</span>
+                    <button
+                      onClick={() => removeArrayItem("aboutGallery", index)}
+                      className="text-red-500 hover:text-red-750 p-1 rounded-lg hover:bg-red-50 cursor-pointer"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <label className="block text-[9px] text-[#2c5e37] uppercase">Image Link / Source</label>
+                    <input
+                      type="text"
+                      value={img.url || ""}
+                      onChange={(e) => updateArrayItem("aboutGallery", index, "url", e.target.value)}
+                      className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-mono font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] text-[#2c5e37] uppercase">Picture Caption / Hover Title</label>
+                    <input
+                      type="text"
+                      value={img.title || ""}
+                      onChange={(e) => updateArrayItem("aboutGallery", index, "title", e.target.value)}
+                      className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
                 </div>
               </div>
             ))}

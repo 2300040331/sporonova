@@ -436,7 +436,75 @@
     "missionTitle": "Our Mission",
     "missionDesc": "Deliver genetically superior liquid spawn and grain starter matrices while supporting regional growers with technical education.",
     "qualityTitle": "Quality Policy",
-    "qualityDesc": "Every culture slant and liquid jar undergoes 100% microscopical and PCR testing before dispatch."
+    "qualityDesc": "Every culture slant and liquid jar undergoes 100% microscopical and PCR testing before dispatch.",
+    "journeySteps": [
+      { "stepNumber": 1, "title": "Research Begins", "description": "Started with a vision to modernize mushroom cultivation through scientific methods" },
+      { "stepNumber": 2, "title": "Laboratory Development", "description": "Established GMP-compliant cleanroom facilities with advanced biological protocols" },
+      { "stepNumber": 3, "title": "Advanced Liquid Spawn Technology", "description": "Pioneered liquid spawn broth technology for faster colonization" },
+      { "stepNumber": 4, "title": "Commercial Production", "description": "Scaled operations to serve commercial farmers across multiple states" },
+      { "stepNumber": 5, "title": "Government Collaborations", "description": "Partnered with JICA, NHB, and state horticulture departments" },
+      { "stepNumber": 6, "title": "National Expansion", "description": "Expanded distribution network to 200+ farmers across India" },
+      { "stepNumber": 7, "title": "Future Global Growth", "description": "Building next-generation spawn solutions with AI-powered quality control" }
+    ],
+    "scienceCards": [
+      { "title": "Pure Mycelium Culture", "description": "Isolated on sterile agar media slants and verified through phase contrast microscopic analysis for complete genetic authenticity.", "badge": "Verified Standard" },
+      { "title": "Liquid Spawn Technology", "description": "Active vegetative mycelium suspended in sterile liquid broth, engineered for 4x faster substrate colonization.", "badge": "Verified Standard" },
+      { "title": "Genetic Stability", "description": "Multi-generation testing and strain preservation prevent genetic degeneration across commercial multiplication cycles.", "badge": "Verified Standard" },
+      { "title": "Laboratory Verification", "description": "Rigorous quality inspection including microscopic sectoring checks and bio-efficiency purity validation.", "badge": "Verified Standard" },
+      { "title": "Contamination Control", "description": "Class 100 HEPA-filtered cleanrooms equipped with positive atmospheric pressure and continuous UV sterilization.", "badge": "Verified Standard" },
+      { "title": "Cold Chain Storage", "description": "Strict temperature-regulated cold chain distribution maintains mycelial dormancy until direct farm inoculation.", "badge": "Verified Standard" }
+    ],
+    "qualityCards": [
+      { "title": "GMP Laboratory", "description": "Good Manufacturing Practice compliant facility ensuring contamination-free production" },
+      { "title": "ISO Standards", "description": "International quality management standards across all processes" },
+      { "title": "DMR Certification", "description": "Directorate of Mushroom Research validated protocols" },
+      { "title": "NHB Certification", "description": "National Horticulture Board quality standards compliance" },
+      { "title": "Scientific Validation", "description": "Rigorous strain verification and biological efficiency testing" }
+    ],
+    "partnershipCards": [
+      { "title": "Government Institutions", "description": "Working with state horticulture departments and JICA for farmer empowerment programs." },
+      { "title": "Research Organizations", "description": "Collaborating with ICAR-DMR and biotechnology research institutes." },
+      { "title": "Agricultural Universities", "description": "Supplying research-grade cultures and training materials to academic institutions." },
+      { "title": "Farmer Cooperatives", "description": "Supporting FPO formation and providing technical assistance to farming communities." },
+      { "title": "International Development Partners", "description": "Partnering with global organizations for sustainable agricultural development." }
+    ],
+    "whyChooseCards": [
+      { "title": "12+ Years Experience", "description": "Decades of combined expertise in professional mycological research and commercial spawn production methodologies." },
+      { "title": "14 Mushroom Varieties", "description": "Diverse library of commercial strains optimized for different climates." },
+      { "title": "Higher Yield Performance", "description": "Genetically verified strains proven to deliver maximum biological efficiency." },
+      { "title": "Chemical-Free Technology", "description": "100% natural substrates and sterile practices without harmful additives." },
+      { "title": "Lower Contamination Risk", "description": "Rigorous quality control ensures clean, vigorous vegetative mycelium." },
+      { "title": "Long Shelf Life", "description": "Specially formulated media designed for extended viability during cold storage and transit." },
+      { "title": "Expert Technical Team", "description": "Dedicated mycologists and technicians ensuring every batch meets the highest industry standards." },
+      { "title": "Scalable Commercial Production", "description": "State-of-the-art facilities capable of supporting farms of any size, from local growers to enterprise agriculture." }
+    ],
+    "processSteps": [
+      { "stepNumber": 1, "title": "Research", "description": "Scientific strain analysis and substrate optimization" },
+      { "stepNumber": 2, "title": "Culture Development", "description": "Pure mycelium isolation on sterile agar media" },
+      { "stepNumber": 3, "title": "Laboratory Testing", "description": "Microscopic verification and contamination screening" },
+      { "stepNumber": 4, "title": "Spawn Production", "description": "Scaled multiplication in GMP-compliant cleanrooms" },
+      { "stepNumber": 5, "title": "Quality Inspection", "description": "Multi-stage quality checks and biological efficiency testing" },
+      { "stepNumber": 6, "title": "Packaging", "description": "Sterile packaging with cold-chain readiness" },
+      { "stepNumber": 7, "title": "Farmer Delivery", "description": "Temperature-controlled distribution across India" }
+    ],
+    "techBadges": [
+      { "label": "Liquid Spawn" },
+      { "label": "Grain Spawn" },
+      { "label": "Mother Culture" },
+      { "label": "Commercial Spawn" },
+      { "label": "Cleanroom Lab" },
+      { "label": "Biotechnology" },
+      { "label": "Research" },
+      { "label": "Innovation" }
+    ],
+    "aboutGallery": [
+      { "url": "/about_header.jpg", "title": "Our Research Facility" },
+      { "url": "/about_mushrooms.jpg", "title": "Premium Mushroom Cultivation" },
+      { "url": "/about_building.jpg", "title": "SporoNova Headquarters" },
+      { "url": "/hero_mushrooms.jpg", "title": "Natural Growing Process" },
+      { "url": "/products_header.jpg", "title": "Spawn Product Line" },
+      { "url": "/training_header.jpg", "title": "Farmer Training Programs" }
+    ]
   },
   "processSteps": [
     {

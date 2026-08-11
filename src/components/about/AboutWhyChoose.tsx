@@ -12,6 +12,7 @@ import {
   Users, 
   Factory 
 } from "lucide-react";
+import { useCMS } from "@/lib/cms-context";
 
 const bentoItems = [
   {
@@ -89,6 +90,18 @@ const itemVariants = {
 };
 
 export default function AboutWhyChoose() {
+  const { data } = useCMS();
+  const rawCards = data?.about?.whyChooseCards || [];
+  const iconsList = [Clock, Leaf, TrendingUp, Ban, ShieldCheck, Timer, Users, Factory];
+  const activeBentoItems = rawCards.length > 0
+    ? rawCards.map((c: any, idx: number) => ({
+        title: c.title,
+        description: c.description,
+        icon: iconsList[idx % iconsList.length],
+        span: idx === 0 || idx === 5 || idx === 6 || idx === 7 ? "col-span-1 md:col-span-2 lg:col-span-2" : "col-span-1"
+      }))
+    : bentoItems;
+
   return (
     <section className="bg-[#f9faf7] py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
@@ -111,7 +124,7 @@ export default function AboutWhyChoose() {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {bentoItems.map((item, index) => {
+          {activeBentoItems.map((item: any, index: number) => {
             const Icon = item.icon;
             return (
               <motion.div

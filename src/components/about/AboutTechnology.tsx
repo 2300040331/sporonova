@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useCMS } from "@/lib/cms-context";
 import { 
   Droplet, 
   Wheat, 
@@ -25,6 +26,30 @@ const badges = [
 ];
 
 export default function AboutTechnology() {
+  const { data } = useCMS();
+  const rawBadges = data?.about?.techBadges || [];
+  const iconsList = [Droplet, Wheat, Microscope, Factory, ShieldCheck, Dna, Search, Lightbulb];
+  const posList = [
+    { top: "20%", left: "15%" },
+    { top: "15%", left: "55%" },
+    { top: "45%", left: "80%" },
+    { top: "70%", left: "65%" },
+    { top: "75%", left: "20%" },
+    { top: "45%", left: "5%" },
+    { top: "35%", left: "35%" },
+    { top: "55%", left: "45%" },
+  ];
+
+  const activeBadges = rawBadges.length > 0
+    ? rawBadges.map((b: any, idx: number) => ({
+        label: b.label,
+        icon: iconsList[idx % iconsList.length],
+        pos: posList[idx % posList.length],
+        duration: 4 + (idx % 3) * 1.2,
+        delay: (idx % 4) * 0.5
+      }))
+    : badges;
+
   const containerRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -73,7 +98,7 @@ export default function AboutTechnology() {
 
         {/* Desktop Absolute Layout */}
         <div className="hidden lg:block relative flex-grow min-h-[400px] mt-8">
-          {badges.map((badge, index) => {
+          {activeBadges.map((badge: any, index: number) => {
             const Icon = badge.icon;
             return (
               <motion.div
@@ -103,7 +128,7 @@ export default function AboutTechnology() {
 
         {/* Mobile Flex Layout */}
         <div className="flex lg:hidden flex-wrap justify-center gap-4 relative z-20">
-          {badges.map((badge, index) => {
+          {activeBadges.map((badge: any, index: number) => {
             const Icon = badge.icon;
             return (
               <motion.div

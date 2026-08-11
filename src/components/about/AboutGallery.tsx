@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { useCMS } from "@/lib/cms-context";
 
 const images = [
   { src: "/about_header.jpg", caption: "Our Research Facility" },
@@ -13,6 +14,12 @@ const images = [
 ];
 
 export default function AboutGallery() {
+  const { data } = useCMS();
+  const rawGallery = data?.about?.aboutGallery || [];
+  const activeImages = rawGallery.length > 0
+    ? rawGallery.map((g: any) => ({ src: g.url, caption: g.title }))
+    : images;
+
   return (
     <section className="py-24 px-6 md:px-12 bg-[#f9faf7]">
       <div className="max-w-7xl mx-auto">
@@ -35,7 +42,7 @@ export default function AboutGallery() {
           }}
           className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4"
         >
-          {images.map((img, idx) => (
+          {activeImages.map((img: any, idx: number) => (
             <motion.div
               key={idx}
               variants={{

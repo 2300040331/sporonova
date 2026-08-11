@@ -120,6 +120,10 @@ export interface CMSData {
     scienceCards?: Array<{ id?: string; title: string; description: string; badge?: string }>;
     qualityCards?: Array<{ title: string; description: string }>;
     partnershipCards?: Array<{ title: string; description: string }>;
+    whyChooseCards?: Array<{ title: string; description: string }>;
+    processSteps?: Array<{ stepNumber: number; title: string; description: string }>;
+    techBadges?: Array<{ label: string }>;
+    aboutGallery?: Array<{ url: string; title: string }>;
   };
   processSteps: Array<{
     id: string;
@@ -441,6 +445,43 @@ const INITIAL_DATA: CMSData = {
       { title: "Farmer Cooperatives", description: "Supporting FPO formation and providing technical assistance to farming communities." },
       { title: "International Development Partners", description: "Partnering with global organizations for sustainable agricultural development." },
     ],
+    whyChooseCards: [
+      { title: "12+ Years Experience", description: "Decades of combined expertise in professional mycological research and commercial spawn production methodologies." },
+      { title: "14 Mushroom Varieties", description: "Diverse library of commercial strains optimized for different climates." },
+      { title: "Higher Yield Performance", description: "Genetically verified strains proven to deliver maximum biological efficiency." },
+      { title: "Chemical-Free Technology", description: "100% natural substrates and sterile practices without harmful additives." },
+      { title: "Lower Contamination Risk", description: "Rigorous quality control ensures clean, vigorous vegetative mycelium." },
+      { title: "Long Shelf Life", description: "Specially formulated media designed for extended viability during cold storage and transit." },
+      { title: "Expert Technical Team", description: "Dedicated mycologists and technicians ensuring every batch meets the highest industry standards." },
+      { title: "Scalable Commercial Production", description: "State-of-the-art facilities capable of supporting farms of any size, from local growers to enterprise agriculture." }
+    ],
+    processSteps: [
+      { stepNumber: 1, title: "Research", description: "Scientific strain analysis and substrate optimization" },
+      { stepNumber: 2, title: "Culture Development", description: "Pure mycelium isolation on sterile agar media" },
+      { stepNumber: 3, title: "Laboratory Testing", description: "Microscopic verification and contamination screening" },
+      { stepNumber: 4, title: "Spawn Production", description: "Scaled multiplication in GMP-compliant cleanrooms" },
+      { stepNumber: 5, title: "Quality Inspection", description: "Multi-stage quality checks and biological efficiency testing" },
+      { stepNumber: 6, title: "Packaging", description: "Sterile packaging with cold-chain readiness" },
+      { stepNumber: 7, title: "Farmer Delivery", description: "Temperature-controlled distribution across India" }
+    ],
+    techBadges: [
+      { label: "Liquid Spawn" },
+      { label: "Grain Spawn" },
+      { label: "Mother Culture" },
+      { label: "Commercial Spawn" },
+      { label: "Cleanroom Lab" },
+      { label: "Biotechnology" },
+      { label: "Research" },
+      { label: "Innovation" }
+    ],
+    aboutGallery: [
+      { url: "/about_header.jpg", title: "Our Research Facility" },
+      { url: "/about_mushrooms.jpg", title: "Premium Mushroom Cultivation" },
+      { url: "/about_building.jpg", title: "SporoNova Headquarters" },
+      { url: "/hero_mushrooms.jpg", title: "Natural Growing Process" },
+      { url: "/products_header.jpg", title: "Spawn Product Line" },
+      { url: "/training_header.jpg", title: "Farmer Training Programs" }
+    ]
   },
   processSteps: [
     {
