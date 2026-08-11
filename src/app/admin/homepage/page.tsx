@@ -20,12 +20,13 @@ import {
   Smartphone,
   BookOpen,
   Info,
+  Package,
 } from "lucide-react";
 
 export default function HomepageCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [activeTab, setActiveTab] = useState<
-    "hero" | "about" | "values" | "credentials" | "partnerships" | "deliverables" | "industries" | "testimonials"
+    "hero" | "about" | "productsHeader" | "values" | "credentials" | "partnerships" | "deliverables" | "industries" | "testimonials"
   >("hero");
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -34,6 +35,7 @@ export default function HomepageCMSPage() {
   const [heroForm, setHeroForm] = useState<any>({});
   const [statsForm, setStatsForm] = useState<any[]>([]);
   const [aboutForm, setAboutForm] = useState<any>({});
+  const [productsHeaderForm, setProductsHeaderForm] = useState<any>({});
   const [valuesForm, setValuesForm] = useState<any>({});
   const [whyChooseUsCardsForm, setWhyChooseUsCardsForm] = useState<any[]>([]);
   const [credentialsForm, setCredentialsForm] = useState<any[]>([]);
@@ -55,6 +57,11 @@ export default function HomepageCMSPage() {
         ]
       );
       setAboutForm(data.about || {});
+      setProductsHeaderForm({
+        badge: (data.homepage as any)?.productsSectionBadge || "Product Catalog",
+        title: (data.homepage as any)?.productsSectionTitle || "Professional Spawn Categories",
+        subtitle: (data.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides.",
+      });
       setValuesForm({
         badge: (data.homepage as any)?.valuesSectionBadge || "Quality Assurance Protocols",
         title: data.homepage?.valuesSectionTitle || "Why Growers Choose SporoNova",
@@ -100,6 +107,9 @@ export default function HomepageCMSPage() {
         ...data.homepage,
         hero: heroForm,
         stats: statsForm,
+        productsSectionBadge: productsHeaderForm.badge,
+        productsSectionTitle: productsHeaderForm.title,
+        productsSectionSubtitle: productsHeaderForm.subtitle,
         valuesSectionBadge: valuesForm.badge,
         valuesSectionTitle: valuesForm.title,
         valuesSectionSubtitle: valuesForm.subtitle,
@@ -163,6 +173,7 @@ export default function HomepageCMSPage() {
         {[
           { id: "hero", label: "Hero & Stats" },
           { id: "about", label: "About Us" },
+          { id: "productsHeader", label: "Product Catalog Header" },
           { id: "values", label: "Why Choose Us" },
           { id: "credentials", label: "Credentials" },
           { id: "partnerships", label: "Partnerships" },
@@ -360,6 +371,45 @@ export default function HomepageCMSPage() {
             </div>
 
 
+          </div>
+        )}
+
+        {activeTab === "productsHeader" && (
+          <div className="space-y-6">
+            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
+              <Package className="w-4 h-4 text-[#4e8c4a]" /> Product Catalog Header Settings
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Section Badge</label>
+                <input
+                  type="text"
+                  value={productsHeaderForm.badge || ""}
+                  onChange={(e) => setProductsHeaderForm({ ...productsHeaderForm, badge: e.target.value })}
+                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Section Title</label>
+                <input
+                  type="text"
+                  value={productsHeaderForm.title || ""}
+                  onChange={(e) => setProductsHeaderForm({ ...productsHeaderForm, title: e.target.value })}
+                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Section Subtitle / Description</label>
+              <textarea
+                rows={2}
+                value={productsHeaderForm.subtitle || ""}
+                onChange={(e) => setProductsHeaderForm({ ...productsHeaderForm, subtitle: e.target.value })}
+                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+              />
+            </div>
           </div>
         )}
 

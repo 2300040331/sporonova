@@ -76,6 +76,9 @@ export interface CMSData {
     valuesSectionTitle: string;
     valuesSectionSubtitle: string;
     valuesSectionBadge?: string;
+    productsSectionBadge?: string;
+    productsSectionTitle?: string;
+    productsSectionSubtitle?: string;
     stats?: any[];
     industriesSectionTitle: string;
     credentialsSectionTitle: string;
@@ -323,6 +326,9 @@ const INITIAL_DATA: CMSData = {
     valuesSectionBadge: "Quality Assurance Protocols",
     valuesSectionTitle: "Why Growers Choose SporoNova",
     valuesSectionSubtitle: "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields.",
+    productsSectionBadge: "Product Catalog",
+    productsSectionTitle: "Professional Spawn Categories",
+    productsSectionSubtitle: "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides.",
     industriesSectionTitle: "Empowering Agritech Across Sectors",
     credentialsSectionTitle: "Accreditations & Institutional Trust",
     testimonialsSectionTitle: "Trusted by Commercial Growers Across India",
@@ -1032,6 +1038,16 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
   );
   changed ||= aboutChanged;
 
+  const homepage = {
+    ...INITIAL_DATA.homepage,
+    ...savedData.homepage,
+    hero: { ...INITIAL_DATA.homepage.hero, ...savedData.homepage?.hero }
+  };
+  const homepageChanged = Object.keys(INITIAL_DATA.homepage).some(
+    (key) => (savedData.homepage as Record<string, unknown>)[key] === undefined
+  );
+  changed ||= homepageChanged;
+
   let processSteps = savedData.processSteps;
   if (!processSteps || processSteps.length < INITIAL_DATA.processSteps.length) {
     processSteps = INITIAL_DATA.processSteps;
@@ -1044,7 +1060,7 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
     changed = true;
   }
 
-  return { data: { ...savedData, products, about, processSteps, whyChooseUsCards }, changed };
+  return { data: { ...savedData, homepage, products, about, processSteps, whyChooseUsCards }, changed };
 }
 
 function ensureDataDirectoryExists() {

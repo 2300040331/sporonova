@@ -462,14 +462,14 @@ export default function Homepage() {
             
             <div className="text-center mb-16 relative">
               <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
-                Product Catalog
+                {(data?.homepage as any)?.productsSectionBadge || "Product Catalog"}
               </span>
               <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-[#1c3c24]">
-                Professional Spawn Categories
+                {(data?.homepage as any)?.productsSectionTitle || "Professional Spawn Categories"}
               </h2>
               <div className="w-12 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
               <p className="text-gray-500 text-xs sm:text-sm mt-3 max-w-xl mx-auto font-medium">
-                Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides.
+                {(data?.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides."}
               </p>
             </div>
 
