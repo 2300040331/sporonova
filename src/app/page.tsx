@@ -173,6 +173,46 @@ export default function Homepage() {
   const testimonialsList = data?.testimonials && data.testimonials.length > 0 ? data.testimonials : TESTIMONIALS;
   const valuesList = data?.values && data.values.length > 0 ? data.values : VALUES;
   const credentialsList = data?.credentials && data.credentials.length > 0 ? data.credentials : CREDENTIALS;
+  const deliverablesList = data?.deliverables && data.deliverables.length > 0 ? data.deliverables : DELIVERABLES;
+  const industriesList = data?.industries && data.industries.length > 0 ? data.industries : INDUSTRIES;
+  const successNumbersList = (data as any)?.successNumbers && (data as any).successNumbers.length > 0 ? (data as any).successNumbers : [
+    { value: "14+", label: "Mushroom Varieties" },
+    { value: "100+ MT", label: "Annual Production" },
+    { value: "1000+", label: "Farmers Served" },
+    { value: "12+", label: "Years Experience" }
+  ];
+  const partnershipsList = (data as any)?.partnerships && (data as any).partnerships.length > 0 ? (data as any).partnerships : [
+    {
+      title: "Government of Tripura",
+      points: [
+        "Livelihood enhancement for tribal & rural farmers",
+        "Agricultural diversification & income doubling",
+        "Skill development through structured training",
+        "Export potential for premium mushrooms",
+        "Alignment with North-East India Development goals"
+      ]
+    },
+    {
+      title: "JICA Foundation",
+      points: [
+        "Proven, scalable agri-tech intervention",
+        "SDG alignment: Zero Hunger, Decent Work",
+        "Community-led inclusive development model",
+        "Traceable impact metrics (yield, income, BE%)",
+        "Replicable across other North-East states"
+      ]
+    },
+    {
+      title: "Indo-German Foundation",
+      points: [
+        "Technology transfer from science to farm",
+        "GMP & ISO-aligned production standards",
+        "Innovation in sustainable food systems",
+        "Cross-border knowledge exchange potential",
+        "Bilateral cooperation in food & agriculture"
+      ]
+    }
+  ];
 
   const [heroProduct, setHeroProduct] = useState<"liquid" | "grain" | "mushroom">("liquid");
   const [reviewIdx, setReviewIdx] = useState(0);
@@ -752,64 +792,26 @@ export default function Homepage() {
 
           <div className="bg-[#f9faf7]/50 border-l border-r border-b border-[#e6e4dc] p-8 md:p-10 rounded-b-3xl">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
-              {/* Government of Tripura (white background with green border) */}
-              <div className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden">
-                <div className="space-y-6 relative z-10">
-                  <div className="flex flex-col items-center text-center">
-                    <Building2 className="w-12 h-12 text-[#4e8c4a] mb-3" />
-                    <h4 className="font-display font-extrabold text-lg text-[#1c3c24] border-b-2 border-amber-500 pb-2 px-4">
-                      Government of Tripura
-                    </h4>
+              {partnershipsList.map((partner: any, idx: number) => {
+                const IconComp = idx === 0 ? Building2 : idx === 1 ? Globe : HelpingHand;
+                return (
+                  <div key={partner.title || idx} className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden">
+                    <div className="space-y-6 relative z-10">
+                      <div className="flex flex-col items-center text-center">
+                        <IconComp className="w-12 h-12 text-[#4e8c4a] mb-3" />
+                        <h4 className="font-display font-extrabold text-lg text-[#1c3c24] border-b-2 border-amber-500 pb-2 px-4">
+                          {partner.title}
+                        </h4>
+                      </div>
+                      <ul className="space-y-3.5 text-xs text-gray-600 list-disc pl-4 font-semibold leading-relaxed">
+                        {partner.points?.map((pt: string, pIdx: number) => (
+                          <li key={pIdx}>{pt}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <ul className="space-y-3.5 text-xs text-gray-600 list-disc pl-4 font-semibold leading-relaxed">
-                    <li>Livelihood enhancement for tribal & rural farmers</li>
-                    <li>Agricultural diversification & income doubling</li>
-                    <li>Skill development through structured training</li>
-                    <li>Export potential for premium mushrooms</li>
-                    <li>Alignment with North-East India Development goals</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* JICA Foundation (white background with green border) */}
-              <div className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden">
-                <div className="space-y-6 relative z-10">
-                  <div className="flex flex-col items-center text-center">
-                    <Globe className="w-12 h-12 text-[#4e8c4a] mb-3" />
-                    <h4 className="font-display font-extrabold text-lg text-[#1c3c24] border-b-2 border-amber-500 pb-2 px-4">
-                      JICA Foundation
-                    </h4>
-                  </div>
-                  <ul className="space-y-3.5 text-xs text-gray-600 list-disc pl-4 font-semibold leading-relaxed">
-                    <li>Proven, scalable agri-tech intervention</li>
-                    <li>SDG alignment: Zero Hunger, Decent Work</li>
-                    <li>Community-led inclusive development model</li>
-                    <li>Traceable impact metrics (yield, income, BE%)</li>
-                    <li>Replicable across other North-East states</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Indo-German Foundation (white background with green border) */}
-              <div className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden">
-                <div className="space-y-6 relative z-10">
-                  <div className="flex flex-col items-center text-center">
-                    <HelpingHand className="w-12 h-12 text-[#4e8c4a] mb-3" />
-                    <h4 className="font-display font-extrabold text-lg text-[#1c3c24] border-b-2 border-amber-500 pb-2 px-4">
-                      Indo-German Foundation
-                    </h4>
-                  </div>
-                  <ul className="space-y-3.5 text-xs text-gray-600 list-disc pl-4 font-semibold leading-relaxed">
-                    <li>Technology transfer from science to farm</li>
-                    <li>GMP & ISO-aligned production standards</li>
-                    <li>Innovation in sustainable food systems</li>
-                    <li>Cross-border knowledge exchange potential</li>
-                    <li>Bilateral cooperation in food & agriculture</li>
-                  </ul>
-                </div>
-              </div>
-
+                );
+              })}
             </div>
           </div>
         </section>
@@ -870,7 +872,7 @@ export default function Homepage() {
                   {/* Background connector line for desktop */}
                   <div className="hidden lg:block absolute left-8 right-8 top-1/2 -translate-y-1/2 h-0.5 bg-[#e6e4dc] z-0 pointer-events-none" />
 
-                  {DELIVERABLES.map((del, idx) => (
+                  {deliverablesList.map((del, idx) => (
                     <React.Fragment key={del.label}>
                       {/* Card Box */}
                       <motion.div
@@ -898,14 +900,14 @@ export default function Homepage() {
                       </motion.div>
 
                       {/* Connection indicator - desktop chevron */}
-                      {idx < DELIVERABLES.length - 1 && (
+                      {idx < deliverablesList.length - 1 && (
                         <div className="hidden lg:flex items-center text-[#4e8c4a] z-10 shrink-0 self-center">
                           <ChevronRight className="w-4 h-4" />
                         </div>
                       )}
 
                       {/* Connection indicator - mobile chevron */}
-                      {idx < DELIVERABLES.length - 1 && (
+                      {idx < deliverablesList.length - 1 && (
                         <div className="lg:hidden flex justify-center text-[#4e8c4a] my-1">
                           <ChevronRight className="w-4 h-4 rotate-90" />
                         </div>
@@ -939,7 +941,7 @@ export default function Homepage() {
               <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#f9faf7] to-transparent z-10 pointer-events-none" />
 
               <div className="animate-marquee flex gap-6">
-                {INDUSTRIES.concat(INDUSTRIES).concat(INDUSTRIES).map((ind, idx) => (
+                {industriesList.concat(industriesList).concat(industriesList).map((ind: any, idx: number) => (
                   <div
                     key={`${ind.name}-${idx}`}
                     title={ind.desc}
@@ -967,22 +969,12 @@ export default function Homepage() {
         {/* SUCCESS NUMBERS */}
         <section className="py-20 bg-[#1c3c24] text-white px-6 shadow-md">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
-            <div className="space-y-1 pt-4 md:pt-0">
-              <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">14+</span>
-              <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">Mushroom Varieties</span>
-            </div>
-            <div className="space-y-1 pt-4 md:pt-0">
-              <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">100+ MT</span>
-              <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">Annual Production</span>
-            </div>
-            <div className="space-y-1 pt-4 md:pt-0">
-              <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">1000+</span>
-              <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">Farmers Served</span>
-            </div>
-            <div className="space-y-1 pt-4 md:pt-0">
-              <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">12+</span>
-              <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">Years Experience</span>
-            </div>
+            {successNumbersList.map((stat: any, idx: number) => (
+              <div key={idx} className="space-y-1 pt-4 md:pt-0">
+                <span className="font-display font-black text-3xl md:text-5xl block text-[#7baa6b]">{stat.value}</span>
+                <span className="text-[10px] text-white/70 uppercase font-mono tracking-widest font-extrabold">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </section>
 

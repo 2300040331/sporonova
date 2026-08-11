@@ -159,6 +159,8 @@ export interface CMSData {
     readTime?: string;
     complexity?: string;
   }>;
+  successNumbers?: Array<{ value: string; label: string }>;
+  partnerships?: Array<{ title: string; points: string[] }>;
   gallery: Array<{ id: string; url: string; title: string; category: string }>;
   media: Array<{
     id: string;
@@ -603,6 +605,44 @@ const INITIAL_DATA: CMSData = {
   knowledgeCenter: [
     { id: "kc-1", title: "Liquid Spawn vs Grain Spawn: Commercial Yield Analysis", type: "Article", category: "Technical Guide", summary: "A comprehensive breakdown of inoculation lag times, cost efficiency, and bag throughput.", content: "Detailed comparison showing liquid spawn broth saves 4 days colonization time...", date: "2026-07-15", author: "Dr. Aris Thorne" },
     { id: "kc-2", title: "Shiitake Cultivation Protocol PDF", type: "Download", category: "Cultivation Guide", summary: "Step-by-step substrate formulation, incubation parameters, and fruiting climate guide.", content: "Official SporoNova Shiitake Manual covering sawdust block sterilization...", date: "2026-06-20", author: "SporoNova Technical Team", fileUrl: "/downloads/shiitake_guide.pdf" },
+  ],
+  successNumbers: [
+    { value: "14+", label: "Mushroom Varieties" },
+    { value: "100+ MT", label: "Annual Production" },
+    { value: "1000+", label: "Farmers Served" },
+    { value: "12+", label: "Years Experience" }
+  ],
+  partnerships: [
+    {
+      title: "Government of Tripura",
+      points: [
+        "Livelihood enhancement for tribal & rural farmers",
+        "Agricultural diversification & income doubling",
+        "Skill development through structured training",
+        "Export potential for premium mushrooms",
+        "Alignment with North-East India Development goals"
+      ]
+    },
+    {
+      title: "JICA Foundation",
+      points: [
+        "Proven, scalable agri-tech intervention",
+        "SDG alignment: Zero Hunger, Decent Work",
+        "Community-led inclusive development model",
+        "Traceable impact metrics (yield, income, BE%)",
+        "Replicable across other North-East states"
+      ]
+    },
+    {
+      title: "Indo-German Foundation",
+      points: [
+        "Technology transfer from science to farm",
+        "GMP & ISO-aligned production standards",
+        "Innovation in sustainable food systems",
+        "Cross-border knowledge exchange potential",
+        "Bilateral cooperation in food & agriculture"
+      ]
+    }
   ],
   gallery: [
     { id: "gal-1", url: "/liquid_spawn_bottle.png", title: "Bioreactor Liquid Spawn Broth", category: "Laboratory" },
