@@ -47,6 +47,7 @@ export default function AboutUsCMSPage() {
   useEffect(() => {
     if (data?.about) {
       setAboutForm({
+        ...data.about,
         heroTitle: data.about.heroTitle || "",
         heroSubtitle: data.about.heroSubtitle || "",
         whoWeAreTitle: data.about.whoWeAreTitle || "",
@@ -75,7 +76,9 @@ export default function AboutUsCMSPage() {
 
   const handleSave = async () => {
     setSaving(true);
-    const success = await updateData({ about: aboutForm });
+    // Keep fields that are not on the current editor tab (for example, vision
+    // and mission) instead of silently removing them when About is saved.
+    const success = await updateData({ about: { ...data.about, ...aboutForm } });
     setSaving(false);
     if (success) {
       setSaveSuccess(true);

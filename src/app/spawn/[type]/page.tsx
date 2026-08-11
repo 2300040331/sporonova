@@ -339,30 +339,19 @@ export default function SpawnPage({ params }: PageProps) {
   
   const cmsProduct = data?.products?.find((p: any) => p.id === type);
   
+  // Merge CMS edits onto the complete record. This keeps a partial CMS export
+  // from blanking the technical content on a public spawn page.
+  const defaultDetail = SPAWN_DETAILS[type];
   const detail = cmsProduct
     ? {
-        id: cmsProduct.id,
-        name: cmsProduct.name,
-        scientificName: cmsProduct.scientificName || cmsProduct.category || "",
-        introduction: cmsProduct.introduction || cmsProduct.desc || "",
-        history: cmsProduct.history || "",
-        principle: cmsProduct.principle || "",
-        composition: cmsProduct.composition || [],
-        advantages: cmsProduct.advantages || [],
-        disadvantages: cmsProduct.disadvantages || [],
-        applications: cmsProduct.applications || [],
-        process: cmsProduct.process || [],
-        labSpecs: cmsProduct.labSpecs || [],
-        storage: cmsProduct.storage || cmsProduct.specifications?.Storage || "",
-        shelfLife: cmsProduct.shelfLife || cmsProduct.specifications?.ShelfLife || "",
-        transport: cmsProduct.transport || "",
-        qualityTesting: cmsProduct.qualityTesting || [],
-        commercialUses: cmsProduct.commercialUses || "",
-        govApplications: cmsProduct.govApplications || "",
-        faqs: cmsProduct.faqs || [],
-        papers: cmsProduct.papers || [],
+        ...defaultDetail,
+        ...cmsProduct,
+        scientificName: cmsProduct.scientificName || defaultDetail?.scientificName || cmsProduct.category || "",
+        introduction: cmsProduct.introduction || defaultDetail?.introduction || cmsProduct.desc || "",
+        storage: cmsProduct.storage || defaultDetail?.storage || cmsProduct.specifications?.Storage || "",
+        shelfLife: cmsProduct.shelfLife || defaultDetail?.shelfLife || cmsProduct.specifications?.ShelfLife || "",
       }
-    : SPAWN_DETAILS[type];
+    : defaultDetail;
 
   const isFallback = !detail;
   

@@ -1005,6 +1005,48 @@ const INITIAL_DATA: CMSData = {
 
 let inMemoryDataCache: CMSData | null = null;
 
+/**
+ * Older CMS exports stored only the product-card fields.  The public spawn
+ * pages and the product editor also need the technical fields, so retain any
+ * saved edits while restoring fields that were omitted from those exports.
+ */
+function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: boolean } {
+  let changed = false;
+  const defaultProducts = new Map(INITIAL_DATA.products.map((product) => [product.id, product]));
+
+  const products = savedData.products.map((product) => {
+    const defaultProduct = defaultProducts.get(product.id);
+    if (!defaultProduct) return product;
+
+    const restoredProduct = { ...defaultProduct, ...product };
+    const productChanged = Object.keys(defaultProduct).some(
+      (key) => (product as Record<string, unknown>)[key] === undefined
+    );
+    changed ||= productChanged;
+    return restoredProduct;
+  });
+
+  const about = { ...INITIAL_DATA.about, ...savedData.about };
+  const aboutChanged = Object.keys(INITIAL_DATA.about).some(
+    (key) => (savedData.about as Record<string, unknown>)[key] === undefined
+  );
+  changed ||= aboutChanged;
+
+  let processSteps = savedData.processSteps;
+  if (!processSteps || processSteps.length < INITIAL_DATA.processSteps.length) {
+    processSteps = INITIAL_DATA.processSteps;
+    changed = true;
+  }
+
+  let whyChooseUsCards = savedData.whyChooseUsCards;
+  if (!whyChooseUsCards || whyChooseUsCards.length === 0) {
+    whyChooseUsCards = INITIAL_DATA.whyChooseUsCards;
+    changed = true;
+  }
+
+  return { data: { ...savedData, products, about, processSteps, whyChooseUsCards }, changed };
+}
+
 function ensureDataDirectoryExists() {
   try {
     const dir = path.dirname(DB_PATH);
@@ -1052,7 +1094,17 @@ export function getCMSData(): CMSData {
   if (fs.existsSync(DB_PATH)) {
     try {
       const fileContent = fs.readFileSync(DB_PATH, "utf-8");
-      inMemoryDataCache = JSON.parse(fileContent);
+      const parsedData = JSON.parse(fileContent) as CMSData;
+      const restored = restoreMissingContent(parsedData);
+      inMemoryDataCache = restored.data;
+
+      if (restored.changed) {
+        try {
+          fs.writeFileSync(DB_PATH, JSON.stringify(inMemoryDataCache, null, 2), "utf-8");
+        } catch (err) {
+          console.warn("Failed to restore missing CMS content to disk:", err);
+        }
+      }
 
       if (!inMemoryDataCache!.users || inMemoryDataCache!.users.length === 0) {
         inMemoryDataCache!.users = [defaultAdminUser];
@@ -1088,4 +1140,3 @@ export function saveCMSData(data: CMSData): void {
     console.warn("Failed to save CMS data to read-only disk:", err);
   }
 }
-

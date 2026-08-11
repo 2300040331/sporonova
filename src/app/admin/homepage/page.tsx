@@ -163,10 +163,12 @@ export default function HomepageCMSPage() {
         {[
           { id: "hero", label: "Hero & Stats" },
           { id: "about", label: "About & Stats" },
+          { id: "values", label: "Why Choose Us" },
           { id: "credentials", label: "Credentials" },
           { id: "partnerships", label: "Partnerships" },
           { id: "deliverables", label: "Deliverables & Impact" },
           { id: "industries", label: "Ecosystem" },
+          { id: "testimonials", label: "Testimonials" },
         ].map((tab) => (
           <button
             key={tab.id}

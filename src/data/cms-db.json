@@ -173,7 +173,77 @@
         "ShelfLife": "90 Days",
         "Purity": "99.9%"
       },
-      "sortOrder": 1
+      "sortOrder": 1,
+      "scientificName": "Mycelial Biomass Broth",
+      "introduction": "Active vegetative mycelium cells propagated inside a sterile liquid sugar solution, providing exponential inoculation surface coordinates.",
+      "history": "First pioneered in university research laboratories during the 1970s, liquid fermentation revolutionized commercial button mushroom yields by automating inoculant distribution.",
+      "principle": "Mycelium requires carbon, nitrogen, and minerals. In a liquid medium, gentle aeration breaks expanding cell clusters into microscopic fragments, each acting as an individual inoculation hub.",
+      "composition": [
+        "Distilled Water (Pure H2O baseline)",
+        "Organic Light Malt Extract (Carbon carbohydrate source)",
+        "Bacteriological Yeast Extract (Nitrogen protein source)",
+        "Magnesium Sulfate (Critical cell division mineral)"
+      ],
+      "advantages": [
+        "Exponentially faster colonization (90% decrease in lag phase)",
+        "100% inoculation nodes covering the entire carrier matrix",
+        "Bioreactor scaling reduces lab labor overheads",
+        "Direct sterile needle syringe injection blocks mold spores"
+      ],
+      "disadvantages": [
+        "Short shelf life (must be chilled and used within 3 weeks)",
+        "Requires advanced cleanroom testing to verify micro-contaminants",
+        "Liquid turbidity makes visual contamination checks difficult"
+      ],
+      "applications": [
+        "Inoculating G1 grain master spawn jars",
+        "Direct bioreactor biomass scale-up runs",
+        "Automated commercial bagging line injections"
+      ],
+      "process": [
+        "Liquid Media Preparation: Dissolving sugars and nutrients at 45 minutes",
+        "Autoclave Sterilization: Steaming at 121°C, 15 PSI for 25 minutes",
+        "Cooling cycle: Ambient laminar cooling to 25°C for 6 hours",
+        "Inoculation: Technicians inject G0 mother agar culture in HEPA hood",
+        "Agitation & Aeration: Incubate on orbital shaker tables for 5 days"
+      ],
+      "labSpecs": [
+        "Class 100 sterile laminar air bench",
+        "Orbital shaker incubator table",
+        "Phase-contrast scientific microscope (1000x magnification)"
+      ],
+      "storage": "Preserved inside clean air-filtered cold-vault refrigeration (2°C - 3.5°C). Do not freeze.",
+      "shelfLife": "21 Days maximum peak viability.",
+      "transport": "Certified logistics cold chain cargo (cold boxes at 4°C). Overnight air dispatch recommended.",
+      "qualityTesting": [
+        "Agar sector plate testing: verifying clean growth margins",
+        "Liquid turbidity verification: checking for bacterial cloudiness",
+        "Laser particle count check: monitoring mycelial density threshold"
+      ],
+      "commercialUses": "Primary inoculant for massive white button and oyster commercial farms globally.",
+      "govApplications": "Distributed to municipal automated farms under state-backed horticulture technology grants.",
+      "faqs": [
+        {
+          "q": "Why does liquid spawn grow faster than grain spawn?",
+          "a": "Liquid spawn contains millions of tiny suspended hyphal fragments per milliliter, which spread instantly across the substrate, whereas grain spawn inoculates only at direct grain contact points."
+        },
+        {
+          "q": "How do you detect contamination in liquid spawn?",
+          "a": "By testing sample drops on petri plates (agar plating) and checking for yeast or bacterial growth patterns under phase-contrast microscopes."
+        }
+      ],
+      "papers": [
+        {
+          "title": "Liquid Fermentation of Pleurotus Strains in Stirred Bioreactors",
+          "author": "Dr. Kenji Sato et al.",
+          "journal": "Journal of Applied Mycology, 2023"
+        },
+        {
+          "title": "Comparative Yield Analysis of Liquid vs. Grain Spawn Inoculations",
+          "author": "H. Patel, R. Miller",
+          "journal": "Biotech Agriculture quarterly, 2025"
+        }
+      ]
     },
     {
       "id": "grain-spawn",
@@ -192,7 +262,71 @@
         "Moisture": "48%",
         "ExpansionRatio": "1:20"
       },
-      "sortOrder": 2
+      "sortOrder": 2,
+      "scientificName": "Cereal Grain Vegetative Inoculant",
+      "introduction": "Sterilized cereal grains hydrated and colonized by pure mycelium, forming robust vegetative carrier kernels.",
+      "history": "Developed in the 1930s by agricultural scientist Senden, substituting wild compost spawn with sterile, grain-based carriers, establishing modern mushroom farming.",
+      "principle": "Grains act as both nutrition storehouses and physical anchors. When mixed with bulk substrates, each colonized grain acts as a center of biological mycelium expansion.",
+      "composition": [
+        "Hydrated cereal grains (Wheat, Millet, or Rye grass kernels)",
+        "Calcium Sulfate (Gypsum: acts as anti-clumping agent)",
+        "Calcium Carbonate (Chalk: balances substrate pH levels)"
+      ],
+      "advantages": [
+        "Long shelf life (refrigerated up to 3 months)",
+        "High carbohydrate storage provides energy to colonize poor soils",
+        "Easy visual detection of competitive molds or bacterial wet-spot",
+        "Physically easy to shake and disperse evenly throughout bulk compost"
+      ],
+      "disadvantages": [
+        "Attracts rodents and insect pests in outdoor environments",
+        "Longer preparation cycle (requires grain boiling, drying, and soaking)",
+        "Higher raw material costs (cereal grains prices rise seasonally)"
+      ],
+      "applications": [
+        "Direct inoculation of pasteurized agricultural straw bags",
+        "Inoculating commercial mushroom compost beds",
+        "Home cultivation setups in indoor grow chambers"
+      ],
+      "process": [
+        "Grain Hydration: Boiling cereal grains for 35 minutes to achieve 50% humidity",
+        "Chalk/Gypsum Addition: Mixing powders to adjust pH and block clumping",
+        "Autoclave Sterilization: Heating at 121°C (15 PSI) for 90 minutes",
+        "Inoculation: Injecting active liquid spawn or transferring agar slants",
+        "Incubation: Climate room storage for 14 days with manual shaking"
+      ],
+      "labSpecs": [
+        "Heavy duty autoclaves with vacuum extraction",
+        "Bulk grain boiling and rinsing stations",
+        "Temperature controlled high-airflow incubation bays"
+      ],
+      "storage": "Clean refrigerated vaults (2°C - 4°C). Keep bags upright to prevent filter contamination.",
+      "shelfLife": "90 Days maximum refrigeration storage.",
+      "transport": "Refrigerated freight logistics trucks. Insulate bags to avoid condensation buildup.",
+      "qualityTesting": [
+        "Visual bag mold check: looking for green Aspergillus or black Pin-mold",
+        "Smell analysis: rejecting bags with sour bacterial scent",
+        "Vigor bounce test: verifying rapid recovery after bag shaking"
+      ],
+      "commercialUses": "The standard inoculant for commercial Oyster, Shiitake, and Button mushroom farming worldwide.",
+      "govApplications": "Distributed bulk spawn to rural cooperative agricultural training centers under microfinance projects.",
+      "faqs": [
+        {
+          "q": "Which grain is best for spawn production?",
+          "a": "Millet is ideal due to its small grain size, which provides more inoculation points per kilogram. Wheat is preferred for larger mushrooms due to higher nutrient volumes."
+        },
+        {
+          "q": "What is the purpose of gypsum in grain spawn?",
+          "a": "Gypsum prevents individual grains from sticking together into a solid block, making it easy to break and shake the bag."
+        }
+      ],
+      "papers": [
+        {
+          "title": "Influence of Cereal Grains on Vegetative Mycelium Expansion Rate",
+          "author": "Dr. Sarah Jenkins",
+          "journal": "Applied Agricultural Mycology, 2024"
+        }
+      ]
     },
     {
       "id": "mother-culture",
@@ -211,7 +345,72 @@
         "Generation": "G0 Primary",
         "StrainID": "SN-SHI-01"
       },
-      "sortOrder": 3
+      "sortOrder": 3,
+      "scientificName": "Genomic Agar Sub-Culture (G0)",
+      "introduction": "Pure mycelial strains isolated on sterile agar media slants inside borosilicate tubes, serving as the primary genetic repository.",
+      "history": "Agar slant preservation was adapted from standard bacteriological methods in the early 20th century to prevent strain degeneration and mutation drift.",
+      "principle": "Mycelium is cultivated on a solid nutrient agar matrix. By slowing metabolic activity at low temperatures, pure genetic lines are preserved without cell division fatigue.",
+      "composition": [
+        "Bacteriological Agar-Agar (Solidifying agent)",
+        "Light Malt Extract (Nutrient carbohydrate source)",
+        "Peptone (Nitrogen and amino acid building blocks)",
+        "Yeast Extract (Vitamin B complex source)"
+      ],
+      "advantages": [
+        "Maintains original genetic purity with zero mutation drift",
+        "Long-term viability storage (up to 12 months under chill)",
+        "Ideal for strain breeding and international genetic exchange",
+        "Provides clear visual verification of sectoring growth margins"
+      ],
+      "disadvantages": [
+        "Requires advanced cleanroom micro-dissection skills",
+        "Extremely slow initial expansion rates",
+        "Highly vulnerable to spore contamination during initial inoculation"
+      ],
+      "applications": [
+        "Inoculating G1 master grain jars or liquid broth inoculants",
+        "Preserving rare regional wild mycology collections",
+        "Long-term strain banking in university research centers"
+      ],
+      "process": [
+        "Agar Media Preparation: Melt malt agar solution at 95°C for 20 minutes",
+        "Pressure Autoclaving: Sterilize at 121°C, 15 PSI for 20 minutes",
+        "Slant Tube Pouring: Dispense and angle tubes under HEPA hood to solidify",
+        "Aseptic Inoculation: Transfer mycelium tissue margins to agar face",
+        "Incubation: Store at 24°C for 7 days to verify clean colony growth"
+      ],
+      "labSpecs": [
+        "Class 100 sterile laminar air bench hood",
+        "Inoculation flame loop sanitizer",
+        "Digital temperature-controlled incubator vault"
+      ],
+      "storage": "Preserved inside clean air-filtered cold vaults at 2°C - 4°C. Keep tubes upright.",
+      "shelfLife": "12 Months maximum storage before slant transfer.",
+      "transport": "Insulated shipping tubes with thermal cold packs. Overnight air express recommended.",
+      "qualityTesting": [
+        "Rhizomorphic margin check: verifying concentric growth rings",
+        "Mutation sector check: identifying and discarding fuzzy mutations",
+        "Sub-plating check: testing on potato dextrose agar plates"
+      ],
+      "commercialUses": "Genetic backup for large scale commercial mushroom production networks.",
+      "govApplications": "Strain archives for agricultural research agencies and public biotechnology universities.",
+      "faqs": [
+        {
+          "q": "Why are slants used instead of petri dishes for long-term storage?",
+          "a": "Petri dishes dry out quickly due to air gaps, whereas capped test tubes retain moisture and protect agar media from dehydration for up to a year."
+        },
+        {
+          "q": "What is genetic sectoring?",
+          "a": "Sectoring is when a section of mycelium mutates and grows at a different rate or texture. These sectors must be discarded to keep the genetic line pure."
+        }
+      ],
+      "papers": [
+        {
+          "title": "Preservation and Maintenance of Basidiomycete Cults on Agar Slants",
+          "author": "Dr. L. Vance, et al.",
+          "journal": "Applied Biotechnology Review, 2024"
+        }
+      ]
     },
     {
       "id": "commercial-spawn",
@@ -230,7 +429,72 @@
         "Filter": "0.2 Micron",
         "TargetYield": "1.2kg/bag"
       },
-      "sortOrder": 4
+      "sortOrder": 4,
+      "scientificName": "Bulk Substrate Inoculant (G2/G3)",
+      "introduction": "Fully colonized bulk grain or sawdust matrices packaged inside heavy-duty breathable filter bags, optimized for direct agricultural bed inoculation.",
+      "history": "Bulk spawn packaging evolved in the 1980s with the introduction of autoclavable polypropylene bags featuring integrated micro-filter patches, allowing gas exchange while blocking mold spores.",
+      "principle": "To colonize large volumes of substrate efficiently, spawn must be robust. Commercial spawn provides massive volume and inoculation points, allowing rapid colonizing of compost or straw.",
+      "composition": [
+        "Sterilized organic millet or sorghum seeds",
+        "Lignocellulosic hardwood sawdust matrix (for wood lovers)",
+        "Agricultural gypsum (Anti-clumping mineral)",
+        "Calcium carbonate (pH balancer)"
+      ],
+      "advantages": [
+        "Cost-effective bulk packaging for large scale commercial farms",
+        "High inoculation point density due to millet seed distribution",
+        "Sustained nutrition block to boost flush yield weights",
+        "Bags are easy to shake and distribute evenly throughout bulk compost"
+      ],
+      "disadvantages": [
+        "High bulk freight shipping costs due to heavy package weights",
+        "Lower shelf life compared to G1 master spawn",
+        "Vulnerable to tearing during shipping or bed mixing"
+      ],
+      "applications": [
+        "Direct inoculation of pasteurized agricultural straw bags",
+        "Inoculating commercial mushroom compost beds (Button mushrooms)",
+        "Supplying agricultural cooperations under bulk farming programs"
+      ],
+      "process": [
+        "Bulk grain boiling: Hydrate seeds to 48% moisture contents",
+        "Bag Filling & Sealing: Pack into filter bags and seal under clean airflow",
+        "Sterilization: Autoclave bags at 121°C for 2.5 hours",
+        "HEPA cooling: Rest bags in positive-pressure clean rooms for 12 hours",
+        "Inoculation: Inject G1 master spawn into bags and seal"
+      ],
+      "labSpecs": [
+        "Large-capacity horizontal sterilizer autoclaves",
+        "Bulk grain mixers and bag filling lines",
+        "Temperature-controlled high-airflow incubation bays"
+      ],
+      "storage": "Store in clean cold storage vaults (2°C - 3.5°C). Keep bags stacked upright with proper airflow space.",
+      "shelfLife": "60 Days peak viability under refrigeration.",
+      "transport": "Refrigerated freight logistics cargo at 4°C. Avoid humidity condensation.",
+      "qualityTesting": [
+        "Visual bag inspection: check for green molds or yellow bacterial exudate",
+        "Bounce test: verify raw vegetative recovery within 48 hours after bag shake",
+        "Sector agar sub-plating test: check samples on petri dishes"
+      ],
+      "commercialUses": "Bulk spawn distribution for industrial button & oyster cultivators.",
+      "govApplications": "Supplying state mushroom multiplication projects and national rural cooperatives.",
+      "faqs": [
+        {
+          "q": "Can I use commercial spawn to make more spawn?",
+          "a": "We do not recommend expanding commercial spawn (G2) further, as third-generation scaling increases the risk of contamination and genetic mutation drift."
+        },
+        {
+          "q": "How much commercial spawn is needed for inoculation?",
+          "a": "Standard inoculation rate is 2% to 5% spawn weight to wet substrate weight, depending on the mushroom variety."
+        }
+      ],
+      "papers": [
+        {
+          "title": "Yield and Biological Efficiency of Commercial Spawn Matrices",
+          "author": "H. Patel, R. Miller",
+          "journal": "Agricultural Biotechnology Quarterly, 2025"
+        }
+      ]
     }
   ],
   "categories": [
@@ -438,130 +702,426 @@
     "qualityTitle": "Quality Policy",
     "qualityDesc": "Every culture slant and liquid jar undergoes 100% microscopical and PCR testing before dispatch.",
     "journeySteps": [
-      { "stepNumber": 1, "title": "Research Begins", "description": "Started with a vision to modernize mushroom cultivation through scientific methods" },
-      { "stepNumber": 2, "title": "Laboratory Development", "description": "Established GMP-compliant cleanroom facilities with advanced biological protocols" },
-      { "stepNumber": 3, "title": "Advanced Liquid Spawn Technology", "description": "Pioneered liquid spawn broth technology for faster colonization" },
-      { "stepNumber": 4, "title": "Commercial Production", "description": "Scaled operations to serve commercial farmers across multiple states" },
-      { "stepNumber": 5, "title": "Government Collaborations", "description": "Partnered with JICA, NHB, and state horticulture departments" },
-      { "stepNumber": 6, "title": "National Expansion", "description": "Expanded distribution network to 200+ farmers across India" },
-      { "stepNumber": 7, "title": "Future Global Growth", "description": "Building next-generation spawn solutions with AI-powered quality control" }
+      {
+        "stepNumber": 1,
+        "title": "Research Begins",
+        "description": "Started with a vision to modernize mushroom cultivation through scientific methods"
+      },
+      {
+        "stepNumber": 2,
+        "title": "Laboratory Development",
+        "description": "Established GMP-compliant cleanroom facilities with advanced biological protocols"
+      },
+      {
+        "stepNumber": 3,
+        "title": "Advanced Liquid Spawn Technology",
+        "description": "Pioneered liquid spawn broth technology for faster colonization"
+      },
+      {
+        "stepNumber": 4,
+        "title": "Commercial Production",
+        "description": "Scaled operations to serve commercial farmers across multiple states"
+      },
+      {
+        "stepNumber": 5,
+        "title": "Government Collaborations",
+        "description": "Partnered with JICA, NHB, and state horticulture departments"
+      },
+      {
+        "stepNumber": 6,
+        "title": "National Expansion",
+        "description": "Expanded distribution network to 200+ farmers across India"
+      },
+      {
+        "stepNumber": 7,
+        "title": "Future Global Growth",
+        "description": "Building next-generation spawn solutions with AI-powered quality control"
+      }
     ],
     "scienceCards": [
-      { "title": "Pure Mycelium Culture", "description": "Isolated on sterile agar media slants and verified through phase contrast microscopic analysis for complete genetic authenticity.", "badge": "Verified Standard" },
-      { "title": "Liquid Spawn Technology", "description": "Active vegetative mycelium suspended in sterile liquid broth, engineered for 4x faster substrate colonization.", "badge": "Verified Standard" },
-      { "title": "Genetic Stability", "description": "Multi-generation testing and strain preservation prevent genetic degeneration across commercial multiplication cycles.", "badge": "Verified Standard" },
-      { "title": "Laboratory Verification", "description": "Rigorous quality inspection including microscopic sectoring checks and bio-efficiency purity validation.", "badge": "Verified Standard" },
-      { "title": "Contamination Control", "description": "Class 100 HEPA-filtered cleanrooms equipped with positive atmospheric pressure and continuous UV sterilization.", "badge": "Verified Standard" },
-      { "title": "Cold Chain Storage", "description": "Strict temperature-regulated cold chain distribution maintains mycelial dormancy until direct farm inoculation.", "badge": "Verified Standard" }
+      {
+        "title": "Pure Mycelium Culture",
+        "description": "Isolated on sterile agar media slants and verified through phase contrast microscopic analysis for complete genetic authenticity.",
+        "badge": "Verified Standard"
+      },
+      {
+        "title": "Liquid Spawn Technology",
+        "description": "Active vegetative mycelium suspended in sterile liquid broth, engineered for 4x faster substrate colonization.",
+        "badge": "Verified Standard"
+      },
+      {
+        "title": "Genetic Stability",
+        "description": "Multi-generation testing and strain preservation prevent genetic degeneration across commercial multiplication cycles.",
+        "badge": "Verified Standard"
+      },
+      {
+        "title": "Laboratory Verification",
+        "description": "Rigorous quality inspection including microscopic sectoring checks and bio-efficiency purity validation.",
+        "badge": "Verified Standard"
+      },
+      {
+        "title": "Contamination Control",
+        "description": "Class 100 HEPA-filtered cleanrooms equipped with positive atmospheric pressure and continuous UV sterilization.",
+        "badge": "Verified Standard"
+      },
+      {
+        "title": "Cold Chain Storage",
+        "description": "Strict temperature-regulated cold chain distribution maintains mycelial dormancy until direct farm inoculation.",
+        "badge": "Verified Standard"
+      }
     ],
     "qualityCards": [
-      { "title": "GMP Laboratory", "description": "Good Manufacturing Practice compliant facility ensuring contamination-free production" },
-      { "title": "ISO Standards", "description": "International quality management standards across all processes" },
-      { "title": "DMR Certification", "description": "Directorate of Mushroom Research validated protocols" },
-      { "title": "NHB Certification", "description": "National Horticulture Board quality standards compliance" },
-      { "title": "Scientific Validation", "description": "Rigorous strain verification and biological efficiency testing" }
+      {
+        "title": "GMP Laboratory",
+        "description": "Good Manufacturing Practice compliant facility ensuring contamination-free production"
+      },
+      {
+        "title": "ISO Standards",
+        "description": "International quality management standards across all processes"
+      },
+      {
+        "title": "DMR Certification",
+        "description": "Directorate of Mushroom Research validated protocols"
+      },
+      {
+        "title": "NHB Certification",
+        "description": "National Horticulture Board quality standards compliance"
+      },
+      {
+        "title": "Scientific Validation",
+        "description": "Rigorous strain verification and biological efficiency testing"
+      }
     ],
     "partnershipCards": [
-      { "title": "Government Institutions", "description": "Working with state horticulture departments and JICA for farmer empowerment programs." },
-      { "title": "Research Organizations", "description": "Collaborating with ICAR-DMR and biotechnology research institutes." },
-      { "title": "Agricultural Universities", "description": "Supplying research-grade cultures and training materials to academic institutions." },
-      { "title": "Farmer Cooperatives", "description": "Supporting FPO formation and providing technical assistance to farming communities." },
-      { "title": "International Development Partners", "description": "Partnering with global organizations for sustainable agricultural development." }
+      {
+        "title": "Government Institutions",
+        "description": "Working with state horticulture departments and JICA for farmer empowerment programs."
+      },
+      {
+        "title": "Research Organizations",
+        "description": "Collaborating with ICAR-DMR and biotechnology research institutes."
+      },
+      {
+        "title": "Agricultural Universities",
+        "description": "Supplying research-grade cultures and training materials to academic institutions."
+      },
+      {
+        "title": "Farmer Cooperatives",
+        "description": "Supporting FPO formation and providing technical assistance to farming communities."
+      },
+      {
+        "title": "International Development Partners",
+        "description": "Partnering with global organizations for sustainable agricultural development."
+      }
     ],
     "whyChooseCards": [
-      { "title": "12+ Years Experience", "description": "Decades of combined expertise in professional mycological research and commercial spawn production methodologies." },
-      { "title": "14 Mushroom Varieties", "description": "Diverse library of commercial strains optimized for different climates." },
-      { "title": "Higher Yield Performance", "description": "Genetically verified strains proven to deliver maximum biological efficiency." },
-      { "title": "Chemical-Free Technology", "description": "100% natural substrates and sterile practices without harmful additives." },
-      { "title": "Lower Contamination Risk", "description": "Rigorous quality control ensures clean, vigorous vegetative mycelium." },
-      { "title": "Long Shelf Life", "description": "Specially formulated media designed for extended viability during cold storage and transit." },
-      { "title": "Expert Technical Team", "description": "Dedicated mycologists and technicians ensuring every batch meets the highest industry standards." },
-      { "title": "Scalable Commercial Production", "description": "State-of-the-art facilities capable of supporting farms of any size, from local growers to enterprise agriculture." }
+      {
+        "title": "12+ Years Experience",
+        "description": "Decades of combined expertise in professional mycological research and commercial spawn production methodologies."
+      },
+      {
+        "title": "14 Mushroom Varieties",
+        "description": "Diverse library of commercial strains optimized for different climates."
+      },
+      {
+        "title": "Higher Yield Performance",
+        "description": "Genetically verified strains proven to deliver maximum biological efficiency."
+      },
+      {
+        "title": "Chemical-Free Technology",
+        "description": "100% natural substrates and sterile practices without harmful additives."
+      },
+      {
+        "title": "Lower Contamination Risk",
+        "description": "Rigorous quality control ensures clean, vigorous vegetative mycelium."
+      },
+      {
+        "title": "Long Shelf Life",
+        "description": "Specially formulated media designed for extended viability during cold storage and transit."
+      },
+      {
+        "title": "Expert Technical Team",
+        "description": "Dedicated mycologists and technicians ensuring every batch meets the highest industry standards."
+      },
+      {
+        "title": "Scalable Commercial Production",
+        "description": "State-of-the-art facilities capable of supporting farms of any size, from local growers to enterprise agriculture."
+      }
     ],
     "processSteps": [
-      { "stepNumber": 1, "title": "Research", "description": "Scientific strain analysis and substrate optimization" },
-      { "stepNumber": 2, "title": "Culture Development", "description": "Pure mycelium isolation on sterile agar media" },
-      { "stepNumber": 3, "title": "Laboratory Testing", "description": "Microscopic verification and contamination screening" },
-      { "stepNumber": 4, "title": "Spawn Production", "description": "Scaled multiplication in GMP-compliant cleanrooms" },
-      { "stepNumber": 5, "title": "Quality Inspection", "description": "Multi-stage quality checks and biological efficiency testing" },
-      { "stepNumber": 6, "title": "Packaging", "description": "Sterile packaging with cold-chain readiness" },
-      { "stepNumber": 7, "title": "Farmer Delivery", "description": "Temperature-controlled distribution across India" }
+      {
+        "stepNumber": 1,
+        "title": "Research",
+        "description": "Scientific strain analysis and substrate optimization"
+      },
+      {
+        "stepNumber": 2,
+        "title": "Culture Development",
+        "description": "Pure mycelium isolation on sterile agar media"
+      },
+      {
+        "stepNumber": 3,
+        "title": "Laboratory Testing",
+        "description": "Microscopic verification and contamination screening"
+      },
+      {
+        "stepNumber": 4,
+        "title": "Spawn Production",
+        "description": "Scaled multiplication in GMP-compliant cleanrooms"
+      },
+      {
+        "stepNumber": 5,
+        "title": "Quality Inspection",
+        "description": "Multi-stage quality checks and biological efficiency testing"
+      },
+      {
+        "stepNumber": 6,
+        "title": "Packaging",
+        "description": "Sterile packaging with cold-chain readiness"
+      },
+      {
+        "stepNumber": 7,
+        "title": "Farmer Delivery",
+        "description": "Temperature-controlled distribution across India"
+      }
     ],
     "techBadges": [
-      { "label": "Liquid Spawn" },
-      { "label": "Grain Spawn" },
-      { "label": "Mother Culture" },
-      { "label": "Commercial Spawn" },
-      { "label": "Cleanroom Lab" },
-      { "label": "Biotechnology" },
-      { "label": "Research" },
-      { "label": "Innovation" }
+      {
+        "label": "Liquid Spawn"
+      },
+      {
+        "label": "Grain Spawn"
+      },
+      {
+        "label": "Mother Culture"
+      },
+      {
+        "label": "Commercial Spawn"
+      },
+      {
+        "label": "Cleanroom Lab"
+      },
+      {
+        "label": "Biotechnology"
+      },
+      {
+        "label": "Research"
+      },
+      {
+        "label": "Innovation"
+      }
     ],
     "aboutGallery": [
-      { "url": "/about_header.jpg", "title": "Our Research Facility" },
-      { "url": "/about_mushrooms.jpg", "title": "Premium Mushroom Cultivation" },
-      { "url": "/about_building.jpg", "title": "SporoNova Headquarters" },
-      { "url": "/hero_mushrooms.jpg", "title": "Natural Growing Process" },
-      { "url": "/products_header.jpg", "title": "Spawn Product Line" },
-      { "url": "/training_header.jpg", "title": "Farmer Training Programs" }
+      {
+        "url": "/about_header.jpg",
+        "title": "Our Research Facility"
+      },
+      {
+        "url": "/about_mushrooms.jpg",
+        "title": "Premium Mushroom Cultivation"
+      },
+      {
+        "url": "/about_building.jpg",
+        "title": "SporoNova Headquarters"
+      },
+      {
+        "url": "/hero_mushrooms.jpg",
+        "title": "Natural Growing Process"
+      },
+      {
+        "url": "/products_header.jpg",
+        "title": "Spawn Product Line"
+      },
+      {
+        "url": "/training_header.jpg",
+        "title": "Farmer Training Programs"
+      }
     ]
   },
   "processSteps": [
     {
       "id": "step-1",
       "stepNumber": 1,
-      "title": "Genomic Isolation (G0)",
-      "subtitle": "Pure Culture Selection",
-      "description": "Wild fruitbody tissue isolation on sterile PDA agar slants under laminar flow.",
-      "icon": "Dna",
-      "image": "/mother_culture.png",
-      "details": [
-        "Agar slant cloning",
-        "Microscopic validation",
-        "Cryo storage preservation"
-      ]
+      "step": "01",
+      "title": "Mother Culture Selection",
+      "subtitle": "Manufacturing Stage",
+      "description": "Isolating high-viability strains of fungi in pure culture to serve as the baseline inoculum.",
+      "purpose": "Isolating high-viability strains of fungi in pure culture to serve as the baseline inoculum.",
+      "temp": "24°C - 25°C",
+      "time": "7 Days",
+      "equipment": [
+        "Laminar Airflow Cabinet",
+        "Inoculation Loop",
+        "Petri Plates",
+        "Agar Formula"
+      ],
+      "precautions": "Discard any slants exhibiting off-color sectors or cottony mutations immediately.",
+      "qualityCheck": "Rhizomorphic density rating: verified uniform grid lines."
     },
     {
       "id": "step-2",
       "stepNumber": 2,
-      "title": "Liquid Bioreactor (G1)",
-      "subtitle": "Mycelial Biomass Expansion",
-      "description": "Inoculating sterile nutrient broth inside aerated stainless steel bioreactors.",
-      "icon": "FlaskConical",
-      "image": "/liquid_spawn_bottle.png",
-      "details": [
-        "Submerged liquid ferment",
-        "DO & pH control",
-        "96-hour rapid growth"
-      ]
+      "step": "02",
+      "title": "Media Preparation",
+      "subtitle": "Manufacturing Stage",
+      "description": "Dissolving sugars and nutrients to construct liquid broth optimized for vegetative mycelium scaling.",
+      "purpose": "Dissolving sugars and nutrients to construct liquid broth optimized for vegetative mycelium scaling.",
+      "time": "45 Minutes",
+      "equipment": [
+        "Laboratory Beakers",
+        "Magnetic Hotplate",
+        "Formulation Broth Balance"
+      ],
+      "precautions": "Use strict ratio limits. Excess sugars caramelize under autoclaving, blocking growth.",
+      "qualityCheck": "Initial solution pH testing target bounds: 5.8 - 6.2."
     },
     {
       "id": "step-3",
       "stepNumber": 3,
-      "title": "Grain Matrix Inoculation (G2)",
-      "subtitle": "Solid Substrate Colonization",
-      "description": "Autoclaved grain bags inoculated with liquid broth under cleanroom air.",
-      "icon": "Wheat",
-      "image": "/grain_jar.png",
-      "details": [
-        "121°C / 15 PSI autoclave",
-        "HEPA Class 100 transfer",
-        "Rhizomorphic run log"
-      ]
+      "step": "03",
+      "title": "Sterilization",
+      "subtitle": "Manufacturing Stage",
+      "description": "High-temperature thermal autoclaving to eliminate competitor mold spores and yeasts in nutrient liquid.",
+      "purpose": "High-temperature thermal autoclaving to eliminate competitor mold spores and yeasts in nutrient liquid.",
+      "temp": "121°C (250°F)",
+      "pressure": "15 PSI",
+      "time": "25 Minutes",
+      "equipment": [
+        "Industrial Autoclave Chamber",
+        "Thermocouple Data Logger"
+      ],
+      "precautions": "Monitor chamber pressure logs. Maintain maximum thermal heat for the entire timing cycle.",
+      "qualityCheck": "Autoclave temperature sensor chart clearance."
     },
     {
       "id": "step-4",
       "stepNumber": 4,
-      "title": "Cold Chain Logistics",
-      "subtitle": "Temperature Controlled Dispatch",
-      "description": "Chilled transport keeping mycelium dormant until grower bed inoculation.",
-      "icon": "Truck",
-      "image": "/growing_kit.png",
-      "details": [
-        "2°C to 4°C refrigerated van",
-        "Thermal tracking sensors",
-        "48-hour express delivery"
-      ]
+      "step": "04",
+      "title": "Cooling Cycle",
+      "subtitle": "Manufacturing Stage",
+      "description": "Cooling media to inoculation temperature to prevent killing the living mother culture cells.",
+      "purpose": "Cooling media to inoculation temperature to prevent killing the living mother culture cells.",
+      "temp": "25°C",
+      "time": "6 Hours",
+      "equipment": [
+        "HEPA Forced Air cooling bench"
+      ],
+      "precautions": "Do not touch or move bottles until the solution reaches a complete cool state.",
+      "qualityCheck": "Digital infrared thermometer test."
+    },
+    {
+      "id": "step-5",
+      "stepNumber": 5,
+      "step": "05",
+      "title": "Inoculation",
+      "subtitle": "Manufacturing Stage",
+      "description": "Aseptic transfer of mother culture blocks directly into sterile liquid broth flasks.",
+      "purpose": "Aseptic transfer of mother culture blocks directly into sterile liquid broth flasks.",
+      "temp": "24°C",
+      "time": "30 Minutes",
+      "equipment": [
+        "Class 100 Inoculation bench",
+        "Flame Loop Sanitizer"
+      ],
+      "precautions": "Technicians sanitize hands with 70% alcohol. Syringe ports flamed red-hot.",
+      "qualityCheck": "Post-inoculation seal integrity inspection."
+    },
+    {
+      "id": "step-6",
+      "stepNumber": 6,
+      "step": "06",
+      "title": "Incubation & Agitation",
+      "subtitle": "Manufacturing Stage",
+      "description": "Fostering mycelium cell growth and multiplying biomass through gentle rotational spinning.",
+      "purpose": "Fostering mycelium cell growth and multiplying biomass through gentle rotational spinning.",
+      "temp": "25.0°C",
+      "time": "5 - 7 Days",
+      "equipment": [
+        "Orbital Shaker Tables",
+        "Water-Jacket Incubator"
+      ],
+      "precautions": "Adjust RPM speeds to prevent mechanical damage to fine hyphal branches.",
+      "qualityCheck": "DO (Dissolved Oxygen) percentage logs: 80% saturation."
+    },
+    {
+      "id": "step-7",
+      "stepNumber": 7,
+      "step": "07",
+      "title": "Growth Monitoring",
+      "subtitle": "Manufacturing Stage",
+      "description": "Reviewing colonization logs and tracking density indicators daily.",
+      "purpose": "Reviewing colonization logs and tracking density indicators daily.",
+      "time": "Daily",
+      "equipment": [
+        "Turbidity meter",
+        "Genomic sequencing logs"
+      ],
+      "precautions": "Isolate containers displaying cell clumping or growth stalls.",
+      "qualityCheck": "Turbidity reading parameters check."
+    },
+    {
+      "id": "step-8",
+      "stepNumber": 8,
+      "step": "08",
+      "title": "Quality testing",
+      "subtitle": "Manufacturing Stage",
+      "description": "Verifying absolute purity of broth blocks prior to bulk crop distribution.",
+      "purpose": "Verifying absolute purity of broth blocks prior to bulk crop distribution.",
+      "time": "2 Days",
+      "equipment": [
+        "Agar sector petri plating",
+        "Phase contrast micro-viewer"
+      ],
+      "precautions": "Reject any batches showing micro-yeasts or lactic bacteria cells.",
+      "qualityCheck": "Zero competitive spore verification under 1000x zoom."
+    },
+    {
+      "id": "step-9",
+      "stepNumber": 9,
+      "step": "09",
+      "title": "Aseptic Packaging",
+      "subtitle": "Manufacturing Stage",
+      "description": "Sealing clean broth containers inside sterile syringe bags with micro-filter locks.",
+      "purpose": "Sealing clean broth containers inside sterile syringe bags with micro-filter locks.",
+      "temp": "20°C",
+      "time": "2 Hours",
+      "equipment": [
+        "Clean packaging heat sealing line"
+      ],
+      "precautions": "Monitor room air filter gauges. Verify no leaks in seals.",
+      "qualityCheck": "Sealing pressure test: zero gas leaks."
+    },
+    {
+      "id": "step-10",
+      "stepNumber": 10,
+      "step": "10",
+      "title": "Cold Storage Vault",
+      "subtitle": "Manufacturing Stage",
+      "description": "Inducing a dormant state inside mycelial cells to preserve spawn viability.",
+      "purpose": "Inducing a dormant state inside mycelial cells to preserve spawn viability.",
+      "temp": "2.0°C - 3.5°C",
+      "time": "Up to 21 Days",
+      "equipment": [
+        "Industrial chill vault shelves"
+      ],
+      "precautions": "Never allow temperatures to dip below freezing, as ice crystal formations destroy cell walls.",
+      "qualityCheck": "Continuous digital temperature logger logs check."
+    },
+    {
+      "id": "step-11",
+      "stepNumber": 11,
+      "step": "11",
+      "title": "Distribution",
+      "subtitle": "Manufacturing Stage",
+      "description": "Dispatching fresh spawn under climate control directly to growers.",
+      "purpose": "Dispatching fresh spawn under climate control directly to growers.",
+      "temp": "4.0°C",
+      "time": "Overnight delivery",
+      "equipment": [
+        "Insulated cold box logistics cargo"
+      ],
+      "precautions": "Ensure cold packs do not directly touch bags to avoid localized frost bites.",
+      "qualityCheck": "Delivery reception temperature verification log."
     }
   ],
   "whyChooseUsCards": [
@@ -693,10 +1253,22 @@
     }
   ],
   "successNumbers": [
-    { "value": "14+", "label": "Mushroom Varieties" },
-    { "value": "100+ MT", "label": "Annual Production" },
-    { "value": "1000+", "label": "Farmers Served" },
-    { "value": "12+", "label": "Years Experience" }
+    {
+      "value": "14+",
+      "label": "Mushroom Varieties"
+    },
+    {
+      "value": "100+ MT",
+      "label": "Annual Production"
+    },
+    {
+      "value": "1000+",
+      "label": "Farmers Served"
+    },
+    {
+      "value": "12+",
+      "label": "Years Experience"
+    }
   ],
   "partnerships": [
     {
