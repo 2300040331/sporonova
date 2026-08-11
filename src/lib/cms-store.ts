@@ -659,9 +659,13 @@ const INITIAL_DATA: CMSData = {
 let inMemoryDataCache: CMSData | null = null;
 
 function ensureDataDirectoryExists() {
-  const dir = path.dirname(DB_PATH);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    const dir = path.dirname(DB_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch (e) {
+    console.warn("Failed to check or create data directory (possibly read-only environment):", e);
   }
 }
 
@@ -705,7 +709,11 @@ export function getCMSData(): CMSData {
 
       if (!inMemoryDataCache!.users || inMemoryDataCache!.users.length === 0) {
         inMemoryDataCache!.users = [defaultAdminUser];
-        fs.writeFileSync(DB_PATH, JSON.stringify(inMemoryDataCache, null, 2), "utf-8");
+        try {
+          fs.writeFileSync(DB_PATH, JSON.stringify(inMemoryDataCache, null, 2), "utf-8");
+        } catch (err) {
+          console.warn("Failed to write updated users to read-only disk:", err);
+        }
       }
 
       return inMemoryDataCache!;
@@ -716,13 +724,21 @@ export function getCMSData(): CMSData {
 
   INITIAL_DATA.users = [defaultAdminUser];
   inMemoryDataCache = INITIAL_DATA;
-  fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), "utf-8");
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("Failed to initialize database on read-only disk:", err);
+  }
   return inMemoryDataCache;
 }
 
 export function saveCMSData(data: CMSData): void {
   ensureDataDirectoryExists();
   inMemoryDataCache = data;
-  fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), "utf-8");
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("Failed to save CMS data to read-only disk:", err);
+  }
 }
 
