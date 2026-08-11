@@ -3,44 +3,23 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronRight, Dna, Settings, ShieldCheck, Box, Send } from "lucide-react";
-
-interface ProcessStep {
-  name: string;
-  desc: string;
-  icon: React.ReactNode;
-}
-
-const PROCESS_STEPS: ProcessStep[] = [
-  {
-    name: "Mother Culture",
-    desc: "Genomics slant isolation.",
-    icon: <Dna className="w-5 h-5" />,
-  },
-  {
-    name: "Spawn Production",
-    desc: "Inoculating carrier blocks.",
-    icon: <Settings className="w-5 h-5" />,
-  },
-  {
-    name: "Quality Testing",
-    desc: "100% purity clearance.",
-    icon: <ShieldCheck className="w-5 h-5" />,
-  },
-  {
-    name: "Packaging",
-    desc: "Eco filter bag sealing.",
-    icon: <Box className="w-5 h-5" />,
-  },
-  {
-    name: "Distribution",
-    desc: "Cold chain logistics dispatch.",
-    icon: <Send className="w-5 h-5" />,
-  },
-];
+import { ChevronRight } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { useCMS } from "@/lib/cms-context";
 
 export default function ProcessTimelinePreview() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { data } = useCMS();
+
+  const stepsList = (data?.homepage as any)?.processPreviewSteps && (data?.homepage as any).processPreviewSteps.length > 0
+    ? (data?.homepage as any).processPreviewSteps
+    : [
+        { name: "Mother Culture", desc: "Genomics slant isolation.", iconName: "Dna" },
+        { name: "Spawn Production", desc: "Inoculating carrier blocks.", iconName: "Settings" },
+        { name: "Quality Testing", desc: "100% purity clearance.", iconName: "ShieldCheck" },
+        { name: "Packaging", desc: "Eco filter bag sealing.", iconName: "Box" },
+        { name: "Distribution", desc: "Cold chain logistics dispatch.", iconName: "Send" },
+      ];
 
   return (
     <div className="w-full bg-[#f8f7f3] border border-[#e6e4dc] rounded-3xl p-8 shadow-sm">
@@ -59,8 +38,10 @@ export default function ProcessTimelinePreview() {
 
       {/* Horizontal step deck */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 overflow-x-auto pb-4 pt-2">
-        {PROCESS_STEPS.map((step, idx) => {
+        {stepsList.map((step: any, idx: number) => {
           const isActive = hoveredIdx === idx;
+          const IconComp = (LucideIcons as any)[step.iconName] || LucideIcons.Settings;
+
           return (
             <React.Fragment key={step.name}>
               {/* Step Card */}
@@ -91,7 +72,7 @@ export default function ProcessTimelinePreview() {
                       : "bg-[#f8f7f3] border-[#e6e4dc] text-[#4e8c4a]"
                   }`}
                 >
-                  {step.icon}
+                  <IconComp className="w-5 h-5" />
                 </motion.div>
 
                 <h4 className="text-sm font-extrabold tracking-wide mb-1 leading-snug">{step.name}</h4>
@@ -103,7 +84,7 @@ export default function ProcessTimelinePreview() {
               </motion.div>
 
               {/* Connecting arrow indicator with sliding animation */}
-              {idx < PROCESS_STEPS.length - 1 && (
+              {idx < stepsList.length - 1 && (
                 <div className="hidden md:block text-[#7baa6b] shrink-0">
                   <motion.div
                     animate={hoveredIdx === idx ? { x: [0, 5, 0] } : {}}

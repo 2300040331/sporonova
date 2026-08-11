@@ -21,12 +21,15 @@ import {
   BookOpen,
   Info,
   Package,
+  Trash2,
+  Plus,
+  PlusCircle,
 } from "lucide-react";
 
 export default function HomepageCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [activeTab, setActiveTab] = useState<
-    "hero" | "about" | "productsHeader" | "values" | "credentials" | "partnerships" | "deliverables" | "industries" | "testimonials"
+    "hero" | "about" | "productsHeader" | "values" | "credentials" | "partnerships" | "deliverables" | "industries" | "processPreview" | "testimonials"
   >("hero");
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -37,11 +40,13 @@ export default function HomepageCMSPage() {
   const [aboutForm, setAboutForm] = useState<any>({});
   const [productsHeaderForm, setProductsHeaderForm] = useState<any>({});
   const [valuesForm, setValuesForm] = useState<any>({});
-  const [whyChooseUsCardsForm, setWhyChooseUsCardsForm] = useState<any[]>([]);
+  const [valuesListForm, setValuesListForm] = useState<any[]>([]);
   const [credentialsForm, setCredentialsForm] = useState<any[]>([]);
   const [partnershipsForm, setPartnershipsForm] = useState<any[]>([]);
   const [deliverablesForm, setDeliverablesForm] = useState<any[]>([]);
+  const [deliverablesStatsForm, setDeliverablesStatsForm] = useState<any[]>([]);
   const [industriesForm, setIndustriesForm] = useState<any[]>([]);
+  const [processPreviewStepsForm, setProcessPreviewStepsForm] = useState<any[]>([]);
   const [successNumbersForm, setSuccessNumbersForm] = useState<any[]>([]);
   const [testimonialsForm, setTestimonialsForm] = useState<any[]>([]);
 
@@ -67,7 +72,7 @@ export default function HomepageCMSPage() {
         title: data.homepage?.valuesSectionTitle || "Why Growers Choose SporoNova",
         subtitle: (data.homepage as any)?.valuesSectionSubtitle || "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields.",
       });
-      setWhyChooseUsCardsForm(data.whyChooseUsCards || []);
+      setValuesListForm(data.values || []);
       setCredentialsForm(data.credentials || []);
       setPartnershipsForm(
         (data as any).partnerships || [
@@ -78,6 +83,23 @@ export default function HomepageCMSPage() {
       );
       setDeliverablesForm(data.deliverables || []);
       setIndustriesForm(data.industries || []);
+      setDeliverablesStatsForm(
+        (data.homepage as any)?.deliverablesStats || [
+          { value: "200+", label: "Farmers Trained Year 1" },
+          { value: "50%", label: "Yield Increase per Farmer" },
+          { value: "3x", label: "Income Multiplier (Projected)" },
+          { value: "14", label: "Mushroom Varieties Available" },
+        ]
+      );
+      setProcessPreviewStepsForm(
+        (data.homepage as any)?.processPreviewSteps || [
+          { name: "Mother Culture", desc: "Genomics slant isolation.", iconName: "Dna" },
+          { name: "Spawn Production", desc: "Inoculating carrier blocks.", iconName: "Settings" },
+          { name: "Quality Testing", desc: "100% purity clearance.", iconName: "ShieldCheck" },
+          { name: "Packaging", desc: "Eco filter bag sealing.", iconName: "Box" },
+          { name: "Distribution", desc: "Cold chain logistics dispatch.", iconName: "Send" },
+        ]
+      );
       setSuccessNumbersForm(
         (data as any).successNumbers || [
           { value: "14+", label: "Mushroom Varieties" },
@@ -98,6 +120,63 @@ export default function HomepageCMSPage() {
     );
   }
 
+  // List item addition & deletion helpers
+  const handleAddStat = () => {
+    setStatsForm([...statsForm, { value: "New Stat", label: "Metric Label", sublabel: "Details Summary", icon: "Leaf" }]);
+  };
+  const handleDeleteStat = (idx: number) => {
+    setStatsForm(statsForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddValue = () => {
+    setValuesListForm([...valuesListForm, { title: "New Quality Value", desc: "Description text", tag: "QUALITY TAG", metric: "100%" }]);
+  };
+  const handleDeleteValue = (idx: number) => {
+    setValuesListForm(valuesListForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddCredential = () => {
+    setCredentialsForm([...credentialsForm, { title: "New Accreditation", status: "Status Description", desc: "Compliance detail summary" }]);
+  };
+  const handleDeleteCredential = (idx: number) => {
+    setCredentialsForm(credentialsForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddPartner = () => {
+    setPartnershipsForm([...partnershipsForm, { title: "New Partnering Agency", points: ["Livelihood improvement point"] }]);
+  };
+  const handleDeletePartner = (idx: number) => {
+    setPartnershipsForm(partnershipsForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddDeliverable = () => {
+    setDeliverablesForm([...deliverablesForm, { label: "Expected Deliverable Title", desc: "Detailed deliverable scope details" }]);
+  };
+  const handleDeleteDeliverable = (idx: number) => {
+    setDeliverablesForm(deliverablesForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddIndustry = () => {
+    setIndustriesForm([...industriesForm, { name: "Ecosystem Sector Name", desc: "Description of spawn deployment" }]);
+  };
+  const handleDeleteIndustry = (idx: number) => {
+    setIndustriesForm(industriesForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddPreviewStep = () => {
+    setProcessPreviewStepsForm([...processPreviewStepsForm, { name: "Production Step", desc: "Step description details.", iconName: "Settings" }]);
+  };
+  const handleDeletePreviewStep = (idx: number) => {
+    setProcessPreviewStepsForm(processPreviewStepsForm.filter((_, i) => i !== idx));
+  };
+
+  const handleAddTestimonial = () => {
+    setTestimonialsForm([...testimonialsForm, { quote: "Farmer review statement goes here.", author: "Grower Name", role: "Cooperative Leader" }]);
+  };
+  const handleDeleteTestimonial = (idx: number) => {
+    setTestimonialsForm(testimonialsForm.filter((_, i) => i !== idx));
+  };
+
   const handlePublish = async () => {
     setSaving(true);
     setSaveSuccess(false);
@@ -113,9 +192,11 @@ export default function HomepageCMSPage() {
         valuesSectionBadge: valuesForm.badge,
         valuesSectionTitle: valuesForm.title,
         valuesSectionSubtitle: valuesForm.subtitle,
+        deliverablesStats: deliverablesStatsForm,
+        processPreviewSteps: processPreviewStepsForm,
       },
       about: aboutForm,
-      whyChooseUsCards: whyChooseUsCardsForm,
+      values: valuesListForm,
       credentials: credentialsForm,
       partnerships: partnershipsForm,
       deliverables: deliverablesForm,
@@ -179,6 +260,7 @@ export default function HomepageCMSPage() {
           { id: "partnerships", label: "Partnerships" },
           { id: "deliverables", label: "Deliverables & Impact" },
           { id: "industries", label: "Ecosystem" },
+          { id: "processPreview", label: "Process Preview Timeline" },
           { id: "testimonials", label: "Testimonials" },
         ].map((tab) => (
           <button
@@ -270,11 +352,30 @@ export default function HomepageCMSPage() {
             </div>
 
             <div className="border-t border-[#e2e8e0] pt-6 space-y-4">
-              <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Hero 4 Core Stats</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Hero Core Stats</h3>
+                <button
+                  type="button"
+                  onClick={handleAddStat}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Stat
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {statsForm.map((stat, idx) => (
                   <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-3">
-                    <span className="text-[10px] text-gray-500 font-mono font-bold">Stat Card #{idx + 1}</span>
+                    <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                      <span className="text-[10px] text-gray-500 font-mono font-bold">Stat Card #{idx + 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteStat(idx)}
+                        className="text-red-500 hover:text-red-750 transition-colors p-1"
+                        title="Delete Stat"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="block text-[9px] font-bold text-[#2c5e37]">Metric Value</label>
@@ -452,11 +553,30 @@ export default function HomepageCMSPage() {
             </div>
 
             <div className="border-t border-[#e2e8e0] pt-6 space-y-4">
-              <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Protocol Feature Cards (8 items)</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Protocol Feature Cards</h3>
+                <button
+                  type="button"
+                  onClick={handleAddValue}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Card
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {whyChooseUsCardsForm.map((card, idx) => (
-                  <div key={card.id || idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-3">
-                    <span className="text-[10px] text-gray-500 font-mono font-bold">Protocol Card #{idx + 1}</span>
+                {valuesListForm.map((card, idx) => (
+                  <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-3">
+                    <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                      <span className="text-[10px] text-gray-500 font-mono font-bold">Protocol Card #{idx + 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteValue(idx)}
+                        className="text-red-500 hover:text-red-750 transition-colors p-1"
+                        title="Delete Card"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
                         <label className="block text-[9px] font-bold text-[#2c5e37]">Header Title</label>
@@ -464,22 +584,37 @@ export default function HomepageCMSPage() {
                           type="text"
                           value={card.title || ""}
                           onChange={(e) => {
-                            const updated = [...whyChooseUsCardsForm];
+                            const updated = [...valuesListForm];
                             updated[idx].title = e.target.value;
-                            setWhyChooseUsCardsForm(updated);
+                            setValuesListForm(updated);
                           }}
                           className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
                         />
                       </div>
                       <div>
-                        <label className="block text-[9px] font-bold text-[#2c5e37]">Highlight Tag</label>
+                        <label className="block text-[9px] font-bold text-[#2c5e37]">Category / Tag</label>
                         <input
                           type="text"
-                          value={card.highlight || ""}
+                          value={card.tag || ""}
                           onChange={(e) => {
-                            const updated = [...whyChooseUsCardsForm];
-                            updated[idx].highlight = e.target.value;
-                            setWhyChooseUsCardsForm(updated);
+                            const updated = [...valuesListForm];
+                            updated[idx].tag = e.target.value;
+                            setValuesListForm(updated);
+                          }}
+                          className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[9px] font-bold text-[#2c5e37]">Metric / Benchmark</label>
+                        <input
+                          type="text"
+                          value={card.metric || ""}
+                          onChange={(e) => {
+                            const updated = [...valuesListForm];
+                            updated[idx].metric = e.target.value;
+                            setValuesListForm(updated);
                           }}
                           className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
                         />
@@ -489,11 +624,11 @@ export default function HomepageCMSPage() {
                       <label className="block text-[9px] font-bold text-[#2c5e37]">Description</label>
                       <textarea
                         rows={2}
-                        value={card.description || ""}
+                        value={card.desc || ""}
                         onChange={(e) => {
-                          const updated = [...whyChooseUsCardsForm];
-                          updated[idx].description = e.target.value;
-                          setWhyChooseUsCardsForm(updated);
+                          const updated = [...valuesListForm];
+                          updated[idx].desc = e.target.value;
+                          setValuesListForm(updated);
                         }}
                         className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
                       />
@@ -508,14 +643,33 @@ export default function HomepageCMSPage() {
         {/* TAB 4: CREDENTIALS */}
         {activeTab === "credentials" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Award className="w-4 h-4 text-[#4e8c4a]" /> Our Credentials & Certifications Settings
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Award className="w-4 h-4 text-[#4e8c4a]" /> Our Credentials & Certifications Settings
+              </h2>
+              <button
+                type="button"
+                onClick={handleAddCredential}
+                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3 h-3" /> Add Credential
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {credentialsForm.map((item, idx) => (
                 <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-3">
-                  <span className="text-[10px] text-gray-500 font-mono font-bold">Credential Card #{idx + 1}</span>
+                  <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                    <span className="text-[10px] text-gray-500 font-mono font-bold">Credential Card #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCredential(idx)}
+                      className="text-red-500 hover:text-red-750 transition-colors p-1"
+                      title="Delete Credential"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="block text-[9px] font-bold text-[#2c5e37]">Credential Title</label>
@@ -566,25 +720,44 @@ export default function HomepageCMSPage() {
         {/* TAB 5: PARTNERSHIPS */}
         {activeTab === "partnerships" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Building className="w-4 h-4 text-[#4e8c4a]" /> Partnership Value Propositions
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Building className="w-4 h-4 text-[#4e8c4a]" /> Partnership Value Propositions
+              </h2>
+              <button
+                type="button"
+                onClick={handleAddPartner}
+                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3 h-3" /> Add Partner
+              </button>
+            </div>
 
             <div className="space-y-6">
               {partnershipsForm.map((partner, idx) => (
                 <div key={idx} className="border border-[#e2e8e0] p-5 rounded-2xl bg-[#f9fbf8] space-y-4">
                   <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
-                    <span className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Partner Agency #{idx + 1}</span>
-                    <input
-                      type="text"
-                      value={partner.title || ""}
-                      onChange={(e) => {
-                        const updated = [...partnershipsForm];
-                        updated[idx].title = e.target.value;
-                        setPartnershipsForm(updated);
-                      }}
-                      className="px-3 py-1 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24] w-64"
-                    />
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Partner Agency #{idx + 1}</span>
+                      <input
+                        type="text"
+                        value={partner.title || ""}
+                        onChange={(e) => {
+                          const updated = [...partnershipsForm];
+                          updated[idx].title = e.target.value;
+                          setPartnershipsForm(updated);
+                        }}
+                        className="px-3 py-1 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24] w-64"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDeletePartner(idx)}
+                      className="text-red-500 hover:text-red-750 transition-colors p-1"
+                      title="Delete Partner"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
 
                   <div className="space-y-2">
@@ -594,7 +767,7 @@ export default function HomepageCMSPage() {
                       value={partner.points ? partner.points.join("\n") : ""}
                       onChange={(e) => {
                         const updated = [...partnershipsForm];
-                        updated[idx].points = e.target.value.split("\n").filter((p) => p.trim() !== "");
+                        updated[idx].points = e.target.value.split("\n");
                         setPartnershipsForm(updated);
                       }}
                       className="w-full px-4 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium leading-relaxed"
@@ -614,40 +787,98 @@ export default function HomepageCMSPage() {
               <TrendingUp className="w-4 h-4 text-[#4e8c4a]" /> Expected Program Deliverables & Impact
             </h2>
 
-            <div className="space-y-4">
-              {deliverablesForm.map((item, idx) => (
-                <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="flex flex-col justify-center">
-                    <span className="text-[10px] text-gray-500 font-mono font-bold">Deliverable 0{idx + 1}</span>
+            {/* Expected Impact Stats Section */}
+            <div className="border border-[#e2e8e0] p-5 rounded-3xl bg-[#f9fbf8]/50 space-y-4">
+              <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Expected Impact Counters (4 Stats)</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {deliverablesStatsForm.map((stat, idx) => (
+                  <div key={idx} className="border border-[#e2e8e0] p-4 rounded-xl bg-white space-y-2">
+                    <span className="text-[10px] text-gray-500 font-mono font-bold">Stat #{idx + 1}</span>
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Metric Value</label>
+                      <input
+                        type="text"
+                        value={stat.value || ""}
+                        onChange={(e) => {
+                          const updated = [...deliverablesStatsForm];
+                          updated[idx].value = e.target.value;
+                          setDeliverablesStatsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Stat Label</label>
+                      <input
+                        type="text"
+                        value={stat.label || ""}
+                        onChange={(e) => {
+                          const updated = [...deliverablesStatsForm];
+                          updated[idx].label = e.target.value;
+                          setDeliverablesStatsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-[9px] font-bold text-[#2c5e37]">Label Heading</label>
-                    <input
-                      type="text"
-                      value={item.label || ""}
-                      onChange={(e) => {
-                        const updated = [...deliverablesForm];
-                        updated[idx].label = e.target.value;
-                        setDeliverablesForm(updated);
-                      }}
-                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
-                    />
+                ))}
+              </div>
+            </div>
+
+            {/* Deliverables List Section */}
+            <div className="border-t border-[#e2e8e0] pt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Key Programme Deliverables</h3>
+                <button
+                  type="button"
+                  onClick={handleAddDeliverable}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Deliverable
+                </button>
+              </div>
+              <div className="space-y-4">
+                {deliverablesForm.map((item, idx) => (
+                  <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] flex items-center gap-4 justify-between">
+                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[9px] font-bold text-[#2c5e37]">Label Heading</label>
+                        <input
+                          type="text"
+                          value={item.label || ""}
+                          onChange={(e) => {
+                            const updated = [...deliverablesForm];
+                            updated[idx].label = e.target.value;
+                            setDeliverablesForm(updated);
+                          }}
+                          className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[9px] font-bold text-[#2c5e37]">Detailed Deliverable Scope</label>
+                        <input
+                          type="text"
+                          value={item.desc || ""}
+                          onChange={(e) => {
+                            const updated = [...deliverablesForm];
+                            updated[idx].desc = e.target.value;
+                            setDeliverablesForm(updated);
+                          }}
+                          className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteDeliverable(idx)}
+                      className="text-red-500 hover:text-red-750 transition-colors p-1"
+                      title="Delete Deliverable"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                  <div>
-                    <label className="block text-[9px] font-bold text-[#2c5e37]">Detailed Deliverable Scope</label>
-                    <input
-                      type="text"
-                      value={item.desc || ""}
-                      onChange={(e) => {
-                        const updated = [...deliverablesForm];
-                        updated[idx].desc = e.target.value;
-                        setDeliverablesForm(updated);
-                      }}
-                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
-                    />
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
@@ -655,14 +886,33 @@ export default function HomepageCMSPage() {
         {/* TAB 7: ECOSYSTEM */}
         {activeTab === "industries" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Briefcase className="w-4 h-4 text-[#4e8c4a]" /> Ecosystem Integration (Industries We Serve)
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-[#4e8c4a]" /> Ecosystem Integration (Industries We Serve)
+              </h2>
+              <button
+                type="button"
+                onClick={handleAddIndustry}
+                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3 h-3" /> Add Sector
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {industriesForm.map((item, idx) => (
                 <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-2">
-                  <span className="text-[10px] text-gray-500 font-mono font-bold">Industry Column #{idx + 1}</span>
+                  <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                    <span className="text-[10px] text-gray-500 font-mono font-bold">Industry Column #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteIndustry(idx)}
+                      className="text-red-500 hover:text-red-750 transition-colors p-1"
+                      title="Delete Sector"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <div>
                     <label className="block text-[9px] font-bold text-[#2c5e37]">Industry Name</label>
                     <input
@@ -695,17 +945,110 @@ export default function HomepageCMSPage() {
           </div>
         )}
 
-        {/* TAB 8: TESTIMONIALS */}
+        {/* TAB 8: PROCESS PREVIEW TIMELINE */}
+        {activeTab === "processPreview" && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <List className="w-4 h-4 text-[#4e8c4a]" /> Process Preview Timeline Settings
+              </h2>
+              <button
+                type="button"
+                onClick={handleAddPreviewStep}
+                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3 h-3" /> Add Step
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {processPreviewStepsForm.map((item, idx) => (
+                <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] flex items-center gap-4 justify-between">
+                  <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Step Name</label>
+                      <input
+                        type="text"
+                        value={item.name || ""}
+                        onChange={(e) => {
+                          const updated = [...processPreviewStepsForm];
+                          updated[idx].name = e.target.value;
+                          setProcessPreviewStepsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-bold text-[#1c3c24]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Icon Name (Lucide name, e.g. Dna, Settings, ShieldCheck, Box, Send)</label>
+                      <input
+                        type="text"
+                        value={item.iconName || ""}
+                        onChange={(e) => {
+                          const updated = [...processPreviewStepsForm];
+                          updated[idx].iconName = e.target.value;
+                          setProcessPreviewStepsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-mono font-bold text-[#1c3c24]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Step Description</label>
+                      <input
+                        type="text"
+                        value={item.desc || ""}
+                        onChange={(e) => {
+                          const updated = [...processPreviewStepsForm];
+                          updated[idx].desc = e.target.value;
+                          setProcessPreviewStepsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleDeletePreviewStep(idx)}
+                    className="text-red-500 hover:text-red-750 transition-colors p-1"
+                    title="Delete Step"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 9: TESTIMONIALS */}
         {activeTab === "testimonials" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Quote className="w-4 h-4 text-[#4e8c4a]" /> Grower Testimonials & Feedback
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Quote className="w-4 h-4 text-[#4e8c4a]" /> Grower Testimonials & Feedback
+              </h2>
+              <button
+                type="button"
+                onClick={handleAddTestimonial}
+                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+              >
+                <Plus className="w-3 h-3" /> Add Testimonial
+              </button>
+            </div>
 
             <div className="space-y-4">
               {testimonialsForm.map((item, idx) => (
                 <div key={idx} className="border border-[#e2e8e0] p-4 rounded-2xl bg-[#f9fbf8] space-y-3">
-                  <span className="text-[10px] text-gray-500 font-mono font-bold">Testimonial Quote #{idx + 1}</span>
+                  <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                    <span className="text-[10px] text-gray-500 font-mono font-bold">Testimonial Quote #{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTestimonial(idx)}
+                      className="text-red-500 hover:text-red-750 transition-colors p-1"
+                      title="Delete Testimonial"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[9px] font-bold text-[#2c5e37]">Author Name</label>

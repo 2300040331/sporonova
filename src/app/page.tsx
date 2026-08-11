@@ -175,6 +175,14 @@ export default function Homepage() {
   const credentialsList = data?.credentials && data.credentials.length > 0 ? data.credentials : CREDENTIALS;
   const deliverablesList = data?.deliverables && data.deliverables.length > 0 ? data.deliverables : DELIVERABLES;
   const industriesList = data?.industries && data.industries.length > 0 ? data.industries : INDUSTRIES;
+  const deliverablesStatsList = (data?.homepage as any)?.deliverablesStats && (data?.homepage as any).deliverablesStats.length > 0
+    ? (data?.homepage as any).deliverablesStats
+    : [
+        { value: "200+", label: "Farmers Trained Year 1" },
+        { value: "50%", label: "Yield Increase per Farmer" },
+        { value: "3x", label: "Income Multiplier (Projected)" },
+        { value: "14", label: "Mushroom Varieties Available" },
+      ];
   const statsList = (data?.homepage as any)?.stats && (data?.homepage as any).stats.length > 0
     ? (data?.homepage as any).stats
     : [
@@ -828,35 +836,14 @@ export default function Homepage() {
               
               {/* Counters Row - Floating Stat panels */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <div className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
-                  <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">200+</span>
-                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
-                    Farmers Trained Year 1
-                  </span>
-                </div>
-
-                <div className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
-                  <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">50%</span>
-                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
-                    Yield Increase per Farmer
-                  </span>
-                </div>
-
-                <div className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
-                  <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">3x</span>
-                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
-                    Income Multiplier (Projected)
-                  </span>
-                </div>
-
-                <div className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
-                  <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">14</span>
-                  <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
-                    Mushroom Varieties Available
-                  </span>
-                </div>
-
+                {deliverablesStatsList.map((stat: any, idx: number) => (
+                  <div key={idx} className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
+                    <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">{stat.value}</span>
+                    <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
+                      {stat.label}
+                    </span>
+                  </div>
+                ))}
               </div>
 
               {/* Key Deliverables connected pipeline */}

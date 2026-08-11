@@ -156,7 +156,52 @@
     "productsSectionSubtitle": "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides.",
     "industriesSectionTitle": "Empowering Agritech Across Sectors",
     "credentialsSectionTitle": "Accreditations & Institutional Trust",
-    "testimonialsSectionTitle": "Trusted by Commercial Growers Across India"
+    "testimonialsSectionTitle": "Trusted by Commercial Growers Across India",
+    "deliverablesStats": [
+      {
+        "value": "200+",
+        "label": "Farmers Trained Year 1"
+      },
+      {
+        "value": "50%",
+        "label": "Yield Increase per Farmer"
+      },
+      {
+        "value": "3x",
+        "label": "Income Multiplier (Projected)"
+      },
+      {
+        "value": "14",
+        "label": "Mushroom Varieties Available"
+      }
+    ],
+    "processPreviewSteps": [
+      {
+        "name": "Mother Culture",
+        "desc": "Genomics slant isolation.",
+        "iconName": "Dna"
+      },
+      {
+        "name": "Spawn Production",
+        "desc": "Inoculating carrier blocks.",
+        "iconName": "Settings"
+      },
+      {
+        "name": "Quality Testing",
+        "desc": "100% purity clearance.",
+        "iconName": "ShieldCheck"
+      },
+      {
+        "name": "Packaging",
+        "desc": "Eco filter bag sealing.",
+        "iconName": "Box"
+      },
+      {
+        "name": "Distribution",
+        "desc": "Cold chain logistics dispatch.",
+        "iconName": "Send"
+      }
+    ]
   },
   "products": [
     {
@@ -1127,34 +1172,54 @@
       "qualityCheck": "Delivery reception temperature verification log."
     }
   ],
-  "whyChooseUsCards": [
+  "values": [
     {
-      "id": "card-1",
-      "title": "HEPA Class 100 Cleanroom",
-      "description": "Zero contamination environment protecting all transfer protocols.",
-      "icon": "ShieldCheck",
-      "highlight": "< 0.01% Risk"
+      "title": "Premium Quality",
+      "desc": "Genetically verified rhizomorphic strains yielding dense flushes.",
+      "tag": "GENOMIC PURITY",
+      "metric": "99.8%"
     },
     {
-      "id": "card-2",
-      "title": "High Biological Efficiency",
-      "description": "Rhizomorphic mycelium ensuring 100%+ yield per bag flush.",
-      "icon": "TrendingUp",
-      "highlight": "100%+ BE"
+      "title": "Scientific Production",
+      "desc": "Standardized laboratory parameters with precise autoclave logs.",
+      "tag": "HEPA CLASS 100",
+      "metric": "121°C / 15 PSI"
     },
     {
-      "id": "card-3",
-      "title": "Complete Cold Chain Security",
-      "description": "Refrigerated logistics preserving viability during transit.",
-      "icon": "Snowflake",
-      "highlight": "2°C - 4°C Monitored"
+      "title": "Low Contamination",
+      "desc": "Class 100 HEPA cleanroom filtration shields all transfers.",
+      "tag": "BIOSECURITY",
+      "metric": "< 0.01% RISK"
     },
     {
-      "id": "card-4",
-      "title": "Scientific Field Advisory",
-      "description": "Direct access to mycologists for substrate recipe and climate control.",
-      "icon": "UserCheck",
-      "highlight": "24/7 Advisory"
+      "title": "Consistent Performance",
+      "desc": "Rigorous testing guarantees reliable, reproducible spawn batches.",
+      "tag": "REPRODUCIBLE",
+      "metric": "100% PASS"
+    },
+    {
+      "title": "Expert Support",
+      "desc": "On-site cultivation guidance and substrate recipe optimization.",
+      "tag": "24/7 ADVISORY",
+      "metric": "FIELD CERTIFIED"
+    },
+    {
+      "title": "Certified Laboratory",
+      "desc": "State-accredited facilities compliant with standard biosecurity.",
+      "tag": "ISO 9001:2015",
+      "metric": "GMP VALIDATED"
+    },
+    {
+      "title": "Fast Distribution",
+      "desc": "Temperature-regulated cold chain ensures mycelial dormancy.",
+      "tag": "COLD CHAIN",
+      "metric": "2°C - 4°C VAULT"
+    },
+    {
+      "title": "Research & Innovation",
+      "desc": "Continuous strain breeding trials and growth optimization experiments.",
+      "tag": "STRAIN R&D",
+      "metric": "14+ VARIETIES"
     }
   ],
   "knowledgeCenter": [

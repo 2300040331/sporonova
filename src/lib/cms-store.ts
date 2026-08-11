@@ -79,6 +79,8 @@ export interface CMSData {
     productsSectionBadge?: string;
     productsSectionTitle?: string;
     productsSectionSubtitle?: string;
+    deliverablesStats?: any[];
+    processPreviewSteps?: any[];
     stats?: any[];
     industriesSectionTitle: string;
     credentialsSectionTitle: string;
@@ -332,6 +334,19 @@ const INITIAL_DATA: CMSData = {
     industriesSectionTitle: "Empowering Agritech Across Sectors",
     credentialsSectionTitle: "Accreditations & Institutional Trust",
     testimonialsSectionTitle: "Trusted by Commercial Growers Across India",
+    deliverablesStats: [
+      { value: "200+", label: "Farmers Trained Year 1" },
+      { value: "50%", label: "Yield Increase per Farmer" },
+      { value: "3x", label: "Income Multiplier (Projected)" },
+      { value: "14", label: "Mushroom Varieties Available" },
+    ],
+    processPreviewSteps: [
+      { name: "Mother Culture", desc: "Genomics slant isolation.", iconName: "Dna" },
+      { name: "Spawn Production", desc: "Inoculating carrier blocks.", iconName: "Settings" },
+      { name: "Quality Testing", desc: "100% purity clearance.", iconName: "ShieldCheck" },
+      { name: "Packaging", desc: "Eco filter bag sealing.", iconName: "Box" },
+      { name: "Distribution", desc: "Cold chain logistics dispatch.", iconName: "Send" },
+    ],
   },
   products: [
     {
@@ -1054,13 +1069,13 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
     changed = true;
   }
 
-  let whyChooseUsCards = savedData.whyChooseUsCards;
-  if (!whyChooseUsCards || whyChooseUsCards.length === 0) {
-    whyChooseUsCards = INITIAL_DATA.whyChooseUsCards;
+  let values = savedData.values;
+  if (!values || values.length === 0) {
+    values = INITIAL_DATA.values;
     changed = true;
   }
 
-  return { data: { ...savedData, homepage, products, about, processSteps, whyChooseUsCards }, changed };
+  return { data: { ...savedData, homepage, products, about, processSteps, values }, changed };
 }
 
 function ensureDataDirectoryExists() {
