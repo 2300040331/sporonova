@@ -733,19 +733,19 @@
   "gallery": [
     {
       "id": "gal-1",
-      "url": "/liquid_spawn_bottle.png",
+      "url": "/about_mushrooms.jpg",
       "title": "Bioreactor Liquid Spawn Broth",
       "category": "Laboratory"
     },
     {
       "id": "gal-2",
-      "url": "/grain_jar.png",
+      "url": "/products_header.jpg",
       "title": "Colonized Wheat Grain Bags",
       "category": "Production"
     },
     {
       "id": "gal-3",
-      "url": "/mother_culture.png",
+      "url": "/about_header.jpg",
       "title": "G0 Agar Culture Slants",
       "category": "Genomics"
     }

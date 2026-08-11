@@ -937,9 +937,9 @@ const INITIAL_DATA: CMSData = {
     }
   ],
   gallery: [
-    { id: "gal-1", url: "/liquid_spawn_bottle.png", title: "Bioreactor Liquid Spawn Broth", category: "Laboratory" },
-    { id: "gal-2", url: "/grain_jar.png", title: "Colonized Wheat Grain Bags", category: "Production" },
-    { id: "gal-3", url: "/mother_culture.png", title: "G0 Agar Culture Slants", category: "Genomics" },
+    { id: "gal-1", url: "/about_mushrooms.jpg", title: "Bioreactor Liquid Spawn Broth", category: "Laboratory" },
+    { id: "gal-2", url: "/products_header.jpg", title: "Colonized Wheat Grain Bags", category: "Production" },
+    { id: "gal-3", url: "/about_header.jpg", title: "G0 Agar Culture Slants", category: "Genomics" },
   ],
   media: [
     { id: "med-1", filename: "logo_transparent.png", url: "/logo_transparent.png", size: "45 KB", mimeType: "image/png", altText: "SporoNova Logo", uploadedAt: "2026-08-01" },
