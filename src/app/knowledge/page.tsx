@@ -81,8 +81,8 @@ const ARTICLES: ArticleMeta[] = [
   },
 ];
 
-export default function KnowledgeHub() {
-  const data = getCMSData();
+export default async function KnowledgeHub() {
+  const data = await getCMSData();
   const ARTICLES = (data.knowledgeCenter || []) as any[];
 
   return (

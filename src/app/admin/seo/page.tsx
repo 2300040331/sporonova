@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Search, Save, CheckCircle2, Globe } from "lucide-react";
 
@@ -9,6 +9,23 @@ export default function SeoCMSPage() {
   const [selectedRoute, setSelectedRoute] = useState<string>("home");
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const defaultSeo = {
+    metaTitle: "SporoNova | Premium Mushroom Spawn",
+    metaDescription: "India's leading mushroom spawn manufacturer.",
+    keywords: "mushroom spawn, liquid spawn",
+    canonicalUrl: "https://sporonova.com/",
+    ogImage: "/logo_transparent.png",
+  };
+  const [seoForm, setSeoForm] = useState(defaultSeo);
+
+  useEffect(() => {
+    if (data?.seo) {
+      setSeoForm(data.seo[selectedRoute] || {
+        ...defaultSeo,
+        canonicalUrl: `https://sporonova.com/${selectedRoute === "home" ? "" : selectedRoute}`,
+      });
+    }
+  }, [data, selectedRoute]);
 
   if (isLoading || !data) {
     return (
@@ -17,16 +34,6 @@ export default function SeoCMSPage() {
       </div>
     );
   }
-
-  const currentSeo = data.seo[selectedRoute] || {
-    metaTitle: "SporoNova | Premium Mushroom Spawn",
-    metaDescription: "India's leading mushroom spawn manufacturer.",
-    keywords: "mushroom spawn, liquid spawn",
-    canonicalUrl: `https://sporonova.com/${selectedRoute === "home" ? "" : selectedRoute}`,
-    ogImage: "/logo_transparent.png",
-  };
-
-  const [seoForm, setSeoForm] = useState(currentSeo);
 
   const handleSaveSeo = async () => {
     setSaving(true);
@@ -80,7 +87,6 @@ export default function SeoCMSPage() {
             key={route}
             onClick={() => {
               setSelectedRoute(route);
-              setSeoForm(data.seo[route] || currentSeo);
             }}
             className={`px-5 py-3 text-xs font-bold uppercase tracking-wider rounded-t-2xl transition-all cursor-pointer ${
               selectedRoute === route

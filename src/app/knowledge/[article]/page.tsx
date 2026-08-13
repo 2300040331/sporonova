@@ -114,7 +114,7 @@ interface PageProps {
 
 export default async function ArticlePage({ params }: PageProps) {
   const { article } = await params;
-  const data = getCMSData();
+  const data = await getCMSData();
   
   // Find article in CMS data first
   const dbArticle = data.knowledgeCenter?.find(

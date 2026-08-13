@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
+import { cookies } from "next/headers";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "sporonova-secret-key-enterprise-cms-2026"
@@ -35,4 +36,10 @@ export async function verifyToken(token: string): Promise<UserSession | null> {
   } catch (error) {
     return null;
   }
+}
+
+export async function getAdminSession(): Promise<UserSession | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("sporonova_admin_token")?.value;
+  return token ? verifyToken(token) : null;
 }

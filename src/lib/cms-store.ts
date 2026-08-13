@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
+import { list, put } from "@vercel/blob";
 
 export interface UserRecord {
   id: string;
@@ -1089,7 +1090,18 @@ function ensureDataDirectoryExists() {
   }
 }
 
-export function getCMSData(): CMSData {
+/**
+ * The local JSON file is a development fallback only. In Vercel, the CMS
+ * document lives in Blob so every server instance and every deployment reads
+ * the same content.
+ */
+const CMS_BLOB_PATH = "cms/content.json";
+
+function isBlobConfigured() {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
+function getLocalCMSData(): CMSData {
   if (inMemoryDataCache) {
     // Guarantee Super Admin exists even if in memory
     if (!inMemoryDataCache.users || inMemoryDataCache.users.length === 0) {
@@ -1162,7 +1174,7 @@ export function getCMSData(): CMSData {
   return inMemoryDataCache;
 }
 
-export function saveCMSData(data: CMSData): void {
+function saveLocalCMSData(data: CMSData): void {
   ensureDataDirectoryExists();
   inMemoryDataCache = data;
   try {
@@ -1170,4 +1182,47 @@ export function saveCMSData(data: CMSData): void {
   } catch (err) {
     console.warn("Failed to save CMS data to read-only disk:", err);
   }
+}
+
+export async function getCMSData(): Promise<CMSData> {
+  if (!isBlobConfigured()) {
+    return getLocalCMSData();
+  }
+
+  const result = await list({ prefix: CMS_BLOB_PATH, limit: 1 });
+  const existing = result.blobs.find((blob) => blob.pathname === CMS_BLOB_PATH);
+
+  if (existing) {
+    const response = await fetch(existing.url, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error("Unable to read the shared CMS data from Vercel Blob.");
+    }
+    const restored = restoreMissingContent((await response.json()) as CMSData);
+    return restored.data;
+  }
+
+  // Seed the Blob store from the project's current CMS content the first time
+  // a newly connected store is used.
+  const initialData = getLocalCMSData();
+  await put(CMS_BLOB_PATH, JSON.stringify(initialData), {
+    access: "public",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: "application/json",
+  });
+  return initialData;
+}
+
+export async function saveCMSData(data: CMSData): Promise<void> {
+  if (!isBlobConfigured()) {
+    saveLocalCMSData(data);
+    return;
+  }
+
+  await put(CMS_BLOB_PATH, JSON.stringify(data), {
+    access: "public",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+    contentType: "application/json",
+  });
 }

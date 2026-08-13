@@ -16,6 +16,7 @@ import {
   Globe,
   Search,
   ShieldCheck,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -122,14 +123,14 @@ export default function AdminDashboardPage() {
         <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:border-[#1c3c24]/30 transition-all">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-extrabold text-[#2c5e37] uppercase tracking-wider">
-              Media Files
+              Gallery Photos
             </span>
             <div className="p-3 bg-[#f0f5ef] border border-[#d2e4d0] rounded-2xl text-[#1c3c24]">
-              <Folder className="w-5 h-5" />
+              <ImageIcon className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#1c3c24] mt-3">{data.media.length}</div>
-          <div className="text-xs text-gray-500 mt-2 font-mono font-semibold">Central Media Library</div>
+          <div className="text-3xl font-black text-[#1c3c24] mt-3">{data.gallery?.length || 0}</div>
+          <div className="text-xs text-gray-500 mt-2 font-mono font-semibold">Public Image Gallery</div>
         </div>
       </div>
 
@@ -144,7 +145,7 @@ export default function AdminDashboardPage() {
             { title: "Homepage", href: "/admin/homepage", icon: Globe, count: "7 Sections" },
             { title: "Header", href: "/admin/header", icon: Globe, count: "Nav & Logo" },
             { title: "Products", href: "/admin/products", icon: Package, count: `${data.products.length} Items` },
-            { title: "Media Library", href: "/admin/media", icon: Folder, count: `${data.media.length} Files` },
+            { title: "Gallery", href: "/admin/gallery", icon: ImageIcon, count: `${data.gallery?.length || 0} Images` },
             { title: "SEO Tool", href: "/admin/seo", icon: Search, count: "Meta & Schema" },
             { title: "Backups", href: "/admin/backups", icon: ShieldCheck, count: "Auto Snapshot" },
           ].map((item) => {

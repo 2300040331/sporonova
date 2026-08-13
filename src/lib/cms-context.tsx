@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { CMSData } from "./cms-store";
+import type { CMSData } from "./cms-store";
 
 interface CMSContextType {
   data: CMSData | null;

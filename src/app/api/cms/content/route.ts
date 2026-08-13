@@ -1,13 +1,19 @@
 import { NextResponse } from "next/server";
 import { getCMSData, saveCMSData } from "@/lib/cms-store";
-import { hashPassword } from "@/lib/auth";
+import { getAdminSession, hashPassword } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
-  const data = getCMSData();
-  return NextResponse.json(data, {
+  const data = await getCMSData();
+  const session = await getAdminSession();
+  // Password hashes, form submissions, and internal analytics are never sent
+  // to the public website. The admin receives the full CMS record.
+  const responseData = session
+    ? data
+    : (({ users, contacts, analytics, backups, ...publicData }) => publicData)(data);
+  return NextResponse.json(responseData, {
     headers: {
       "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
       "Pragma": "no-cache",
@@ -18,8 +24,11 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   try {
+    if (!(await getAdminSession())) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    }
     const body = await request.json();
-    const currentData = getCMSData();
+    const currentData = await getCMSData();
     
     // Hash passwords on backend if they are updated and in plain text
     if (body.users && Array.isArray(body.users)) {
@@ -31,7 +40,7 @@ export async function PUT(request: Request) {
     }
 
     const updatedData = { ...currentData, ...body };
-    saveCMSData(updatedData);
+    await saveCMSData(updatedData);
     return NextResponse.json(
       { success: true, data: updatedData },
       {

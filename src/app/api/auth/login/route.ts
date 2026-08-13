@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const cleanEmail = (email || "").trim().toLowerCase();
     const cleanPassword = (password || "").trim();
 
-    const data = getCMSData();
+    const data = await getCMSData();
     let user = data.users.find((u) => u.email.toLowerCase() === cleanEmail);
 
     if (isGoogleLogin) {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
           createdAt: new Date().toISOString(),
         };
         data.users.push(user);
-        saveCMSData(data);
+        await saveCMSData(data);
       }
     } else {
       // Check default fallback admin or user match
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
             createdAt: new Date().toISOString(),
           };
           data.users.push(user);
-          saveCMSData(data);
+          await saveCMSData(data);
         } else {
           return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
         }
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     }
 
     user.lastLogin = new Date().toISOString();
-    saveCMSData(data);
+    await saveCMSData(data);
 
     const sessionPayload = {
       id: user.id,

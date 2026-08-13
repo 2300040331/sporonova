@@ -8,6 +8,15 @@ export default function SettingsCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [settingsForm, setSettingsForm] = useState(data?.settings || {
+    siteName: "", primaryColor: "#1F5E38", secondaryColor: "#2E7D32", accentColor: "#4e8c4a",
+    backgroundColor: "#f8f7f3", textColor: "#333333", fontFamilyHeading: "Outfit, sans-serif",
+    fontFamilyBody: "Inter, sans-serif", containerWidth: "1280px", sectionPadding: "64px", borderRadius: "16px",
+  });
+
+  React.useEffect(() => {
+    if (data?.settings) setSettingsForm(data.settings);
+  }, [data]);
 
   if (isLoading || !data) {
     return (
@@ -16,8 +25,6 @@ export default function SettingsCMSPage() {
       </div>
     );
   }
-
-  const [settingsForm, setSettingsForm] = useState(data.settings);
 
   const handleSave = async () => {
     setSaving(true);

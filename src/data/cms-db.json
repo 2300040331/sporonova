@@ -1395,7 +1395,7 @@
       "id": "med-1",
       "filename": "logo_transparent.png",
       "url": "/logo_transparent.png",
-      "size": "45 KB",
+      "size": "398.3 KB",
       "mimeType": "image/png",
       "altText": "SporoNova Logo",
       "uploadedAt": "2026-08-01"
@@ -1404,7 +1404,7 @@
       "id": "med-2",
       "filename": "liquid_spawn_bottle.png",
       "url": "/liquid_spawn_bottle.png",
-      "size": "120 KB",
+      "size": "120.0 KB",
       "mimeType": "image/png",
       "altText": "Liquid Spawn Broth",
       "uploadedAt": "2026-08-01"
@@ -1413,9 +1413,90 @@
       "id": "med-3",
       "filename": "grain_jar.png",
       "url": "/grain_jar.png",
-      "size": "180 KB",
+      "size": "180.0 KB",
       "mimeType": "image/png",
       "altText": "Grain Spawn Jar",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-4",
+      "filename": "about_building.jpg",
+      "url": "/about_building.jpg",
+      "size": "1021.7 KB",
+      "mimeType": "image/jpeg",
+      "altText": "SporoNova HQ Facility",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-5",
+      "filename": "about_header.jpg",
+      "url": "/about_header.jpg",
+      "size": "824.5 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Our Research Facility",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-6",
+      "filename": "about_mushrooms.jpg",
+      "url": "/about_mushrooms.jpg",
+      "size": "797.5 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Premium Mushroom Cultivation",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-7",
+      "filename": "hero_mushrooms.jpg",
+      "url": "/hero_mushrooms.jpg",
+      "size": "1001.3 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Natural Growing Process",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-8",
+      "filename": "process_header.jpg",
+      "url": "/process_header.jpg",
+      "size": "754.5 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Production Process Header",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-9",
+      "filename": "products_header.jpg",
+      "url": "/products_header.jpg",
+      "size": "876.1 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Spawn Product Line",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-10",
+      "filename": "training_header.jpg",
+      "url": "/training_header.jpg",
+      "size": "966.6 KB",
+      "mimeType": "image/jpeg",
+      "altText": "Farmer Training Programs",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-11",
+      "filename": "whatsapp.png",
+      "url": "/whatsapp.png",
+      "size": "133.2 KB",
+      "mimeType": "image/png",
+      "altText": "WhatsApp Icon",
+      "uploadedAt": "2026-08-01"
+    },
+    {
+      "id": "med-12",
+      "filename": "logo.png",
+      "url": "/logo.png",
+      "size": "34.0 KB",
+      "mimeType": "image/png",
+      "altText": "SporoNova Brand Logo",
       "uploadedAt": "2026-08-01"
     }
   ],
