@@ -62,7 +62,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
-  const sidebarNavItems = [
+  interface NavItem {
+    name: string;
+    href: string;
+    icon: any;
+    superAdminOnly?: boolean;
+  }
+
+  const sidebarNavItems: NavItem[] = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Homepage", href: "/admin/homepage", icon: Home },
     { name: "Header", href: "/admin/header", icon: Menu },
