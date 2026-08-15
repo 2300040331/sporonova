@@ -96,7 +96,22 @@ body {
 }
 
 html {
+  font-size: 18px;
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 1280px) {
+  html {
+    font-size: 18.5px;
+  }
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 19.5px;
+  }
 }
 
 /* Infinite Marquee Slider animations */

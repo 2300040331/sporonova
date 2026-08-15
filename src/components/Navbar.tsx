@@ -37,23 +37,23 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/98 backdrop-blur-md border-b border-[#e2e8e0] py-3 shadow-sm"
-            : "bg-white border-b border-[#e8ece6] py-3.5"
+            ? "bg-white/98 backdrop-blur-md border-b border-[#e2e8e0] py-3.5 shadow-sm"
+            : "bg-white border-b border-[#e8ece6] py-4"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
+        <div className="max-w-[1680px] w-full mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between">
           
           {/* Logo */}
           <Link href="/" className="flex items-center group">
             <img
               src={header?.logoUrl || "/logo_transparent.png"}
               alt={header?.logoAlt || "SPORONOVA"}
-              className="h-9 sm:h-10 md:h-11 w-auto object-contain mix-blend-multiply group-hover:opacity-90 transition-all"
+              className="h-10 sm:h-12 md:h-13 w-auto object-contain mix-blend-multiply group-hover:opacity-90 transition-all"
             />
           </Link>
  
         {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-[#1c3c24]">
+        <nav className="hidden lg:flex items-center gap-7 xl:gap-8 text-xs xl:text-[13px] font-extrabold uppercase tracking-wider text-[#1c3c24]">
           {(header?.navLinks || [
             { name: "Home", href: "/" },
             { name: "Production Process", href: "/process" },
@@ -72,17 +72,17 @@ export default function Navbar() {
                     onMouseEnter={() => setShowProductsDropdown(true)}
                     onMouseLeave={() => setShowProductsDropdown(false)}
                   >
-                    <button className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-bold text-[11px]">
+                    <button className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-extrabold text-xs xl:text-[13px]">
                       Products <ChevronDown className="w-3.5 h-3.5 text-[#4e8c4a]" />
                     </button>
                     {showProductsDropdown && (
-                      <div className="absolute top-full left-0 w-52 pt-2 z-50">
-                        <div className="bg-white border border-[#e6e4dc] rounded-2xl shadow-xl py-2.5">
+                      <div className="absolute top-full left-0 w-56 pt-2 z-50">
+                        <div className="bg-white border border-[#e6e4dc] rounded-2xl shadow-xl py-3">
                           {productsList.map((p) => (
                             <Link
                               key={p.name}
                               href={p.href}
-                              className="block px-5 py-2.5 text-[11px] font-bold text-[#1c3c24] hover:bg-[#f9faf7] hover:text-[#4e8c4a] transition-colors"
+                              className="block px-6 py-2.5 text-xs font-bold text-[#1c3c24] hover:bg-[#f9faf7] hover:text-[#4e8c4a] transition-colors"
                             >
                               {p.name}
                             </Link>
@@ -106,9 +106,9 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center">
           <Link
             href={header?.ctaLink || "/contact"}
-            className="flex items-center gap-2 px-6 py-3 bg-[#1c3c24] text-[10px] font-bold uppercase tracking-wider text-white rounded-full hover:bg-[#4e8c4a] hover:scale-[1.02] transition-all shadow-md shadow-[#1c3c24]/10"
+            className="flex items-center gap-2 px-7 py-3.5 bg-[#1c3c24] text-[11px] font-extrabold uppercase tracking-wider text-white rounded-full hover:bg-[#4e8c4a] hover:scale-[1.03] transition-all shadow-md shadow-[#1c3c24]/10"
           >
-            {header?.ctaText || "Contact Us"} <ArrowRight className="w-3.5 h-3.5" />
+            {header?.ctaText || "Contact Us"} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
  
