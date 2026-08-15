@@ -35,22 +35,22 @@ export default function Navbar() {
   return (
     <>
       <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-[#e6e4dc]/60 py-3.5 shadow-md"
-          : "bg-white/90 backdrop-blur-sm border-b border-[#e6e4dc]/35 py-4"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        
-        {/* Logo */}
-        <Link href="/" className="flex items-center group">
-          <img
-            src={header?.logoUrl || "/logo_transparent.png"}
-            alt={header?.logoAlt || "SPORONOVA"}
-            className="h-14 w-auto hover:scale-[1.02] transition-all"
-          />
-        </Link>
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-white/98 backdrop-blur-md border-b border-[#e2e8e0] py-3 shadow-sm"
+            : "bg-white border-b border-[#e8ece6] py-3.5"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between">
+          
+          {/* Logo */}
+          <Link href="/" className="flex items-center group">
+            <img
+              src={header?.logoUrl || "/logo_transparent.png"}
+              alt={header?.logoAlt || "SPORONOVA"}
+              className="h-9 sm:h-10 md:h-11 w-auto object-contain mix-blend-multiply group-hover:opacity-90 transition-all"
+            />
+          </Link>
  
         {/* Desktop Nav Links */}
         <nav className="hidden lg:flex items-center gap-6 text-[11px] font-bold uppercase tracking-wider text-[#1c3c24]">

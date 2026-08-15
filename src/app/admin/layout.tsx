@@ -110,7 +110,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <img
               src="/logo_transparent.png"
               alt="SporoNova CMS"
-              className="h-9 w-auto"
+              className="h-8 md:h-9 w-auto object-contain mix-blend-multiply"
             />
             <span className="hidden sm:inline-block text-[10px] font-mono font-bold uppercase tracking-widest text-[#2c5e37] bg-[#f0f5ef] border border-[#d2e4d0] px-2.5 py-1 rounded-full">
               CMS Suite v2.0
