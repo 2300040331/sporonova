@@ -14,7 +14,6 @@ import {
   TrendingUp,
   Edit,
   Globe,
-  Search,
   ShieldCheck,
   Image as ImageIcon,
 } from "lucide-react";
@@ -30,7 +29,12 @@ export default function AdminDashboardPage() {
     );
   }
 
-  const newSubmissionsCount = data.contacts.filter((c) => c.status === "New").length;
+  const contacts = data.contacts || [];
+  const products = data.products || [];
+  const gallery = data.gallery || [];
+  const analytics = data.analytics || { pageViews: 0, uniqueVisitors: 0, productDownloads: 0, topPages: [], deviceBreakdown: [] };
+
+  const newSubmissionsCount = contacts.filter((c) => c.status === "New").length;
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
@@ -82,7 +86,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="text-3xl font-black text-[#1c3c24] mt-3">
-            {data.analytics.pageViews.toLocaleString()}
+            {analytics.pageViews.toLocaleString()}
           </div>
           <div className="flex items-center gap-1.5 text-xs text-[#2c5e37] mt-2 font-bold">
             <TrendingUp className="w-3.5 h-3.5 text-[#4e8c4a]" /> +14.2% from last month
@@ -98,9 +102,9 @@ export default function AdminDashboardPage() {
               <Package className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#1c3c24] mt-3">{data.products.length}</div>
+          <div className="text-3xl font-black text-[#1c3c24] mt-3">{products.length}</div>
           <div className="text-xs text-gray-500 mt-2 font-mono font-semibold">
-            {data.products.filter((p) => p.status === "Published").length} Published • Live
+            {products.filter((p) => p.status === "Published").length} Published • Live
           </div>
         </div>
 
@@ -113,7 +117,7 @@ export default function AdminDashboardPage() {
               <Inbox className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#1c3c24] mt-3">{data.contacts.length}</div>
+          <div className="text-3xl font-black text-[#1c3c24] mt-3">{contacts.length}</div>
           <div className="text-xs text-amber-700 mt-2 font-bold flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
             {newSubmissionsCount} Unread Lead Requests
@@ -129,7 +133,7 @@ export default function AdminDashboardPage() {
               <ImageIcon className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-3xl font-black text-[#1c3c24] mt-3">{data.gallery?.length || 0}</div>
+          <div className="text-3xl font-black text-[#1c3c24] mt-3">{gallery.length}</div>
           <div className="text-xs text-gray-500 mt-2 font-mono font-semibold">Public Image Gallery</div>
         </div>
       </div>
@@ -144,9 +148,8 @@ export default function AdminDashboardPage() {
           {[
             { title: "Homepage", href: "/admin/homepage", icon: Globe, count: "7 Sections" },
             { title: "Header", href: "/admin/header", icon: Globe, count: "Nav & Logo" },
-            { title: "Products", href: "/admin/products", icon: Package, count: `${data.products.length} Items` },
-            { title: "Gallery", href: "/admin/gallery", icon: ImageIcon, count: `${data.gallery?.length || 0} Images` },
-            { title: "SEO Tool", href: "/admin/seo", icon: Search, count: "Meta & Schema" },
+            { title: "Products", href: "/admin/products", icon: Package, count: `${products.length} Items` },
+            { title: "Gallery", href: "/admin/gallery", icon: ImageIcon, count: `${gallery.length} Images` },
             { title: "Backups", href: "/admin/backups", icon: ShieldCheck, count: "Auto Snapshot" },
           ].map((item) => {
             const Icon = item.icon;
@@ -182,7 +185,7 @@ export default function AdminDashboardPage() {
             href="/admin/forms"
             className="text-xs font-bold text-[#2c5e37] hover:text-[#1c3c24] flex items-center gap-1 cursor-pointer"
           >
-            <span>View All Leads ({data.contacts.length})</span>
+            <span>View All Leads ({contacts.length})</span>
             <ArrowUpRight className="w-4 h-4" />
           </Link>
         </div>
@@ -199,7 +202,7 @@ export default function AdminDashboardPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#e2e8e0] text-xs">
-              {data.contacts.slice(0, 5).map((submission) => (
+              {contacts.slice(0, 5).map((submission) => (
                 <tr key={submission.id} className="hover:bg-[#f9fbf8] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-[#1c3c24]">{submission.name}</td>
                   <td className="py-3.5 px-4 text-gray-600">

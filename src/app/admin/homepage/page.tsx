@@ -10,16 +10,13 @@ import {
   Type,
   Sparkles,
   CheckCircle2,
-  List,
   Award,
   Building,
   TrendingUp,
   Briefcase,
   Quote,
-  ShieldCheck,
   Smartphone,
   BookOpen,
-  Info,
   Package,
   Trash2,
   Plus,
@@ -29,7 +26,7 @@ import {
 export default function HomepageCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [activeTab, setActiveTab] = useState<
-    "hero" | "about" | "productsHeader" | "values" | "credentials" | "partnerships" | "deliverables" | "industries" | "processPreview" | "testimonials"
+    "hero" | "productsHeader" | "credentials" | "partnerships" | "deliverables" | "industries" | "testimonials"
   >("hero");
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -37,16 +34,13 @@ export default function HomepageCMSPage() {
   // Form states
   const [heroForm, setHeroForm] = useState<any>({});
   const [statsForm, setStatsForm] = useState<any[]>([]);
-  const [aboutForm, setAboutForm] = useState<any>({});
   const [productsHeaderForm, setProductsHeaderForm] = useState<any>({});
-  const [valuesForm, setValuesForm] = useState<any>({});
-  const [valuesListForm, setValuesListForm] = useState<any[]>([]);
   const [credentialsForm, setCredentialsForm] = useState<any[]>([]);
   const [partnershipsForm, setPartnershipsForm] = useState<any[]>([]);
   const [deliverablesForm, setDeliverablesForm] = useState<any[]>([]);
   const [deliverablesStatsForm, setDeliverablesStatsForm] = useState<any[]>([]);
   const [industriesForm, setIndustriesForm] = useState<any[]>([]);
-  const [processPreviewStepsForm, setProcessPreviewStepsForm] = useState<any[]>([]);
+
   const [successNumbersForm, setSuccessNumbersForm] = useState<any[]>([]);
   const [testimonialsForm, setTestimonialsForm] = useState<any[]>([]);
 
@@ -61,18 +55,11 @@ export default function HomepageCMSPage() {
           { value: "100%", label: "Organic & Chemical Free", sublabel: "Pure & safe cultivation", icon: "Shield" },
         ]
       );
-      setAboutForm(data.about || {});
       setProductsHeaderForm({
         badge: (data.homepage as any)?.productsSectionBadge || "Product Catalog",
         title: (data.homepage as any)?.productsSectionTitle || "Professional Spawn Categories",
         subtitle: (data.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides.",
       });
-      setValuesForm({
-        badge: (data.homepage as any)?.valuesSectionBadge || "Quality Assurance Protocols",
-        title: data.homepage?.valuesSectionTitle || "Why Growers Choose SporoNova",
-        subtitle: (data.homepage as any)?.valuesSectionSubtitle || "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields.",
-      });
-      setValuesListForm(data.values || []);
       setCredentialsForm(data.credentials || []);
       setPartnershipsForm(
         (data as any).partnerships || [
@@ -91,15 +78,7 @@ export default function HomepageCMSPage() {
           { value: "14", label: "Mushroom Varieties Available" },
         ]
       );
-      setProcessPreviewStepsForm(
-        (data.homepage as any)?.processPreviewSteps || [
-          { name: "Mother Culture", desc: "Genomics slant isolation.", iconName: "Dna" },
-          { name: "Spawn Production", desc: "Inoculating carrier blocks.", iconName: "Settings" },
-          { name: "Quality Testing", desc: "100% purity clearance.", iconName: "ShieldCheck" },
-          { name: "Packaging", desc: "Eco filter bag sealing.", iconName: "Box" },
-          { name: "Distribution", desc: "Cold chain logistics dispatch.", iconName: "Send" },
-        ]
-      );
+
       setSuccessNumbersForm(
         (data as any).successNumbers || [
           { value: "14+", label: "Mushroom Varieties" },
@@ -128,12 +107,7 @@ export default function HomepageCMSPage() {
     setStatsForm(statsForm.filter((_, i) => i !== idx));
   };
 
-  const handleAddValue = () => {
-    setValuesListForm([...valuesListForm, { title: "New Quality Value", desc: "Description text", tag: "QUALITY TAG", metric: "100%" }]);
-  };
-  const handleDeleteValue = (idx: number) => {
-    setValuesListForm(valuesListForm.filter((_, i) => i !== idx));
-  };
+
 
   const handleAddCredential = () => {
     setCredentialsForm([...credentialsForm, { title: "New Accreditation", status: "Status Description", desc: "Compliance detail summary" }]);
@@ -163,12 +137,7 @@ export default function HomepageCMSPage() {
     setIndustriesForm(industriesForm.filter((_, i) => i !== idx));
   };
 
-  const handleAddPreviewStep = () => {
-    setProcessPreviewStepsForm([...processPreviewStepsForm, { name: "Production Step", desc: "Step description details.", iconName: "Settings" }]);
-  };
-  const handleDeletePreviewStep = (idx: number) => {
-    setProcessPreviewStepsForm(processPreviewStepsForm.filter((_, i) => i !== idx));
-  };
+
 
   const handleAddTestimonial = () => {
     setTestimonialsForm([...testimonialsForm, { quote: "Farmer review statement goes here.", author: "Grower Name", role: "Cooperative Leader" }]);
@@ -189,14 +158,8 @@ export default function HomepageCMSPage() {
         productsSectionBadge: productsHeaderForm.badge,
         productsSectionTitle: productsHeaderForm.title,
         productsSectionSubtitle: productsHeaderForm.subtitle,
-        valuesSectionBadge: valuesForm.badge,
-        valuesSectionTitle: valuesForm.title,
-        valuesSectionSubtitle: valuesForm.subtitle,
         deliverablesStats: deliverablesStatsForm,
-        processPreviewSteps: processPreviewStepsForm,
       },
-      about: aboutForm,
-      values: valuesListForm,
       credentials: credentialsForm,
       partnerships: partnershipsForm,
       deliverables: deliverablesForm,
@@ -253,14 +216,11 @@ export default function HomepageCMSPage() {
       <div className="flex flex-wrap border-b border-[#e2e8e0] gap-1">
         {[
           { id: "hero", label: "Hero & Stats" },
-          { id: "about", label: "About Us" },
           { id: "productsHeader", label: "Product Catalog Header" },
-          { id: "values", label: "Why Choose Us" },
           { id: "credentials", label: "Credentials" },
           { id: "partnerships", label: "Partnerships" },
           { id: "deliverables", label: "Deliverables & Impact" },
           { id: "industries", label: "Ecosystem" },
-          { id: "processPreview", label: "Process Preview Timeline" },
           { id: "testimonials", label: "Testimonials" },
         ].map((tab) => (
           <button
@@ -424,56 +384,6 @@ export default function HomepageCMSPage() {
           </div>
         )}
 
-        {/* TAB 2: ABOUT SECTION */}
-        {activeTab === "about" && (
-          <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Info className="w-4 h-4 text-[#4e8c4a]" /> About Bio-Lab & Cleanroom Section
-            </h2>
-
-            <div>
-              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">About Hero Subheading</label>
-              <input
-                type="text"
-                value={aboutForm.heroSubtitle || ""}
-                onChange={(e) => setAboutForm({ ...aboutForm, heroSubtitle: e.target.value })}
-                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">About Main Title Text</label>
-              <input
-                type="text"
-                value={aboutForm.heroTitle || ""}
-                onChange={(e) => setAboutForm({ ...aboutForm, heroTitle: e.target.value, whoWeAreTitle: e.target.value })}
-                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Company Paragraph 1 (Introduction)</label>
-              <textarea
-                rows={3}
-                value={aboutForm.whoWeAreParagraph1 || ""}
-                onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreParagraph1: e.target.value })}
-                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Company Paragraph 2 (Cleanroom Standard)</label>
-              <textarea
-                rows={3}
-                value={aboutForm.whoWeAreParagraph2 || ""}
-                onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreParagraph2: e.target.value })}
-                className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-              />
-            </div>
-
-
-          </div>
-        )}
 
         {activeTab === "productsHeader" && (
           <div className="space-y-6">
@@ -514,8 +424,8 @@ export default function HomepageCMSPage() {
           </div>
         )}
 
-        {/* TAB 3: QUALITY STANDARDS */}
-        {activeTab === "values" && (
+        {/* TAB 3: QUALITY STANDARDS - Removed, use sidebar "Why Choose Us" page */}
+        {false && (
           <div className="space-y-6">
             <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
               <ShieldCheck className="w-4 h-4 text-[#4e8c4a]" /> Quality Assurance Protocols Settings
@@ -945,8 +855,8 @@ export default function HomepageCMSPage() {
           </div>
         )}
 
-        {/* TAB 8: PROCESS PREVIEW TIMELINE */}
-        {activeTab === "processPreview" && (
+        {/* TAB 8: PROCESS PREVIEW - Removed, use sidebar "Production Process" page */}
+        {false && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
               <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">

@@ -19,9 +19,7 @@ import {
   MessageSquare,
   HelpCircle,
   Inbox,
-  Search,
   BarChart3,
-  Users,
   Settings,
   Database,
   User,
@@ -76,18 +74,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { name: "Contact Forms", href: "/admin/forms", icon: Inbox },
     { name: "Contact Details", href: "/admin/contact", icon: Mail },
-    { name: "SEO", href: "/admin/seo", icon: Search },
     { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-    { name: "Users", href: "/admin/users", icon: Users, superAdminOnly: true },
     { name: "Settings", href: "/admin/settings", icon: Settings },
     { name: "Backup", href: "/admin/backups", icon: Database },
     { name: "Profile", href: "/admin/profile", icon: User },
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8faf7] text-[#1c3c24] flex flex-col font-sans selection:bg-[#1c3c24] selection:text-white">
+    <div className="h-screen bg-[#f8faf7] text-[#1c3c24] flex flex-col font-sans selection:bg-[#1c3c24] selection:text-white overflow-hidden">
       {/* Top Admin Header Bar */}
-      <header className="h-16 bg-white/95 backdrop-blur-md border-b border-[#e2e8e0] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-sm">
+      <header className="h-16 bg-white/95 backdrop-blur-md border-b border-[#e2e8e0] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 shadow-sm flex-shrink-0">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -148,12 +144,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 min-h-0 relative">
         {/* Sidebar Desktop */}
         <aside
           className={`${
             sidebarOpen ? "w-64" : "w-20"
-          } hidden lg:flex flex-col bg-white border-r border-[#e2e8e0] transition-all duration-300 z-30 shadow-sm`}
+          } hidden lg:flex flex-col bg-white border-r border-[#e2e8e0] transition-all duration-300 z-30 shadow-sm flex-shrink-0`}
         >
           <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1 custom-scrollbar">
             {sidebarNavItems.map((item) => {

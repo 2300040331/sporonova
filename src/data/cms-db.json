@@ -120,7 +120,7 @@
       "ctaSecondaryLink": "/contact",
       "heroImage": "/hero_mushrooms.jpg",
       "backgroundImage": "/hero_bg_pattern.svg",
-      "showModel": false
+      "showModel": true
     },
     "stats": [
       {
@@ -1172,56 +1172,6 @@
       "qualityCheck": "Delivery reception temperature verification log."
     }
   ],
-  "values": [
-    {
-      "title": "Premium Quality",
-      "desc": "Genetically verified rhizomorphic strains yielding dense flushes.",
-      "tag": "GENOMIC PURITY",
-      "metric": "99.8%"
-    },
-    {
-      "title": "Scientific Production",
-      "desc": "Standardized laboratory parameters with precise autoclave logs.",
-      "tag": "HEPA CLASS 100",
-      "metric": "121°C / 15 PSI"
-    },
-    {
-      "title": "Low Contamination",
-      "desc": "Class 100 HEPA cleanroom filtration shields all transfers.",
-      "tag": "BIOSECURITY",
-      "metric": "< 0.01% RISK"
-    },
-    {
-      "title": "Consistent Performance",
-      "desc": "Rigorous testing guarantees reliable, reproducible spawn batches.",
-      "tag": "REPRODUCIBLE",
-      "metric": "100% PASS"
-    },
-    {
-      "title": "Expert Support",
-      "desc": "On-site cultivation guidance and substrate recipe optimization.",
-      "tag": "24/7 ADVISORY",
-      "metric": "FIELD CERTIFIED"
-    },
-    {
-      "title": "Certified Laboratory",
-      "desc": "State-accredited facilities compliant with standard biosecurity.",
-      "tag": "ISO 9001:2015",
-      "metric": "GMP VALIDATED"
-    },
-    {
-      "title": "Fast Distribution",
-      "desc": "Temperature-regulated cold chain ensures mycelial dormancy.",
-      "tag": "COLD CHAIN",
-      "metric": "2°C - 4°C VAULT"
-    },
-    {
-      "title": "Research & Innovation",
-      "desc": "Continuous strain breeding trials and growth optimization experiments.",
-      "tag": "STRAIN R&D",
-      "metric": "14+ VARIETIES"
-    }
-  ],
   "knowledgeCenter": [
     {
       "id": "what-are-mushrooms",
@@ -1326,16 +1276,16 @@
       "label": "Mushroom Varieties"
     },
     {
-      "value": "100+ MT",
-      "label": "Annual Production"
+      "value": "50%",
+      "label": "Higher Yield"
     },
     {
-      "value": "1000+",
-      "label": "Farmers Served"
+      "value": "3 Months",
+      "label": "Shelf Life"
     },
     {
-      "value": "12+",
-      "label": "Years Experience"
+      "value": "100%",
+      "label": "Organic & Chemical Free"
     }
   ],
   "partnerships": [
@@ -1545,7 +1495,7 @@
       "role": "Super Admin",
       "status": "Active",
       "createdAt": "2026-08-07T00:00:00.000Z",
-      "lastLogin": "2026-08-09T04:59:10.501Z"
+      "lastLogin": "2026-08-15T12:55:14.459Z"
     }
   ],
   "contact": {
