@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
+import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
 import {
   Save,
   Globe,
@@ -268,6 +269,14 @@ export default function HomepageCMSPage() {
                   <span className="text-xs font-bold text-[#1c3c24]">Render 3D model block on Hero right side</span>
                 </label>
               </div>
+            </div>
+
+            <div>
+              <ImageUploadDropzone
+                label="Hero Section Photo (Right Side Forest / Mushroom Image)"
+                value={heroForm.heroImage || "/hero_mushrooms.jpg"}
+                onChange={(url) => setHeroForm({ ...heroForm, heroImage: url })}
+              />
             </div>
 
             <div>
