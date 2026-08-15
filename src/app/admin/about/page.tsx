@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
+import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
 import { 
   Save, 
   CheckCircle2, 
@@ -233,14 +234,10 @@ export default function AboutUsCMSPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-              Section Image URL
-            </label>
-            <input
-              type="text"
+            <ImageUploadDropzone
+              label="Who We Are Section Image"
               value={aboutForm.whoWeAreImage || ""}
-              onChange={(e) => setAboutForm({ ...aboutForm, whoWeAreImage: e.target.value })}
-              className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+              onChange={(url) => setAboutForm({ ...aboutForm, whoWeAreImage: url })}
             />
           </div>
         </div>
@@ -679,12 +676,10 @@ export default function AboutUsCMSPage() {
                     </button>
                   </div>
                   <div>
-                    <label className="block text-[9px] text-[#2c5e37] uppercase">Image Link / Source</label>
-                    <input
-                      type="text"
+                    <ImageUploadDropzone
+                      label="Gallery Image Photo"
                       value={img.url || ""}
-                      onChange={(e) => updateArrayItem("aboutGallery", index, "url", e.target.value)}
-                      className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-mono font-bold"
+                      onChange={(url) => updateArrayItem("aboutGallery", index, "url", url)}
                     />
                   </div>
                   <div>

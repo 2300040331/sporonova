@@ -51,6 +51,10 @@ export default function GalleryCMSPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Drag & Drop Batch Upload States
+  const [isDraggingOverPage, setIsDraggingOverPage] = useState(false);
+  const [uploadProgressText, setUploadProgressText] = useState("");
+
   // Dialog States
   const [addPhotoOpen, setAddPhotoOpen] = useState(false);
   const [uploadingMedia, setUploadingMedia] = useState(false);
@@ -63,6 +67,62 @@ export default function GalleryCMSPage() {
   const [quickAddPhoto, setQuickAddPhoto] = useState<any | null>(null);
   const [quickTitle, setQuickTitle] = useState("");
   const [quickCategory, setQuickCategory] = useState("Laboratory");
+
+  const handleFilesBatchUpload = async (files: FileList | File[]) => {
+    const validFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (validFiles.length === 0) {
+      alert("Please drop valid image files (PNG, JPG, WebP, SVG).");
+      return;
+    }
+
+    setUploadingMedia(true);
+    let currentMedia = [...media];
+    let currentGallery = [...gallery];
+    let count = 0;
+
+    for (const file of validFiles) {
+      count++;
+      setUploadProgressText(`Uploading ${count} of ${validFiles.length}: ${file.name}...`);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        const upload = await fetch("/api/cms/media", { method: "POST", body: formData });
+        const uploaded = await upload.json();
+        if (upload.ok && uploaded.url) {
+          const newMediaItem = {
+            id: uploaded.id || `med-${crypto.randomUUID()}`,
+            filename: uploaded.filename || file.name,
+            url: uploaded.url,
+            size: uploaded.size || `${(file.size / 1024).toFixed(1)} KB`,
+            mimeType: uploaded.mimeType || file.type,
+            altText: file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+            uploadedAt: uploaded.uploadedAt || new Date().toISOString().split("T")[0],
+          };
+          currentMedia = [newMediaItem, ...currentMedia];
+
+          const addedPhoto = {
+            id: `gal-${crypto.randomUUID()}`,
+            url: uploaded.url,
+            title: file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+            category: "Laboratory",
+          };
+          currentGallery = [addedPhoto, ...currentGallery];
+        }
+      } catch (err) {
+        console.error("Upload error for file", file.name, err);
+      }
+    }
+
+    const success = await updateData({ media: currentMedia, gallery: currentGallery });
+    if (success) {
+      setMedia(currentMedia);
+      setGallery(currentGallery);
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 4000);
+    }
+    setUploadingMedia(false);
+    setUploadProgressText("");
+  };
 
   useEffect(() => {
     if (data?.gallery) setGallery(data.gallery);
@@ -327,6 +387,67 @@ export default function GalleryCMSPage() {
           All Media Files ({media.length})
         </button>
       </div>
+
+      {/* Interactive Drag & Drop Upload Zone */}
+      <label
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDraggingOverPage(true);
+        }}
+        onDragLeave={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDraggingOverPage(false);
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsDraggingOverPage(false);
+          if (e.dataTransfer.files) {
+            handleFilesBatchUpload(e.dataTransfer.files);
+          }
+        }}
+        className={`block border-2 border-dashed rounded-3xl p-8 text-center cursor-pointer transition-all duration-200 ${
+          isDraggingOverPage
+            ? "border-[#4e8c4a] bg-[#f0f5ef] scale-[1.01] shadow-lg"
+            : "border-[#d2e4d0] bg-white hover:border-[#4e8c4a] hover:bg-[#f9fbf8] shadow-sm"
+        }`}
+      >
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.files) handleFilesBatchUpload(e.target.files);
+          }}
+        />
+        {uploadingMedia ? (
+          <div className="flex flex-col items-center gap-3 text-[#1c3c24]">
+            <div className="w-10 h-10 border-4 border-[#1c3c24] border-t-transparent rounded-full animate-spin" />
+            <div className="text-sm font-bold text-[#1c3c24]">
+              {uploadProgressText || "Uploading photos to Vercel Blob..."}
+            </div>
+            <p className="text-xs text-gray-500 font-medium">Please wait while files are uploaded and saved.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-2">
+            <div className="p-4 bg-[#f0f5ef] border border-[#d2e4d0] rounded-2xl text-[#4e8c4a] group-hover:scale-110 transition-transform">
+              <Upload className="w-8 h-8" />
+            </div>
+            <div className="text-sm font-extrabold text-[#1c3c24]">
+              Drag & Drop Photos Here to Upload
+            </div>
+            <p className="text-xs text-gray-500 max-w-md">
+              Drop single or multiple images directly from your computer. Files are instantly stored in Vercel Blob cloud and added to your media catalog.
+            </p>
+            <div className="mt-1 inline-flex items-center gap-1.5 px-3 py-1 bg-[#f0f5ef] border border-[#d2e4d0] rounded-full text-[10px] font-mono font-bold text-[#2c5e37]">
+              Supports PNG, JPG, WebP, SVG · Up to 5 MB each
+            </div>
+          </div>
+        )}
+      </label>
 
       {/* TAB CONTENT: PUBLIC GALLERY */}
       {activeTab === "gallery" && (

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useCMS } from "@/lib/cms-context";
+import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
 import { 
   Plus, 
   Edit2, 
@@ -317,25 +318,21 @@ export default function ProductsCMSPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Thumbnail Path</label>
-                      <input
-                        type="text"
-                        value={editingProduct.thumbnail || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, thumbnail: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">URL Route Slug</label>
-                      <input
-                        type="text"
-                        value={editingProduct.href || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, href: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
-                      />
-                    </div>
+                  <div>
+                    <ImageUploadDropzone
+                      label="Product Thumbnail Photo"
+                      value={editingProduct.thumbnail || ""}
+                      onChange={(url) => setEditingProduct({ ...editingProduct, thumbnail: url, images: [url] })}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">URL Route Slug</label>
+                    <input
+                      type="text"
+                      value={editingProduct.href || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, href: e.target.value })}
+                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+                    />
                   </div>
                 </div>
               )}
