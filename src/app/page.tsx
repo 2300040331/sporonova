@@ -13,6 +13,7 @@ import GrainJarCanvas from "@/components/canvas/GrainJarCanvas";
 import MushroomStructureCanvas from "@/components/canvas/MushroomStructureCanvas";
 import { useCMS } from "@/lib/cms-context";
 import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
+import { DynamicIcon } from "@/lib/icon-registry";
 
 interface ProductCard {
   id: string;
@@ -395,22 +396,25 @@ export default function Homepage() {
           >
             
             {statsList.map((st: any, idx: number) => {
-              const IconComp = idx === 0 ? Leaf : idx === 1 ? Award : idx === 2 ? Clock : Shield;
+              const defaultIcons = ["Leaf", "Award", "Clock", "Shield"];
+              const iconName = st.icon || defaultIcons[idx % defaultIcons.length];
               return (
                 <div key={idx} className="flex items-start gap-4">
                   <div 
-                    className="p-3 bg-[#f9faf7] border border-[#e6e4dc] rounded-2xl shrink-0"
+                    className="p-3 bg-[#f9faf7] border border-[#e6e4dc] shrink-0"
                     style={{ 
-                      backgroundColor: statsStyles?.backgroundColor || undefined,
+                      backgroundColor: statsStyles?.backgroundColor || (data?.settings as any)?.iconBgColor || undefined,
                       borderColor: statsStyles?.borderColor || undefined,
+                      borderRadius: statsStyles?.borderRadius !== undefined ? `${statsStyles.borderRadius}px` : (data?.settings as any)?.iconBorderRadius !== undefined ? `${(data?.settings as any).iconBorderRadius}px` : undefined,
                     }}
                   >
-                    <IconComp 
+                    <DynamicIcon 
+                      name={iconName}
                       className="w-5 h-5 text-[#4e8c4a]" 
                       style={{ 
-                        color: statsStyles?.iconColor || undefined,
-                        width: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : undefined,
-                        height: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : undefined,
+                        color: statsStyles?.iconColor || (data?.settings as any)?.iconColor || undefined,
+                        width: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
+                        height: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
                       }}
                     />
                   </div>
@@ -709,8 +713,8 @@ export default function Homepage() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 relative z-10"
           >
             {valuesList.map((val, idx) => {
-              const icons = [Leaf, Sparkles, Shield, Award, Users, Building2, Clock, Globe];
-              const IconComp = icons[idx % icons.length];
+              const defaultIcons = ["Leaf", "Sparkles", "Shield", "Award", "Users", "Building2", "Clock", "Globe"];
+              const iconName = (val as any).icon || defaultIcons[idx % defaultIcons.length];
               const numStr = (idx + 1).toString().padStart(2, "0");
 
               return (
@@ -736,7 +740,7 @@ export default function Homepage() {
                     {/* Top Bar: Icon + Index */}
                     <div className="flex items-center justify-between">
                       <div className="w-12 h-12 rounded-2xl bg-[#f9faf7] border border-[#e6e4dc] group-hover:bg-[#1c3c24] group-hover:border-[#1c3c24] group-hover:text-white group-hover:rotate-6 flex items-center justify-center text-[#4e8c4a] transition-all duration-300 shadow-sm">
-                        <IconComp className="w-5 h-5 transition-transform group-hover:scale-110" />
+                        <DynamicIcon name={iconName} className="w-5 h-5 transition-transform group-hover:scale-110" />
                       </div>
                       <span className="font-mono text-xs font-black text-gray-300 group-hover:text-[#4e8c4a] transition-colors duration-300 bg-[#f9faf7] px-2.5 py-1 rounded-full border border-gray-100">
                         {numStr}
@@ -825,13 +829,35 @@ export default function Homepage() {
 
                     <div className="space-y-4">
                       <div className="flex items-center gap-4">
-                        <div className="p-3.5 bg-[#f9faf7] border border-[#e6e4dc] group-hover:bg-[#1c3c24] group-hover:border-[#1c3c24] group-hover:text-white transition-all duration-300 rounded-2xl shrink-0 shadow-xs">
-                          {React.isValidElement((cred as any).icon) ? (
+                        <div 
+                          className="p-3.5 bg-[#f9faf7] border border-[#e6e4dc] group-hover:bg-[#1c3c24] group-hover:border-[#1c3c24] group-hover:text-white transition-all duration-300 shrink-0 shadow-xs"
+                          style={{
+                            backgroundColor: credentialsStyles?.backgroundColor || (data?.settings as any)?.iconBgColor || undefined,
+                            borderRadius: credentialsStyles?.borderRadius !== undefined ? `${credentialsStyles.borderRadius}px` : (data?.settings as any)?.iconBorderRadius !== undefined ? `${(data?.settings as any).iconBorderRadius}px` : "16px",
+                          }}
+                        >
+                          {typeof (cred as any).icon === "string" ? (
+                            <DynamicIcon
+                              name={(cred as any).icon}
+                              className="w-5 h-5 text-[#4e8c4a] group-hover:text-white transition-colors"
+                              style={{ 
+                                color: credentialsStyles?.iconColor || (data?.settings as any)?.iconColor || undefined,
+                                width: credentialsStyles?.iconSize !== undefined ? `${credentialsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
+                                height: credentialsStyles?.iconSize !== undefined ? `${credentialsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
+                              }}
+                              fallback={<ShieldCheck className="w-5 h-5 text-[#4e8c4a] group-hover:text-white transition-colors" style={{ color: credentialsStyles?.iconColor || (data?.settings as any)?.iconColor || undefined }} />}
+                            />
+                          ) : React.isValidElement((cred as any).icon) ? (
                             React.cloneElement((cred as any).icon as React.ReactElement<any>, {
-                              className: "w-5 h-5 text-[#4e8c4a] group-hover:text-[#7baa6b] transition-colors",
+                              className: "w-5 h-5 text-[#4e8c4a] group-hover:text-white transition-colors",
+                              style: { 
+                                color: credentialsStyles?.iconColor || (data?.settings as any)?.iconColor || undefined,
+                                width: credentialsStyles?.iconSize !== undefined ? `${credentialsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
+                                height: credentialsStyles?.iconSize !== undefined ? `${credentialsStyles.iconSize}px` : (data?.settings as any)?.iconSize !== undefined ? `${(data?.settings as any).iconSize}px` : undefined,
+                              }
                             })
                           ) : (
-                            <ShieldCheck className="w-5 h-5 text-[#4e8c4a] group-hover:text-[#7baa6b] transition-colors" />
+                            <ShieldCheck className="w-5 h-5 text-[#4e8c4a] group-hover:text-white transition-colors" style={{ color: credentialsStyles?.iconColor || (data?.settings as any)?.iconColor || undefined }} />
                           )}
                         </div>
                         <div>

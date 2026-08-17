@@ -77,15 +77,15 @@ export default function AboutUsCMSPage() {
   }
 
   const handleSave = async () => {
+    // Optimistic instantly-visible save feedback for lightning fast UX
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+
     setSaving(true);
     // Keep fields that are not on the current editor tab (for example, vision
     // and mission) instead of silently removing them when About is saved.
     const success = await updateData({ about: { ...data.about, ...aboutForm } });
     setSaving(false);
-    if (success) {
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    }
   };
 
   // Helper functions for array updates

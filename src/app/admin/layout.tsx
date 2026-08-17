@@ -27,6 +27,7 @@ import {
   X,
   ExternalLink,
   Mail,
+  Palette,
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -77,6 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Production Process", href: "/admin/production-process", icon: Cpu },
     { name: "About Us", href: "/admin/about", icon: Info },
     { name: "Why Choose Us", href: "/admin/why-choose-us", icon: Award },
+    { name: "Icon Library", href: "/admin/icons", icon: Palette },
     { name: "Knowledge Center", href: "/admin/knowledge-center", icon: BookOpen },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { name: "Contact Forms", href: "/admin/forms", icon: Inbox },

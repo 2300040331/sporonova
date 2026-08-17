@@ -5,6 +5,7 @@ import { useCMS } from "@/lib/cms-context";
 import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
 import { SectionStylesConfig } from "@/lib/styles-helper";
 import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
+import IconPicker from "@/components/admin/IconPicker";
 import {
   Save,
   Globe,
@@ -169,8 +170,11 @@ export default function HomepageCMSPage() {
   };
 
   const handlePublish = async () => {
+    // Optimistic instantly-visible save feedback for lightning fast UX
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+
     setSaving(true);
-    setSaveSuccess(false);
 
     const updatedData = {
       homepage: {
@@ -202,10 +206,6 @@ export default function HomepageCMSPage() {
 
     const success = await updateData(updatedData);
     setSaving(false);
-    if (success) {
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    }
   };
 
   return (
@@ -454,17 +454,28 @@ export default function HomepageCMSPage() {
                         />
                       </div>
                     </div>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37]">Subtitle Details</label>
-                      <input
-                        type="text"
-                        value={stat.sublabel || ""}
-                        onChange={(e) => {
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[9px] font-bold text-[#2c5e37]">Subtitle Details</label>
+                        <input
+                          type="text"
+                          value={stat.sublabel || ""}
+                          onChange={(e) => {
+                            const updated = [...statsForm];
+                            updated[idx].sublabel = e.target.value;
+                            setStatsForm(updated);
+                          }}
+                          className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                        />
+                      </div>
+                      <IconPicker
+                        value={stat.icon || "Leaf"}
+                        onChange={(iconName) => {
                           const updated = [...statsForm];
-                          updated[idx].sublabel = e.target.value;
+                          updated[idx].icon = iconName;
                           setStatsForm(updated);
                         }}
-                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                        label="Card Icon"
                       />
                     </div>
                   </div>
@@ -625,17 +636,28 @@ export default function HomepageCMSPage() {
                       />
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-[9px] font-bold text-[#2c5e37]">Details Summary</label>
-                    <textarea
-                      rows={2}
-                      value={item.desc || ""}
-                      onChange={(e) => {
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37]">Details Summary</label>
+                      <textarea
+                        rows={2}
+                        value={item.desc || ""}
+                        onChange={(e) => {
+                          const updated = [...credentialsForm];
+                          updated[idx].desc = e.target.value;
+                          setCredentialsForm(updated);
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                      />
+                    </div>
+                    <IconPicker
+                      value={item.icon || "ShieldCheck"}
+                      onChange={(iconName) => {
                         const updated = [...credentialsForm];
-                        updated[idx].desc = e.target.value;
+                        updated[idx].icon = iconName;
                         setCredentialsForm(updated);
                       }}
-                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-xs font-medium text-gray-600"
+                      label="Select Icon"
                     />
                   </div>
                 </div>

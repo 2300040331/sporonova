@@ -33,17 +33,16 @@ export default function KnowledgeCenterCMSPage() {
   }
 
   const handleSave = async () => {
+    // Optimistic instantly-visible save feedback for lightning fast UX
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+
     setSaving(true);
-    setSaveSuccess(false);
     const success = await updateData({
       knowledgeCenter: items,
       knowledgeStyles: knowledgeStyles,
     } as any);
     setSaving(false);
-    if (success) {
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    }
   };
 
   const handleAdd = () => {

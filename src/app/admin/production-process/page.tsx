@@ -62,16 +62,16 @@ export default function ProcessCMSPage() {
   };
 
   const handleSave = async () => {
+    // Optimistic instantly-visible save feedback for lightning fast UX
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+
     setSaving(true);
     const success = await updateData({
       processSteps: steps,
       processStyles: processStyles,
     } as any);
     setSaving(false);
-    if (success) {
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    }
   };
 
   return (

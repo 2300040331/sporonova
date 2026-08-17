@@ -5,6 +5,7 @@ import { useCMS } from "@/lib/cms-context";
 import { Save, Plus, Trash2, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
 import { SectionStylesConfig } from "@/lib/styles-helper";
 import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
+import IconPicker from "@/components/admin/IconPicker";
 
 export default function WhyChooseUsCMSPage() {
   const { data, updateData, isLoading } = useCMS();
@@ -33,8 +34,11 @@ export default function WhyChooseUsCMSPage() {
   }
 
   const handleSave = async () => {
+    // Optimistic instantly-visible save feedback for lightning fast UX
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3500);
+
     setSaving(true);
-    setSaveSuccess(false);
     const success = await updateData({
       values: valuesList,
       homepage: {
@@ -43,13 +47,9 @@ export default function WhyChooseUsCMSPage() {
       }
     });
     setSaving(false);
-    if (success) {
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3500);
-    }
   };
 
-  const updateCard = (index: number, field: string, value: string) => {
+  const updateCard = (index: number, field: string, value: any) => {
     const updated = [...valuesList];
     updated[index] = { ...updated[index], [field]: value };
     setValuesList(updated);
@@ -61,6 +61,7 @@ export default function WhyChooseUsCMSPage() {
       title: "Premium Quality",
       desc: "Genetically verified rhizomorphic strains yielding dense flushes.",
       metric: "100%",
+      icon: "Leaf",
     };
     setValuesList([...valuesList, newCard]);
   };
@@ -188,16 +189,24 @@ export default function WhyChooseUsCMSPage() {
                 />
               </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                  Benchmark Metric Value
-                </label>
-                <input
-                  type="text"
-                  value={card.metric || ""}
-                  onChange={(e) => updateCard(idx, "metric", e.target.value)}
-                  className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
-                  placeholder="e.g. 99.8%"
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Benchmark Metric Value
+                  </label>
+                  <input
+                    type="text"
+                    value={card.metric || ""}
+                    onChange={(e) => updateCard(idx, "metric", e.target.value)}
+                    className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+                    placeholder="e.g. 99.8%"
+                  />
+                </div>
+
+                <IconPicker
+                  value={card.icon || "Leaf"}
+                  onChange={(iconName) => updateCard(idx, "icon", iconName)}
+                  label="Select Card Icon"
                 />
               </div>
             </div>
