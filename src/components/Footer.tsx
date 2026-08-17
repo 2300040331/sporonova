@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Award, Globe, Shield, Activity } from "lucide-react";
 
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 export default function Footer() {
   const { data } = useCMS();
@@ -31,7 +32,10 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#f9faf7] border-t border-[#e6e4dc]/80 pt-20 pb-12 px-6 z-10 relative">
+    <footer 
+      className="bg-[#f9faf7] border-t border-[#e6e4dc]/80 pt-20 pb-12 px-6 z-10 relative"
+      style={getSectionStyles(footer?.styles)}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
@@ -63,11 +67,22 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6">Spawn Catalog</h4>
+            <h4 
+              className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6 font-sans"
+              style={getHeadingStyles(footer?.styles)}
+            >
+              Spawn Catalog
+            </h4>
             <ul className="flex flex-col gap-3 text-xs text-gray-600 font-medium">
               {catalogLinks.map((item, i) => (
                 <li key={i}>
-                  <Link href={item.href} className="hover:text-[#4e8c4a] transition-colors">{item.name}</Link>
+                  <Link 
+                    href={item.href} 
+                    className="hover:text-[#4e8c4a] transition-colors font-sans"
+                    style={getParagraphStyles(footer?.styles)}
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -75,18 +90,28 @@ export default function Footer() {
 
           {/* Cultivation Solutions */}
           <div>
-            <h4 className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6">Cultivation Solutions</h4>
+            <h4 
+              className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6 font-sans"
+              style={getHeadingStyles(footer?.styles)}
+            >
+              Cultivation Solutions
+            </h4>
             <ul className="flex flex-col gap-3 text-xs text-gray-600 font-medium">
-              <li><Link href="/process" className="hover:text-[#4e8c4a] transition-colors">Production Process Map</Link></li>
-              <li><Link href="/knowledge" className="hover:text-[#4e8c4a] transition-colors">Technical Knowledge Base</Link></li>
-              <li><Link href="/#why-choose-us" className="hover:text-[#4e8c4a] transition-colors">Quality Control Metrics</Link></li>
-              <li><Link href="/#contact" className="hover:text-[#4e8c4a] transition-colors">Farmer Inquiries</Link></li>
+              <li><Link href="/process" className="hover:text-[#4e8c4a] transition-colors font-sans" style={getParagraphStyles(footer?.styles)}>Production Process Map</Link></li>
+              <li><Link href="/knowledge" className="hover:text-[#4e8c4a] transition-colors font-sans" style={getParagraphStyles(footer?.styles)}>Technical Knowledge Base</Link></li>
+              <li><Link href="/#why-choose-us" className="hover:text-[#4e8c4a] transition-colors font-sans" style={getParagraphStyles(footer?.styles)}>Quality Control Metrics</Link></li>
+              <li><Link href="/#contact" className="hover:text-[#4e8c4a] transition-colors font-sans" style={getParagraphStyles(footer?.styles)}>Farmer Inquiries</Link></li>
             </ul>
           </div>
 
           {/* Certified Partners */}
           <div>
-            <h4 className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6">Accreditation</h4>
+            <h4 
+              className="text-[#1c3c24] font-display text-xs font-bold uppercase tracking-wider mb-6 font-sans"
+              style={getHeadingStyles(footer?.styles)}
+            >
+              Accreditation
+            </h4>
             <div className="flex flex-wrap gap-2.5">
               {partners.map((pt) => (
                 <Link

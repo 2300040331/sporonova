@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { Upload, Image as ImageIcon, Check, Loader2 } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Upload, Image as ImageIcon, Check, Loader2, AlertCircle } from "lucide-react";
 
 interface ImageUploadDropzoneProps {
   value?: string;
@@ -9,6 +9,8 @@ interface ImageUploadDropzoneProps {
   label?: string;
   className?: string;
   aspectRatio?: "square" | "video" | "auto";
+  requiredWidth?: number;
+  requiredHeight?: number;
 }
 
 export default function ImageUploadDropzone({
@@ -17,27 +19,79 @@ export default function ImageUploadDropzone({
   label = "Upload Image",
   className = "",
   aspectRatio = "auto",
+  requiredWidth,
+  requiredHeight,
 }: ImageUploadDropzoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentDimensions, setCurrentDimensions] = useState<{ width: number; height: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (value) {
+      const img = new Image();
+      img.onload = () => {
+        setCurrentDimensions({ width: img.width, height: img.height });
+      };
+      img.onerror = () => {
+        setCurrentDimensions(null);
+      };
+      img.src = value;
+    } else {
+      setCurrentDimensions(null);
+    }
+  }, [value]);
+
+  const validateAndGetDimensions = (file: File): Promise<{ width: number; height: number; isValid: boolean; errorMsg?: string }> => {
+    return new Promise((resolve) => {
+      if (!file.type.startsWith("image/")) {
+        resolve({ width: 0, height: 0, isValid: false, errorMsg: "Please drop a valid image file (PNG, JPG, WebP, SVG)." });
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        resolve({ width: 0, height: 0, isValid: false, errorMsg: "Image file size must be less than 5 MB." });
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+          
+          if (requiredWidth && requiredHeight) {
+            if (width !== requiredWidth || height !== requiredHeight) {
+              const msg = `Invalid Image Size. Required: ${requiredWidth} × ${requiredHeight} px. Uploaded: ${width} × ${height} px. Please upload an image with the required dimensions.`;
+              resolve({ width, height, isValid: false, errorMsg: msg });
+              return;
+            }
+          }
+          resolve({ width, height, isValid: true });
+        };
+        img.onerror = () => {
+          resolve({ width: 0, height: 0, isValid: false, errorMsg: "Failed to read image data." });
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
   const uploadFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      setError("Please drop a valid image file (PNG, JPG, WebP, SVG).");
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      setError("Image file size must be less than 5 MB.");
-      return;
-    }
-
     setError(null);
     setUploading(true);
 
     try {
+      const validation = await validateAndGetDimensions(file);
+      if (!validation.isValid) {
+        setError(validation.errorMsg || "Image validation failed.");
+        setUploading(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -96,12 +150,21 @@ export default function ImageUploadDropzone({
       ? "aspect-video"
       : "min-h-[140px]";
 
+  const showRequirements = requiredWidth && requiredHeight;
+
   return (
     <div className={`space-y-1.5 ${className}`}>
       {label && (
-        <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
-          {label}
-        </label>
+        <div className="flex justify-between items-center">
+          <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
+            {label}
+          </label>
+          {showRequirements && (
+            <span className="text-[9px] font-bold text-gray-400 font-mono">
+              Required: {requiredWidth} × {requiredHeight} px
+            </span>
+          )}
+        </div>
       )}
 
       <div
@@ -126,7 +189,7 @@ export default function ImageUploadDropzone({
         {uploading ? (
           <div className="flex flex-col items-center gap-2 text-[#1c3c24]">
             <Loader2 className="w-8 h-8 text-[#4e8c4a] animate-spin" />
-            <span className="text-xs font-bold font-mono">Uploading to Vercel Blob...</span>
+            <span className="text-xs font-bold font-mono">Validating and Uploading...</span>
           </div>
         ) : value ? (
           <div className="relative w-full h-full flex flex-col items-center justify-center group">
@@ -135,8 +198,18 @@ export default function ImageUploadDropzone({
               alt="Preview"
               className="max-h-32 w-auto object-contain rounded-xl shadow-sm border border-[#e2e8e0] bg-white p-1"
             />
-            <div className="mt-2 text-[10px] font-bold text-[#2c5e37] flex items-center gap-1">
-              <Check className="w-3 h-3 text-emerald-600" /> Image active · Drag a new image here to replace
+            
+            {/* Status Information Box */}
+            <div className="mt-2 text-[10px] font-bold text-[#2c5e37] flex flex-col items-center gap-0.5">
+              <span className="flex items-center gap-1">
+                <Check className="w-3.5 h-3.5 text-emerald-600" /> Image active · Drag a new image here to replace
+              </span>
+              
+              {currentDimensions && (
+                <span className="text-[9px] text-gray-500 font-mono mt-0.5">
+                  Uploaded: {currentDimensions.width} × {currentDimensions.height} px | Required: {requiredWidth || "auto"} × {requiredHeight || "auto"} px | Status: <span className="text-emerald-600 font-bold">Valid</span>
+                </span>
+              )}
             </div>
           </div>
         ) : (
@@ -150,12 +223,20 @@ export default function ImageUploadDropzone({
             <div className="text-[10px] text-gray-400 font-medium">
               or click to browse from your computer (PNG, JPG, WebP)
             </div>
+            {showRequirements && (
+              <div className="text-[9px] text-red-500/80 font-bold font-mono bg-red-50 px-2 py-0.5 rounded-md mt-1 border border-red-100">
+                Must be exactly {requiredWidth} × {requiredHeight} px
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {error && (
-        <p className="text-[10px] text-red-600 font-bold mt-1">{error}</p>
+        <div className="flex items-start gap-1 p-2.5 bg-red-50 border border-red-100 rounded-xl text-red-700 text-[10px] font-bold animate-fadeIn">
+          <AlertCircle className="w-4 h-4 text-red-650 shrink-0 mt-0.5" />
+          <span>{error}</span>
+        </div>
       )}
     </div>
   );

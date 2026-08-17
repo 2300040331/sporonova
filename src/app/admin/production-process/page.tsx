@@ -1,18 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, Cpu, Plus, Trash2, CheckCircle2 } from "lucide-react";
+import { SectionStylesConfig } from "@/lib/styles-helper";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function ProcessCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [steps, setSteps] = useState<any[]>([]);
+  const [processStyles, setProcessStyles] = useState<SectionStylesConfig>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data?.processSteps) {
       setSteps(data.processSteps);
+    }
+    if ((data as any)?.processStyles) {
+      setProcessStyles((data as any).processStyles);
+    } else {
+      setProcessStyles({});
     }
   }, [data]);
 
@@ -55,7 +63,10 @@ export default function ProcessCMSPage() {
 
   const handleSave = async () => {
     setSaving(true);
-    const success = await updateData({ processSteps: steps });
+    const success = await updateData({
+      processSteps: steps,
+      processStyles: processStyles,
+    } as any);
     setSaving(false);
     if (success) {
       setSaveSuccess(true);
@@ -87,6 +98,18 @@ export default function ProcessCMSPage() {
             className="flex items-center gap-2 px-4 py-2.5 bg-[#f0f5ef] border border-[#d2e4d0] text-[#1c3c24] rounded-2xl text-xs font-bold uppercase tracking-wider hover:bg-[#1c3c24] hover:text-white transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Add Inoculation Stage
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Production Process changes to current saved state?")) {
+                setSteps(data?.processSteps || []);
+                setProcessStyles((data as any)?.processStyles || {});
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
           </button>
           <button
             onClick={handleSave}
@@ -279,6 +302,12 @@ export default function ProcessCMSPage() {
           );
         })}
       </div>
+
+      <BrandingSectionStylesControls
+        sectionName="Production Process Stages"
+        styles={processStyles}
+        onChange={setProcessStyles}
+      />
     </div>
   );
 }

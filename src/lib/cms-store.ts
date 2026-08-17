@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 import { list, put } from "@vercel/blob";
+import { SectionStylesConfig } from "./styles-helper";
 
 export interface UserRecord {
   id: string;
@@ -39,6 +40,7 @@ export interface CMSData {
     sticky: boolean;
     navLinks: Array<{ name: string; href: string; order: number }>;
     productsDropdown: Array<{ name: string; href: string }>;
+    styles?: SectionStylesConfig;
   };
   footer: {
     logoUrl: string;
@@ -57,6 +59,7 @@ export interface CMSData {
       instagram: string;
     };
     quickLinks: Array<{ name: string; href: string }>;
+    styles?: SectionStylesConfig;
   };
   homepage: {
     hero: {
@@ -73,6 +76,7 @@ export interface CMSData {
       heroImage: string;
       backgroundImage: string;
       showModel: boolean;
+      styles?: SectionStylesConfig;
     };
     valuesSectionTitle: string;
     valuesSectionSubtitle: string;
@@ -86,6 +90,15 @@ export interface CMSData {
     industriesSectionTitle: string;
     credentialsSectionTitle: string;
     testimonialsSectionTitle: string;
+    statsStyles?: SectionStylesConfig;
+    productsHeaderStyles?: SectionStylesConfig;
+    credentialsStyles?: SectionStylesConfig;
+    partnershipsStyles?: SectionStylesConfig;
+    deliverablesStyles?: SectionStylesConfig;
+    industriesStyles?: SectionStylesConfig;
+    testimonialsStyles?: SectionStylesConfig;
+    whyChooseUsStyles?: SectionStylesConfig;
+    successNumbersStyles?: SectionStylesConfig;
   };
   products: Array<{
     id: string;
@@ -119,6 +132,7 @@ export interface CMSData {
     govApplications?: string;
     faqs?: Array<{ q: string; a: string }>;
     papers?: Array<{ title: string; author: string; journal: string }>;
+    styles?: SectionStylesConfig;
   }>;
   categories: Array<{ id: string; name: string; slug: string; desc: string }>;
   values: Array<{ title: string; desc: string; tag: string; metric: string }>;
@@ -148,6 +162,7 @@ export interface CMSData {
     processSteps?: Array<{ stepNumber: number; title: string; description: string }>;
     techBadges?: Array<{ label: string }>;
     aboutGallery?: Array<{ url: string; title: string }>;
+    styles?: SectionStylesConfig;
   };
   contact: {
     badge: string;
@@ -161,6 +176,7 @@ export interface CMSData {
     footerTag: string;
     whatsappNumber: string;
     mapIframeUrl: string;
+    styles?: SectionStylesConfig;
   };
   processSteps: Array<{
     id: string;
@@ -180,6 +196,7 @@ export interface CMSData {
     qualityCheck?: string;
     details?: string[];
   }>;
+  processStyles?: SectionStylesConfig;
   whyChooseUsCards: Array<{
     id: string;
     title: string;
@@ -200,6 +217,7 @@ export interface CMSData {
     readTime?: string;
     complexity?: string;
   }>;
+  knowledgeStyles?: SectionStylesConfig;
   successNumbers?: Array<{ value: string; label: string }>;
   partnerships?: Array<{ title: string; points: string[] }>;
   gallery: Array<{ id: string; url: string; title: string; category: string }>;

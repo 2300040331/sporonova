@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MoveRight } from "lucide-react";
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,6 +38,7 @@ export default function AboutHero() {
     <section 
       ref={containerRef}
       className="relative min-h-[85vh] lg:min-h-screen w-full flex items-center overflow-hidden bg-[#1c3c24]"
+      style={getSectionStyles(about?.styles)}
     >
       {/* Background Image & Overlay */}
       <div className="absolute inset-0 z-0">
@@ -57,11 +59,17 @@ export default function AboutHero() {
             </span>
           </div>
           
-          <h1 className="hero-element font-display font-black tracking-tight text-[#f9faf7] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
+          <h1 
+            className="hero-element font-display font-black tracking-tight text-[#f9faf7] text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] font-sans"
+            style={getHeadingStyles(about?.styles)}
+          >
             {about?.heroTitle || "Science and Commitment Behind Every Kernel"}
           </h1>
           
-          <p className="hero-element text-[#e6e4dc] text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl font-sans">
+          <p 
+            className="hero-element text-[#e6e4dc] text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl font-sans"
+            style={getParagraphStyles(about?.styles)}
+          >
             {about?.whoWeAreParagraph1 || "For over a decade, SporoNova has partnered with commercial cultivators, horticulture boards, and rural cooperatives to modernize mycology cultivation."}
           </p>
           
@@ -69,6 +77,7 @@ export default function AboutHero() {
             <a 
               href="#who-we-are" 
               className="rounded-full bg-[#4e8c4a] text-[#f9faf7] px-8 py-4 text-[10px] font-bold uppercase tracking-wider hover:bg-[#7baa6b] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex items-center gap-2 group"
+              style={getButtonStyles(about?.styles)}
             >
               Explore Our Story
               <MoveRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

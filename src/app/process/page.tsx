@@ -6,6 +6,7 @@ import { ArrowLeft, CheckSquare, ShieldAlert, Thermometer, Clock, HelpCircle, Fi
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 interface ProcessStage {
   step: string;
@@ -134,6 +135,7 @@ const LIQUID_SPAWN_PROCESS: ProcessStage[] = [
 export default function ProcessPage() {
   const { data } = useCMS();
   const stepsFromCMS = data?.processSteps;
+  const processStyles = (data as any)?.processStyles;
 
   const stepsList: ProcessStage[] = (stepsFromCMS && stepsFromCMS.length > 0)
     ? stepsFromCMS.map((st: any, i: number) => ({
@@ -154,10 +156,13 @@ export default function ProcessPage() {
       <main className="flex-1 bg-[#f9faf7] pt-24 min-h-screen">
         
         {/* Header split banner */}
-        <section className="py-8 px-6 max-w-7xl mx-auto">
+        <section className="py-8 px-6 max-w-7xl mx-auto" style={getSectionStyles(processStyles)}>
           <div className="rounded-[2.5rem] overflow-hidden border border-[#e6e4dc] bg-white shadow-lg grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[30vh]">
             
-            <div className="lg:col-span-7 bg-[#1c3c24] text-white p-10 md:p-14 flex flex-col justify-center space-y-6 relative overflow-hidden">
+            <div 
+              className="lg:col-span-7 bg-[#1c3c24] text-white p-10 md:p-14 flex flex-col justify-center space-y-6 relative overflow-hidden"
+              style={{ backgroundColor: processStyles?.backgroundColor || undefined }}
+            >
               <div className="absolute -top-12 -left-12 w-32 h-32 bg-white/5 rounded-full pointer-events-none" />
               
               <Link
@@ -167,11 +172,17 @@ export default function ProcessPage() {
                 &larr; Back to Home
               </Link>
               
-              <h1 className="text-white font-display text-3xl md:text-4xl font-black tracking-tight leading-tight relative z-10">
+              <h1 
+                className="text-white font-display text-3xl md:text-4xl font-black tracking-tight leading-tight relative z-10 font-sans"
+                style={getHeadingStyles(processStyles)}
+              >
                 Our Manufacturing Process
               </h1>
               
-              <p className="text-white/80 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed relative z-10">
+              <p 
+                className="text-white/80 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed relative z-10 font-sans"
+                style={getParagraphStyles(processStyles)}
+              >
                 SporoNova operates automated industrial pipelines. Below is the detailed step-by-step manufacturing journey for our signature Liquid Spawn Broth formulation.
               </p>
             </div>
@@ -188,13 +199,18 @@ export default function ProcessPage() {
         </section>
 
         {/* Timeline details mapping - connected timeline steps */}
-        <section className="py-12 px-6 max-w-4xl mx-auto pb-24 space-y-12">
+        <section className="py-12 px-6 max-w-4xl mx-auto pb-24 space-y-12" style={getSectionStyles(processStyles)}>
           
           <div className="relative border-l border-[#e6e4dc] pl-10 ml-6 space-y-12">
             {stepsList.map((stage) => (
               <div
                 key={stage.step}
                 className="relative bg-white border border-[#e6e4dc] p-8 rounded-[2rem] shadow-sm hover:shadow-md hover:border-[#4e8c4a]/40 transition-all space-y-5"
+                style={{
+                  backgroundColor: processStyles?.cardBgColor || undefined,
+                  borderColor: processStyles?.cardBorderColor || undefined,
+                  borderRadius: processStyles?.cardBorderRadius !== undefined ? `${processStyles.cardBorderRadius}px` : undefined,
+                }}
               >
                 
                 {/* Step circle indicator - Floating z-index bubble */}
@@ -205,13 +221,19 @@ export default function ProcessPage() {
                 {/* Title */}
                 <div>
                   <span className="text-[9px] text-[#4e8c4a] font-mono uppercase tracking-widest block mb-0.5 font-bold">Manufacturing Stage</span>
-                  <h3 className="text-[#1c3c24] font-display text-lg md:text-xl font-bold tracking-wide">
+                  <h3 
+                    className="text-[#1c3c24] font-display text-lg md:text-xl font-bold tracking-wide font-sans"
+                    style={getHeadingStyles(processStyles)}
+                  >
                     {stage.name}
                   </h3>
                 </div>
 
                 {/* Purpose */}
-                <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                <p 
+                  className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed font-sans"
+                  style={getParagraphStyles(processStyles)}
+                >
                   {stage.purpose}
                 </p>
 

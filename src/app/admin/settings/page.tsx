@@ -55,6 +55,21 @@ export default function SettingsCMSPage() {
             </span>
           )}
           <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Settings changes to current saved state?")) {
+                setSettingsForm(data?.settings || {
+                  siteName: "", primaryColor: "#1F5E38", secondaryColor: "#2E7D32", accentColor: "#4e8c4a",
+                  backgroundColor: "#f8f7f3", textColor: "#333333", fontFamilyHeading: "Outfit, sans-serif",
+                  fontFamilyBody: "Inter, sans-serif", containerWidth: "1280px", sectionPadding: "64px", borderRadius: "16px",
+                });
+              }
+            }}
+            className="px-5 py-3 border border-emerald-500/30 hover:bg-emerald-800/50 text-white font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
+          <button
             onClick={handleSave}
             disabled={saving}
             className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E7D32] to-[#1F5E38] hover:from-[#388e3c] hover:to-[#276e42] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow-lg cursor-pointer"

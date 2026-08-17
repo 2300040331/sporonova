@@ -3,16 +3,24 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, Plus, Trash2, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
+import { SectionStylesConfig } from "@/lib/styles-helper";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function WhyChooseUsCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [valuesList, setValuesList] = useState<any[]>([]);
+  const [whyChooseUsStyles, setWhyChooseUsStyles] = useState<SectionStylesConfig>({});
 
   useEffect(() => {
     if (data?.values) {
       setValuesList(data.values);
+    }
+    if (data?.homepage && (data.homepage as any).whyChooseUsStyles) {
+      setWhyChooseUsStyles((data.homepage as any).whyChooseUsStyles);
+    } else {
+      setWhyChooseUsStyles({});
     }
   }, [data]);
 
@@ -27,7 +35,13 @@ export default function WhyChooseUsCMSPage() {
   const handleSave = async () => {
     setSaving(true);
     setSaveSuccess(false);
-    const success = await updateData({ values: valuesList });
+    const success = await updateData({
+      values: valuesList,
+      homepage: {
+        ...data?.homepage,
+        whyChooseUsStyles: whyChooseUsStyles,
+      }
+    });
     setSaving(false);
     if (success) {
       setSaveSuccess(true);
@@ -82,6 +96,19 @@ export default function WhyChooseUsCMSPage() {
             className="flex items-center gap-1.5 px-4 py-2.5 bg-[#f0f5ef] hover:bg-[#dceada] border border-[#d2e4d0] text-[#1c3c24] font-bold text-xs uppercase tracking-wider rounded-2xl cursor-pointer transition-all"
           >
             <Plus className="w-4 h-4" /> Add Protocol Card
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Why Choose Us changes to current saved state?")) {
+                setValuesList(data?.values || []);
+                setWhyChooseUsStyles((data?.homepage as any)?.whyChooseUsStyles || {});
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
           </button>
 
           <button
@@ -177,6 +204,12 @@ export default function WhyChooseUsCMSPage() {
           );
         })}
       </div>
+
+      <BrandingSectionStylesControls
+        sectionName="Why Choose Us Section"
+        styles={whyChooseUsStyles}
+        onChange={setWhyChooseUsStyles}
+      />
     </div>
   );
 }

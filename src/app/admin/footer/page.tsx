@@ -3,16 +3,31 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, CheckCircle2 } from "lucide-react";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function FooterCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [footerForm, setFooterForm] = useState<any>(data?.footer || {});
+  const [footerForm, setFooterForm] = useState<any>({
+    description: "",
+    address: "",
+    email: "",
+    phone: "",
+    copyrightText: "",
+    styles: {},
+  });
 
   useEffect(() => {
     if (data?.footer) {
-      setFooterForm(data.footer);
+      setFooterForm({
+        description: data.footer.description || "",
+        address: data.footer.address || "",
+        email: data.footer.email || "",
+        phone: data.footer.phone || "",
+        copyrightText: data.footer.copyrightText || "",
+        styles: data.footer.styles || {},
+      });
     }
   }, [data]);
 
@@ -52,6 +67,26 @@ export default function FooterCMSPage() {
               <CheckCircle2 className="w-4 h-4 text-[#4e8c4a]" /> Footer Published!
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Footer changes to current saved state?")) {
+                if (data?.footer) {
+                  setFooterForm({
+                    description: data.footer.description || "",
+                    address: data.footer.address || "",
+                    email: data.footer.email || "",
+                    phone: data.footer.phone || "",
+                    copyrightText: data.footer.copyrightText || "",
+                    styles: data.footer.styles || {},
+                  });
+                }
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
           <button
             onClick={handleSave}
             disabled={saving}
@@ -130,6 +165,12 @@ export default function FooterCMSPage() {
             className="w-full px-4 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
           />
         </div>
+        
+        <BrandingSectionStylesControls
+          sectionName="Website Footer"
+          styles={footerForm.styles}
+          onChange={(newStyles) => setFooterForm({ ...footerForm, styles: newStyles })}
+        />
       </div>
     </div>
   );

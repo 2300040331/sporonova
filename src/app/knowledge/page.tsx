@@ -4,6 +4,7 @@ import { BookOpen, Search, Star, Layers, Activity, ShieldCheck, ArrowRight } fro
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getCMSData } from "@/lib/cms-store";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 interface ArticleMeta {
   id: string;
@@ -84,6 +85,7 @@ const ARTICLES: ArticleMeta[] = [
 export default async function KnowledgeHub() {
   const data = await getCMSData();
   const ARTICLES = (data.knowledgeCenter || []) as any[];
+  const knowledgeStyles = data.knowledgeStyles;
 
   return (
     <>
@@ -92,8 +94,11 @@ export default async function KnowledgeHub() {
       <main className="flex-1 bg-[#f9faf7] pt-24 min-h-screen">
         
         {/* Hub Header - Premium Forest Green banner */}
-        <section className="py-8 px-6 max-w-7xl mx-auto">
-          <div className="rounded-[2.5rem] overflow-hidden border border-[#e6e4dc] bg-[#1c3c24] text-white p-10 md:p-14 relative shadow-lg text-center space-y-6">
+        <section className="py-8 px-6 max-w-7xl mx-auto" style={getSectionStyles(knowledgeStyles)}>
+          <div 
+            className="rounded-[2.5rem] overflow-hidden border border-[#e6e4dc] bg-[#1c3c24] text-white p-10 md:p-14 relative shadow-lg text-center space-y-6"
+            style={{ backgroundColor: knowledgeStyles?.backgroundColor || undefined }}
+          >
             {/* Decorative ambient background spots */}
             <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/5 rounded-full pointer-events-none" />
             <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none" />
@@ -101,10 +106,16 @@ export default async function KnowledgeHub() {
             <span className="text-[10px] text-[#7baa6b] font-mono uppercase tracking-widest block font-bold relative z-10">
               Interactive Encyclopedia
             </span>
-            <h1 className="text-white font-display text-3xl md:text-5xl font-black tracking-tight leading-tight relative z-10">
+            <h1 
+              className="text-white font-display text-3xl md:text-5xl font-black tracking-tight leading-tight relative z-10 font-sans"
+              style={getHeadingStyles(knowledgeStyles)}
+            >
               Mycology Knowledge Center
             </h1>
-            <p className="text-white/80 text-xs sm:text-sm font-semibold max-w-2xl mx-auto leading-relaxed relative z-10">
+            <p 
+              className="text-white/80 text-xs sm:text-sm font-semibold max-w-2xl mx-auto leading-relaxed relative z-10 font-sans"
+              style={getParagraphStyles(knowledgeStyles)}
+            >
               Delve into advanced biotechnology research, sterilizer recipes, mycelium growth dynamics, and commercial farm protocols compiled by SporoNova scientists.
             </p>
 
@@ -122,12 +133,17 @@ export default async function KnowledgeHub() {
         </section>
 
         {/* Article Grid - Asymmetric cards */}
-        <section className="py-8 px-6 max-w-7xl mx-auto pb-24">
+        <section className="py-8 px-6 max-w-7xl mx-auto pb-24" style={getSectionStyles(knowledgeStyles)}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {ARTICLES.map((art) => (
               <div
                 key={art.id}
                 className="bg-white border border-[#e6e4dc] p-7 rounded-[2rem] shadow-sm hover:shadow-md hover:border-[#4e8c4a]/40 transition-all flex flex-col justify-between min-h-[240px] group"
+                style={{
+                  backgroundColor: knowledgeStyles?.cardBgColor || undefined,
+                  borderColor: knowledgeStyles?.cardBorderColor || undefined,
+                  borderRadius: knowledgeStyles?.cardBorderRadius !== undefined ? `${knowledgeStyles.cardBorderRadius}px` : undefined,
+                }}
               >
                 <div className="space-y-4">
                   <div className="flex justify-between items-center text-[9px] font-mono font-bold">
@@ -135,11 +151,17 @@ export default async function KnowledgeHub() {
                     <span className="text-gray-400">{art.readTime}</span>
                   </div>
 
-                  <h3 className="text-[#1c3c24] font-display font-extrabold text-base md:text-lg leading-snug group-hover:text-[#4e8c4a] transition-colors line-clamp-2">
+                  <h3 
+                    className="text-[#1c3c24] font-display font-extrabold text-base md:text-lg leading-snug group-hover:text-[#4e8c4a] transition-colors line-clamp-2 font-sans"
+                    style={getHeadingStyles(knowledgeStyles)}
+                  >
                     {art.title}
                   </h3>
                   
-                  <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed line-clamp-3">
+                  <p 
+                    className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed line-clamp-3 font-sans"
+                    style={getParagraphStyles(knowledgeStyles)}
+                  >
                     {art.summary}
                   </p>
                 </div>

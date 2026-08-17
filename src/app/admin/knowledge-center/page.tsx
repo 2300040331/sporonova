@@ -3,16 +3,24 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, BookOpen, Plus, Trash2, CheckCircle2 } from "lucide-react";
+import { SectionStylesConfig } from "@/lib/styles-helper";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function KnowledgeCenterCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [items, setItems] = useState<any[]>(data?.knowledgeCenter || []);
+  const [knowledgeStyles, setKnowledgeStyles] = useState<SectionStylesConfig>({});
 
   useEffect(() => {
     if (data?.knowledgeCenter) {
       setItems(data.knowledgeCenter);
+    }
+    if ((data as any)?.knowledgeStyles) {
+      setKnowledgeStyles((data as any).knowledgeStyles);
+    } else {
+      setKnowledgeStyles({});
     }
   }, [data]);
 
@@ -27,7 +35,10 @@ export default function KnowledgeCenterCMSPage() {
   const handleSave = async () => {
     setSaving(true);
     setSaveSuccess(false);
-    const success = await updateData({ knowledgeCenter: items });
+    const success = await updateData({
+      knowledgeCenter: items,
+      knowledgeStyles: knowledgeStyles,
+    } as any);
     setSaving(false);
     if (success) {
       setSaveSuccess(true);
@@ -65,7 +76,7 @@ export default function KnowledgeCenterCMSPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-[#e2e8e0] p-6 rounded-3xl shadow-sm">
         <div>
           <h1 className="text-2xl font-bold text-[#1c3c24] tracking-tight">Knowledge Base CMS</h1>
-          <p className="text-xs text-gray-600 mt-1 font-medium">
+          <p className="text-xs text-gray-650 mt-1 font-medium">
             Manage public-facing articles, scientific resources, and cultivation manuals.
           </p>
         </div>
@@ -81,6 +92,18 @@ export default function KnowledgeCenterCMSPage() {
             className="flex items-center gap-2 px-4 py-3 bg-[#f0f5ef] border border-[#d2e4d0] text-[#1c3c24] rounded-2xl text-xs font-bold uppercase tracking-wider hover:bg-[#1c3c24] hover:text-white transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Add Resource
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Knowledge changes to current saved state?")) {
+                setItems(data?.knowledgeCenter || []);
+                setKnowledgeStyles((data as any)?.knowledgeStyles || {});
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
           </button>
           <button
             onClick={handleSave}
@@ -234,6 +257,12 @@ export default function KnowledgeCenterCMSPage() {
           </div>
         ))}
       </div>
+
+      <BrandingSectionStylesControls
+        sectionName="Knowledge Base Articles"
+        styles={knowledgeStyles}
+        onChange={setKnowledgeStyles}
+      />
     </div>
   );
 }

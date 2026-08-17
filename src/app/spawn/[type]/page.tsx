@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SpawnCanvas from "@/components/SpawnCanvas";
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 interface SpawnDetail {
   id: string;
@@ -338,6 +339,7 @@ export default function SpawnPage({ params }: PageProps) {
   const { data } = useCMS();
   
   const cmsProduct = data?.products?.find((p: any) => p.id === type);
+  const productStyles = cmsProduct?.styles;
   
   // Merge CMS edits onto the complete record. This keeps a partial CMS export
   // from blanking the technical content on a public spawn page.
@@ -366,7 +368,7 @@ export default function SpawnPage({ params }: PageProps) {
       <main className="flex-1 bg-[#f9faf7] pt-24 min-h-screen">
         
         {/* HERO SECTION - Premium Green and Beige style */}
-        <section className="relative py-20 px-6 border-b border-[#e6e4dc] bg-white">
+        <section className="relative py-20 px-6 border-b border-[#e6e4dc] bg-white" style={getSectionStyles(productStyles)}>
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
             
             {/* Text description */}
@@ -381,11 +383,17 @@ export default function SpawnPage({ params }: PageProps) {
                 <span className="text-[9px] text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
                   {!isFallback ? detail.scientificName : "Biotechnology Formula"}
                 </span>
-                <h1 className="text-[#1c3c24] font-display text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                <h1 
+                  className="text-[#1c3c24] font-display text-4xl md:text-5xl font-black tracking-tight leading-tight font-sans"
+                  style={getHeadingStyles(productStyles)}
+                >
                   {displayTitle}
                 </h1>
               </div>
-              <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed max-w-xl">
+              <p 
+                className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed max-w-xl font-sans"
+                style={getParagraphStyles(productStyles)}
+              >
                 {!isFallback
                   ? detail.introduction
                   : `Comprehensive specifications, laboratory recipes, and production workflows for SporoNova's certified ${displayTitle} formulas.`}
@@ -428,7 +436,7 @@ export default function SpawnPage({ params }: PageProps) {
 
         {/* DETAILED SPEC SECTIONS */}
         {!isFallback && (
-          <section className="py-24 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <section className="py-24 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16" style={getSectionStyles(productStyles)}>
             
             {/* Left Main column articles */}
             <div className="lg:col-span-8 space-y-16">

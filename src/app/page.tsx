@@ -12,6 +12,7 @@ import LiquidSpawnBottleCanvas from "@/components/canvas/LiquidSpawnBottleCanvas
 import GrainJarCanvas from "@/components/canvas/GrainJarCanvas";
 import MushroomStructureCanvas from "@/components/canvas/MushroomStructureCanvas";
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 interface ProductCard {
   id: string;
@@ -169,6 +170,17 @@ const DELIVERABLES = [
 export default function Homepage() {
   const { data } = useCMS();
   const hero = data?.homepage?.hero;
+  
+  const heroStyles = data?.homepage?.hero?.styles;
+  const statsStyles = (data?.homepage as any)?.statsStyles;
+  const productsHeaderStyles = (data?.homepage as any)?.productsHeaderStyles;
+  const credentialsStyles = (data?.homepage as any)?.credentialsStyles;
+  const partnershipsStyles = (data?.homepage as any)?.partnershipsStyles;
+  const deliverablesStyles = (data?.homepage as any)?.deliverablesStyles;
+  const industriesStyles = (data?.homepage as any)?.industriesStyles;
+  const testimonialsStyles = (data?.homepage as any)?.testimonialsStyles;
+  const whyChooseUsStyles = (data?.homepage as any)?.whyChooseUsStyles;
+
   const productsList = data?.products && data.products.length > 0 ? data.products : PRODUCTS;
   const testimonialsList = data?.testimonials && data.testimonials.length > 0 ? data.testimonials : TESTIMONIALS;
   const valuesList = data?.values && data.values.length > 0 ? data.values : VALUES;
@@ -302,7 +314,7 @@ export default function Homepage() {
       alert("Please select an inquiry type.");
       return;
     }
-    const phoneNumber = "917207208419";
+    const phoneNumber = data?.contact?.whatsappNumber || "917207208419";
     const text = `*Name:* ${encodeURIComponent(formData.name || "N/A")}%0A*Email:* ${encodeURIComponent(formData.email || "N/A")}%0A*Inquiry Type:* ${encodeURIComponent(formData.inquiryType)}%0A*Title:* ${encodeURIComponent(formData.title || "N/A")}%0A*Message:* ${encodeURIComponent(formData.message || "N/A")}`;
     
     window.open(`https://wa.me/${phoneNumber}?text=${text}`, "_blank");
@@ -314,11 +326,14 @@ export default function Homepage() {
       <main className="flex-1 bg-luxury-beige">
         
         {/* HERO SECTION */}
-        <section className="pt-32 pb-16 px-6 bg-[#f9faf7] relative">
+        <section className="pt-32 pb-16 px-6 bg-[#f9faf7] relative" style={getSectionStyles(heroStyles)}>
           <div className="max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden border border-[#e6e4dc] bg-white shadow-xl grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[70vh]">
             
             {/* Left Copy Column */}
-            <div className="lg:col-span-6 bg-[#1c3c24] text-white p-10 md:p-16 flex flex-col justify-center space-y-8 relative overflow-hidden">
+            <div 
+              className="lg:col-span-6 bg-[#1c3c24] text-white p-10 md:p-16 flex flex-col justify-center space-y-8 relative overflow-hidden"
+              style={{ backgroundColor: heroStyles?.backgroundColor || undefined }}
+            >
               {/* Background accent ring */}
               <div className="absolute -top-12 -left-12 w-48 h-48 bg-white/5 rounded-full pointer-events-none" />
               <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none" />
@@ -327,12 +342,15 @@ export default function Homepage() {
                 {hero?.badge || "SporoNova • Agricultural Spawn Manufacturer"}
               </span>
               <h1
-                className="text-white font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight relative z-10"
-                style={{ color: hero?.headingColor || "#ffffff" }}
+                className="text-white font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight relative z-10 font-sans"
+                style={{ ...getHeadingStyles(heroStyles), color: heroStyles?.headingColor || heroStyles?.textColor || undefined }}
               >
                 {hero?.headingText || "Premium Mushroom Spawn for Better Harvests"}
               </h1>
-              <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl relative z-10">
+              <p 
+                className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl relative z-10 font-sans"
+                style={{ ...getParagraphStyles(heroStyles), color: heroStyles?.paragraphColor || undefined }}
+              >
                 {hero?.subtitleText || "We produce high-quality mushroom spawn using scientific methods, helping farmers, entrepreneurs, research institutions, and commercial growers achieve consistent and healthy mushroom production."}
               </p>
 
@@ -340,6 +358,7 @@ export default function Homepage() {
                 <Link
                   href={hero?.ctaPrimaryLink || "/#products"}
                   className="px-8 py-3.5 bg-[#4e8c4a] text-white text-[10px] font-bold uppercase tracking-wider rounded-full hover:bg-white hover:text-[#1c3c24] transition-all shadow-md shadow-[#4e8c4a]/10"
+                  style={getButtonStyles(heroStyles)}
                 >
                   {hero?.ctaPrimaryText || "Explore Our Products →"}
                 </Link>
@@ -365,25 +384,54 @@ export default function Homepage() {
         </section>
 
         {/* FLOATING STATS BAR */}
-        <section className="px-6 relative z-20">
-          <div className="max-w-7xl mx-auto -mt-12 bg-white rounded-3xl border border-[#e6e4dc]/80 shadow-lg p-6 md:py-8 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section className="px-6 relative z-20" style={getSectionStyles(statsStyles)}>
+          <div 
+            className="max-w-7xl mx-auto -mt-12 bg-white rounded-3xl border border-[#e6e4dc]/80 shadow-lg p-6 md:py-8 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            style={{ 
+              backgroundColor: statsStyles?.cardBgColor || undefined, 
+              borderColor: statsStyles?.cardBorderColor || undefined, 
+              borderRadius: statsStyles?.cardBorderRadius !== undefined ? `${statsStyles.cardBorderRadius}px` : undefined 
+            }}
+          >
             
             {statsList.map((st: any, idx: number) => {
               const IconComp = idx === 0 ? Leaf : idx === 1 ? Award : idx === 2 ? Clock : Shield;
               return (
                 <div key={idx} className="flex items-start gap-4">
-                  <div className="p-3 bg-[#f9faf7] border border-[#e6e4dc] rounded-2xl shrink-0">
-                    <IconComp className="w-5 h-5 text-[#4e8c4a]" />
+                  <div 
+                    className="p-3 bg-[#f9faf7] border border-[#e6e4dc] rounded-2xl shrink-0"
+                    style={{ 
+                      backgroundColor: statsStyles?.backgroundColor || undefined,
+                      borderColor: statsStyles?.borderColor || undefined,
+                    }}
+                  >
+                    <IconComp 
+                      className="w-5 h-5 text-[#4e8c4a]" 
+                      style={{ 
+                        color: statsStyles?.iconColor || undefined,
+                        width: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : undefined,
+                        height: statsStyles?.iconSize !== undefined ? `${statsStyles.iconSize}px` : undefined,
+                      }}
+                    />
                   </div>
                   <div className="space-y-1">
-                    <span className="font-display font-extrabold text-gray-900 text-base block leading-none">{st.value}</span>
-                    <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block">{st.label}</span>
+                    <span 
+                      className="font-display font-extrabold text-gray-900 text-base block leading-none font-sans"
+                      style={getHeadingStyles(statsStyles)}
+                    >
+                      {st.value}
+                    </span>
+                    <span 
+                      className="text-[10px] text-gray-500 font-bold uppercase tracking-wider block font-sans"
+                      style={getParagraphStyles(statsStyles)}
+                    >
+                      {st.label}
+                    </span>
                     <span className="text-[9px] text-gray-400 font-semibold block">{st.sublabel}</span>
                   </div>
                 </div>
               );
             })}
-
           </div>
         </section>
 
@@ -465,18 +513,24 @@ export default function Homepage() {
         </section>
 
         {/* PRODUCTS SECTION - Asymmetrical Layout Diversity Grid */}
-        <section id="products" className="py-24 bg-white border-t border-b border-[#e6e4dc] px-6">
+        <section id="products" className="py-24 bg-white border-t border-b border-[#e6e4dc] px-6" style={getSectionStyles(productsHeaderStyles)}>
           <div className="max-w-7xl mx-auto">
             
             <div className="text-center mb-16 relative">
               <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
                 {(data?.homepage as any)?.productsSectionBadge || "Product Catalog"}
               </span>
-              <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-[#1c3c24]">
+              <h2 
+                className="font-display text-3xl md:text-4xl font-black tracking-tight text-[#1c3c24] font-sans"
+                style={getHeadingStyles(productsHeaderStyles)}
+              >
                 {(data?.homepage as any)?.productsSectionTitle || "Professional Spawn Categories"}
               </h2>
               <div className="w-12 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
-              <p className="text-gray-500 text-xs sm:text-sm mt-3 max-w-xl mx-auto font-medium">
+              <p 
+                className="text-gray-500 text-xs sm:text-sm mt-3 max-w-xl mx-auto font-medium font-sans"
+                style={getParagraphStyles(productsHeaderStyles)}
+              >
                 {(data?.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides."}
               </p>
             </div>
@@ -604,7 +658,7 @@ export default function Homepage() {
         </section>
 
         {/* WHY CHOOSE US - Highly Animated, Interactive & Dynamic Cards */}
-        <section id="why-choose-us" className="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden">
+        <section id="why-choose-us" className="py-24 px-6 max-w-7xl mx-auto relative overflow-hidden" style={getSectionStyles(whyChooseUsStyles)}>
           {/* Subtle ambient gradient light pulse background */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-r from-[#4e8c4a]/10 via-[#7baa6b]/10 to-transparent blur-3xl pointer-events-none rounded-full" />
 
@@ -620,12 +674,18 @@ export default function Homepage() {
                 <span className="w-2 h-2 rounded-full bg-[#4e8c4a] animate-ping" />
                 {(data?.homepage as any)?.valuesSectionBadge || "Quality Assurance Protocols"}
               </div>
-              <h2 className="font-display text-3xl md:text-5xl font-black tracking-tight text-[#1c3c24] leading-tight">
+              <h2 
+                className="font-display text-3xl md:text-5xl font-black tracking-tight text-[#1c3c24] leading-tight font-sans"
+                style={getHeadingStyles(whyChooseUsStyles)}
+              >
                 {(data?.homepage as any)?.valuesSectionTitle || "Why Growers Choose SporoNova"}
               </h2>
             </div>
             <div className="md:col-span-4">
-              <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
+              <p 
+                className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed font-sans"
+                style={getParagraphStyles(whyChooseUsStyles)}
+              >
                 {(data?.homepage as any)?.valuesSectionSubtitle || "Our standard manufacturing protocols solve major cultivation hazards, ensuring optimal biological efficiency and reproducible harvest yields."}
               </p>
             </div>
@@ -663,6 +723,11 @@ export default function Homepage() {
                   whileHover={{ y: -10, scale: 1.025 }}
                   transition={{ type: "spring", stiffness: 300, damping: 18 }}
                   className="group bg-white border border-[#e6e4dc] rounded-[2rem] p-7 space-y-6 hover:border-[#4e8c4a]/50 hover:shadow-2xl hover:shadow-[#4e8c4a]/10 transition-all duration-300 flex flex-col justify-between relative overflow-hidden cursor-default"
+                  style={{
+                    backgroundColor: whyChooseUsStyles?.cardBgColor || undefined,
+                    borderColor: whyChooseUsStyles?.cardBorderColor || undefined,
+                    borderRadius: whyChooseUsStyles?.cardBorderRadius !== undefined ? `${whyChooseUsStyles.cardBorderRadius}px` : undefined,
+                  }}
                 >
                   {/* Hover Accent Top Line */}
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4e8c4a] via-[#7baa6b] to-[#1c3c24] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -683,12 +748,12 @@ export default function Homepage() {
                       <span className="text-[8px] font-mono font-bold tracking-widest text-[#4e8c4a] uppercase block">
                         {val.tag}
                       </span>
-                      <h4 className="text-[#1c3c24] font-display font-extrabold text-base md:text-lg leading-tight group-hover:text-[#1c3c24]">
+                      <h4 className="text-[#1c3c24] font-display font-extrabold text-base md:text-lg leading-tight group-hover:text-[#1c3c24] font-sans">
                         {val.title}
                       </h4>
                     </div>
 
-                    <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
+                    <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed font-sans">
                       {val.desc}
                     </p>
                   </div>
@@ -708,17 +773,23 @@ export default function Homepage() {
           </motion.div>
         </section>
         {/* CREDENTIALS & CERTIFICATIONS (Sliding Carousel / Marquee) */}
-        <section id="accreditation" className="py-24 bg-white border-t border-[#e6e4dc] scroll-mt-24">
+        <section id="accreditation" className="py-24 bg-white border-t border-[#e6e4dc] scroll-mt-24" style={getSectionStyles(credentialsStyles)}>
           <div className="max-w-7xl mx-auto px-6">
             
             {/* Dark green header bar with badge & slider status */}
-            <div className="bg-[#1c3c24] text-white py-7 px-8 sm:px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div 
+              className="bg-[#1c3c24] text-white py-7 px-8 sm:px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              style={{ backgroundColor: credentialsStyles?.backgroundColor || undefined }}
+            >
               <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none" />
               <div className="space-y-1 relative z-10">
                 <span className="text-[10px] text-[#7baa6b] font-mono uppercase tracking-widest block font-extrabold">
                   Verified Compliance & Credentials
                 </span>
-                <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-wide">
+                <h2 
+                  className="font-display text-2xl md:text-3xl font-extrabold tracking-wide font-sans"
+                  style={getHeadingStyles(credentialsStyles)}
+                >
                   Our Credentials & Certifications
                 </h2>
               </div>
@@ -743,6 +814,11 @@ export default function Homepage() {
                   <div
                     key={`${cred.title}-${idx}`}
                     className="group bg-white border border-[#e6e4dc] p-7 rounded-[1.75rem] hover:border-[#4e8c4a]/60 hover:shadow-xl hover:shadow-[#4e8c4a]/10 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between w-[320px] sm:w-[360px] shrink-0 relative overflow-hidden cursor-default"
+                    style={{
+                      backgroundColor: credentialsStyles?.cardBgColor || undefined,
+                      borderColor: credentialsStyles?.cardBorderColor || undefined,
+                      borderRadius: credentialsStyles?.cardBorderRadius !== undefined ? `${credentialsStyles.cardBorderRadius}px` : undefined,
+                    }}
                   >
                     {/* Hover Top Accent */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#4e8c4a] to-[#7baa6b] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -786,11 +862,17 @@ export default function Homepage() {
         </section>
 
         {/* PARTNERSHIP VALUE PROPOSITION */}
-        <section className="py-24 px-6 max-w-7xl mx-auto">
+        <section className="py-24 px-6 max-w-7xl mx-auto" style={getSectionStyles(partnershipsStyles)}>
           
-          <div className="bg-[#1c3c24] text-white py-8 px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md">
+          <div 
+            className="bg-[#1c3c24] text-white py-8 px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md"
+            style={{ backgroundColor: partnershipsStyles?.backgroundColor || undefined }}
+          >
             <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none" />
-            <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-wide">
+            <h2 
+              className="font-display text-2xl md:text-3xl font-extrabold tracking-wide font-sans"
+              style={getHeadingStyles(partnershipsStyles)}
+            >
               Partnership Value Proposition
             </h2>
           </div>
@@ -800,7 +882,15 @@ export default function Homepage() {
               {partnershipsList.map((partner: any, idx: number) => {
                 const IconComp = idx === 0 ? Building2 : idx === 1 ? Globe : HelpingHand;
                 return (
-                  <div key={partner.title || idx} className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden">
+                  <div 
+                    key={partner.title || idx} 
+                    className="bg-white text-gray-900 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between space-y-6 shadow-sm hover:scale-[1.01] transition-transform duration-300 border border-[#e6e4dc] relative overflow-hidden"
+                    style={{
+                      backgroundColor: partnershipsStyles?.cardBgColor || undefined,
+                      borderColor: partnershipsStyles?.cardBorderColor || undefined,
+                      borderRadius: partnershipsStyles?.cardBorderRadius !== undefined ? `${partnershipsStyles.cardBorderRadius}px` : undefined,
+                    }}
+                  >
                     <div className="space-y-6 relative z-10">
                       <div className="flex flex-col items-center text-center">
                         <IconComp className="w-12 h-12 text-[#4e8c4a] mb-3" />
@@ -822,12 +912,18 @@ export default function Homepage() {
         </section>
 
         {/* EXPECTED IMPACT & DELIVERABLES */}
-        <section className="py-24 bg-white border-t border-b border-[#e6e4dc] px-6">
+        <section className="py-24 bg-white border-t border-b border-[#e6e4dc] px-6" style={getSectionStyles(deliverablesStyles)}>
           <div className="max-w-7xl mx-auto">
             
-            <div className="bg-[#1c3c24] text-white py-8 px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md">
+            <div 
+              className="bg-[#1c3c24] text-white py-8 px-10 rounded-t-3xl border-b border-white/10 relative overflow-hidden shadow-md"
+              style={{ backgroundColor: deliverablesStyles?.backgroundColor || undefined }}
+            >
               <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-bl-full pointer-events-none" />
-              <h2 className="font-display text-2xl md:text-3xl font-extrabold tracking-wide">
+              <h2 
+                className="font-display text-2xl md:text-3xl font-extrabold tracking-wide font-sans"
+                style={getHeadingStyles(deliverablesStyles)}
+              >
                 Expected Impact & Deliverables
               </h2>
             </div>
@@ -837,7 +933,15 @@ export default function Homepage() {
               {/* Counters Row - Floating Stat panels */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {deliverablesStatsList.map((stat: any, idx: number) => (
-                  <div key={idx} className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm">
+                  <div 
+                    key={idx} 
+                    className="bg-white border border-[#e6e4dc]/75 p-6 rounded-2xl text-center space-y-1.5 shadow-sm"
+                    style={{
+                      backgroundColor: deliverablesStyles?.cardBgColor || undefined,
+                      borderColor: deliverablesStyles?.cardBorderColor || undefined,
+                      borderRadius: deliverablesStyles?.cardBorderRadius !== undefined ? `${deliverablesStyles.cardBorderRadius}px` : undefined,
+                    }}
+                  >
                     <span className="font-display font-black text-3xl md:text-4xl text-[#4e8c4a] block">{stat.value}</span>
                     <span className="text-[10px] text-gray-500 uppercase font-mono tracking-widest font-bold block leading-tight">
                       {stat.label}
@@ -906,14 +1010,17 @@ export default function Homepage() {
           </div>
         </section>
         {/* INDUSTRIES WE SERVE MARQUEE */}
-        <section className="py-24 bg-[#f9faf7] border-t border-b border-[#e6e4dc] px-6">
+        <section className="py-24 bg-[#f9faf7] border-t border-b border-[#e6e4dc] px-6" style={getSectionStyles(industriesStyles)}>
           <div className="max-w-7xl mx-auto">
             
             <div className="text-center mb-16">
               <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
                 Ecosystem Integration
               </span>
-              <h2 className="font-display text-3xl font-black tracking-wide text-[#1c3c24]">
+              <h2 
+                className="font-display text-3xl font-black tracking-wide text-[#1c3c24] font-sans"
+                style={getHeadingStyles(industriesStyles)}
+              >
                 Industries We Serve
               </h2>
               <div className="w-12 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
@@ -963,13 +1070,16 @@ export default function Homepage() {
         </section>
 
         {/* TESTIMONIALS SLIDING CAROUSEL */}
-        <section className="py-24 px-6 max-w-7xl mx-auto overflow-hidden relative">
+        <section className="py-24 px-6 max-w-7xl mx-auto overflow-hidden relative" style={getSectionStyles(testimonialsStyles)}>
           
           <div className="text-center mb-16">
             <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
               Customer Feedback
             </span>
-            <h2 className="font-display text-3xl font-black tracking-wide text-[#1c3c24]">
+            <h2 
+              className="font-display text-3xl font-black tracking-wide text-[#1c3c24] font-sans"
+              style={getHeadingStyles(testimonialsStyles)}
+            >
               Trusted by Growers & Institutions
             </h2>
             <div className="w-12 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
@@ -984,6 +1094,11 @@ export default function Homepage() {
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
                 className="bg-white border border-[#e6e4dc] rounded-[2rem] p-10 md:p-16 space-y-6 shadow-sm relative"
+                style={{
+                  backgroundColor: testimonialsStyles?.cardBgColor || undefined,
+                  borderColor: testimonialsStyles?.cardBorderColor || undefined,
+                  borderRadius: testimonialsStyles?.cardBorderRadius !== undefined ? `${testimonialsStyles.cardBorderRadius}px` : undefined,
+                }}
               >
                 <div className="flex text-amber-500 gap-1 justify-center">
                   <Star className="w-5 h-5 fill-current" />
@@ -993,7 +1108,10 @@ export default function Homepage() {
                   <Star className="w-5 h-5 fill-current" />
                 </div>
 
-                <p className="text-gray-600 text-base md:text-lg font-semibold leading-relaxed text-center italic">
+                <p 
+                  className="text-gray-600 text-base md:text-lg font-semibold leading-relaxed text-center italic font-sans"
+                  style={getParagraphStyles(testimonialsStyles)}
+                >
                   &quot;{(testimonialsList[reviewIdx] || TESTIMONIALS[0]).quote}&quot;
                 </p>
 

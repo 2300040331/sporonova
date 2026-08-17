@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, CheckCircle2, Menu, Plus, Trash2, Sliders } from "lucide-react";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function HeaderCMSPage() {
   const { data, updateData, isLoading } = useCMS();
@@ -67,6 +68,17 @@ export default function HeaderCMSPage() {
               <CheckCircle2 className="w-4 h-4 text-[#4e8c4a]" /> Header Published!
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Header changes to current saved state?")) {
+                setHeaderForm(data?.header || {});
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
           <button
             onClick={handleSave}
             disabled={saving}
@@ -194,6 +206,12 @@ export default function HeaderCMSPage() {
             />
           </div>
         </div>
+        
+        <BrandingSectionStylesControls
+          sectionName="Website Header"
+          styles={headerForm.styles}
+          onChange={(newStyles) => setHeaderForm({ ...headerForm, styles: newStyles })}
+        />
       </div>
     </div>
   );

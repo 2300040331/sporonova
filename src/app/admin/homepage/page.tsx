@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
+import { SectionStylesConfig } from "@/lib/styles-helper";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 import {
   Save,
   Globe,
@@ -44,6 +46,16 @@ export default function HomepageCMSPage() {
 
   const [successNumbersForm, setSuccessNumbersForm] = useState<any[]>([]);
   const [testimonialsForm, setTestimonialsForm] = useState<any[]>([]);
+
+  // Style states
+  const [heroStyles, setHeroStyles] = useState<SectionStylesConfig>({});
+  const [statsStyles, setStatsStyles] = useState<SectionStylesConfig>({});
+  const [productsHeaderStyles, setProductsHeaderStyles] = useState<SectionStylesConfig>({});
+  const [credentialsStyles, setCredentialsStyles] = useState<SectionStylesConfig>({});
+  const [partnershipsStyles, setPartnershipsStyles] = useState<SectionStylesConfig>({});
+  const [deliverablesStyles, setDeliverablesStyles] = useState<SectionStylesConfig>({});
+  const [industriesStyles, setIndustriesStyles] = useState<SectionStylesConfig>({});
+  const [testimonialsStyles, setTestimonialsStyles] = useState<SectionStylesConfig>({});
 
   useEffect(() => {
     if (data) {
@@ -89,6 +101,15 @@ export default function HomepageCMSPage() {
         ]
       );
       setTestimonialsForm(data.testimonials || []);
+
+      setHeroStyles(data.homepage?.hero?.styles || {});
+      setStatsStyles((data.homepage as any)?.statsStyles || {});
+      setProductsHeaderStyles((data.homepage as any)?.productsHeaderStyles || {});
+      setCredentialsStyles((data.homepage as any)?.credentialsStyles || {});
+      setPartnershipsStyles((data.homepage as any)?.partnershipsStyles || {});
+      setDeliverablesStyles((data.homepage as any)?.deliverablesStyles || {});
+      setIndustriesStyles((data.homepage as any)?.industriesStyles || {});
+      setTestimonialsStyles((data.homepage as any)?.testimonialsStyles || {});
     }
   }, [data]);
 
@@ -154,12 +175,22 @@ export default function HomepageCMSPage() {
     const updatedData = {
       homepage: {
         ...data.homepage,
-        hero: heroForm,
+        hero: {
+          ...heroForm,
+          styles: heroStyles,
+        },
         stats: statsForm,
         productsSectionBadge: productsHeaderForm.badge,
         productsSectionTitle: productsHeaderForm.title,
         productsSectionSubtitle: productsHeaderForm.subtitle,
         deliverablesStats: deliverablesStatsForm,
+        statsStyles,
+        productsHeaderStyles,
+        credentialsStyles,
+        partnershipsStyles,
+        deliverablesStyles,
+        industriesStyles,
+        testimonialsStyles,
       },
       credentials: credentialsForm,
       partnerships: partnershipsForm,
@@ -197,6 +228,38 @@ export default function HomepageCMSPage() {
               <CheckCircle2 className="w-4 h-4 text-[#4e8c4a]" /> Published Live Successfully!
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Reset ALL homepage sections to current saved state? All unsaved changes will be lost.")) {
+                setHeroForm(data.homepage?.hero || {});
+                setStatsForm((data.homepage as any)?.stats || []);
+                setProductsHeaderForm({
+                  badge: (data.homepage as any)?.productsSectionBadge || "Product Catalog",
+                  title: (data.homepage as any)?.productsSectionTitle || "Professional Spawn Categories",
+                  subtitle: (data.homepage as any)?.productsSectionSubtitle || "",
+                });
+                setCredentialsForm(data.credentials || []);
+                setPartnershipsForm((data as any).partnerships || []);
+                setDeliverablesForm(data.deliverables || []);
+                setDeliverablesStatsForm((data.homepage as any)?.deliverablesStats || []);
+                setIndustriesForm(data.industries || []);
+                setTestimonialsForm(data.testimonials || []);
+                setSuccessNumbersForm((data as any).successNumbers || []);
+                setHeroStyles(data.homepage?.hero?.styles || {});
+                setStatsStyles((data.homepage as any)?.statsStyles || {});
+                setProductsHeaderStyles((data.homepage as any)?.productsHeaderStyles || {});
+                setCredentialsStyles((data.homepage as any)?.credentialsStyles || {});
+                setPartnershipsStyles((data.homepage as any)?.partnershipsStyles || {});
+                setDeliverablesStyles((data.homepage as any)?.deliverablesStyles || {});
+                setIndustriesStyles((data.homepage as any)?.industriesStyles || {});
+                setTestimonialsStyles((data.homepage as any)?.testimonialsStyles || {});
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-red-50 hover:border-red-200 text-red-700 font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer"
+          >
+            Reset All
+          </button>
           <button
             onClick={handlePublish}
             disabled={saving}
@@ -243,9 +306,25 @@ export default function HomepageCMSPage() {
         {/* TAB 1: HERO & STATS */}
         {activeTab === "hero" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Type className="w-4 h-4 text-[#4e8c4a]" /> Hero & Main Stats Settings
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Type className="w-4 h-4 text-[#4e8c4a]" /> Hero & Main Stats Settings
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm("Revert Hero & Stats changes to current saved state?")) {
+                    setHeroForm(data.homepage?.hero || {});
+                    setStatsForm((data.homepage as any)?.stats || []);
+                    setHeroStyles(data.homepage?.hero?.styles || {});
+                    setStatsStyles((data.homepage as any)?.statsStyles || {});
+                  }
+                }}
+                className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+              >
+                Reset Section
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -276,6 +355,8 @@ export default function HomepageCMSPage() {
                 label="Hero Section Photo (Right Side Forest / Mushroom Image)"
                 value={heroForm.heroImage || "/hero_mushrooms.jpg"}
                 onChange={(url) => setHeroForm({ ...heroForm, heroImage: url })}
+                requiredWidth={1920}
+                requiredHeight={1080}
               />
             </div>
 
@@ -390,15 +471,45 @@ export default function HomepageCMSPage() {
                 ))}
               </div>
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Hero Main Area"
+              styles={heroStyles}
+              onChange={setHeroStyles}
+            />
+
+            <BrandingSectionStylesControls
+              sectionName="Hero Stats Bar"
+              styles={statsStyles}
+              onChange={setStatsStyles}
+            />
           </div>
         )}
 
 
         {activeTab === "productsHeader" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <Package className="w-4 h-4 text-[#4e8c4a]" /> Product Catalog Header Settings
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+                <Package className="w-4 h-4 text-[#4e8c4a]" /> Product Catalog Header Settings
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm("Revert Product Catalog Header changes to current saved state?")) {
+                    setProductsHeaderForm({
+                      badge: (data.homepage as any)?.productsSectionBadge || "Product Catalog",
+                      title: (data.homepage as any)?.productsSectionTitle || "Professional Spawn Categories",
+                      subtitle: (data.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection.",
+                    });
+                    setProductsHeaderStyles((data.homepage as any)?.productsHeaderStyles || {});
+                  }
+                }}
+                className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+              >
+                Reset Section
+              </button>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -430,6 +541,12 @@ export default function HomepageCMSPage() {
                 className="w-full px-4 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
               />
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Products Section Header"
+              styles={productsHeaderStyles}
+              onChange={setProductsHeaderStyles}
+            />
           </div>
         )}
 
@@ -439,16 +556,31 @@ export default function HomepageCMSPage() {
         {activeTab === "credentials" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
-              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
-                <Award className="w-4 h-4 text-[#4e8c4a]" /> Our Credentials & Certifications Settings
-              </h2>
-              <button
-                type="button"
-                onClick={handleAddCredential}
-                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <Plus className="w-3 h-3" /> Add Credential
-              </button>
+              <div className="flex items-center gap-2">
+                <Award className="w-4 h-4 text-[#4e8c4a]" />
+                <h2 className="text-base font-bold text-[#1c3c24]">Our Credentials & Certifications Settings</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Revert Credentials changes to current saved state?")) {
+                      setCredentialsForm(data.credentials || []);
+                      setCredentialsStyles((data.homepage as any)?.credentialsStyles || {});
+                    }
+                  }}
+                  className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                >
+                  Reset Section
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddCredential}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Credential
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -509,6 +641,12 @@ export default function HomepageCMSPage() {
                 </div>
               ))}
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Credentials Section"
+              styles={credentialsStyles}
+              onChange={setCredentialsStyles}
+            />
           </div>
         )}
 
@@ -516,16 +654,37 @@ export default function HomepageCMSPage() {
         {activeTab === "partnerships" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
-              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
-                <Building className="w-4 h-4 text-[#4e8c4a]" /> Partnership Value Propositions
-              </h2>
-              <button
-                type="button"
-                onClick={handleAddPartner}
-                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <Plus className="w-3 h-3" /> Add Partner
-              </button>
+              <div className="flex items-center gap-2">
+                <Building className="w-4 h-4 text-[#4e8c4a]" />
+                <h2 className="text-base font-bold text-[#1c3c24]">Partnership Value Propositions</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Revert Partnerships changes to current saved state?")) {
+                      setPartnershipsForm(
+                        (data as any).partnerships || [
+                          { title: "Government of Tripura", points: [] },
+                          { title: "JICA Foundation", points: [] },
+                          { title: "Indo-German Foundation", points: [] },
+                        ]
+                      );
+                      setPartnershipsStyles((data.homepage as any)?.partnershipsStyles || {});
+                    }
+                  }}
+                  className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                >
+                  Reset Section
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddPartner}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Partner
+                </button>
+              </div>
             </div>
 
             <div className="space-y-6">
@@ -572,15 +731,53 @@ export default function HomepageCMSPage() {
                 </div>
               ))}
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Partnerships Section"
+              styles={partnershipsStyles}
+              onChange={setPartnershipsStyles}
+            />
           </div>
         )}
 
         {/* TAB 6: DELIVERABLES & IMPACT */}
         {activeTab === "deliverables" && (
           <div className="space-y-6">
-            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2 border-b border-[#e2e8e0] pb-3">
-              <TrendingUp className="w-4 h-4 text-[#4e8c4a]" /> Expected Program Deliverables & Impact
-            </h2>
+            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-[#4e8c4a]" />
+                <h2 className="text-base font-bold text-[#1c3c24]">Expected Program Deliverables & Impact</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Revert Deliverables & Impact changes to current saved state?")) {
+                      setDeliverablesForm(data.deliverables || []);
+                      setDeliverablesStatsForm(
+                        (data.homepage as any)?.deliverablesStats || [
+                          { value: "200+", label: "Farmers Trained Year 1" },
+                          { value: "50%", label: "Yield Increase per Farmer" },
+                          { value: "3x", label: "Income Multiplier (Projected)" },
+                          { value: "14", label: "Mushroom Varieties Available" },
+                        ]
+                      );
+                      setDeliverablesStyles((data.homepage as any)?.deliverablesStyles || {});
+                    }
+                  }}
+                  className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                >
+                  Reset Section
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddDeliverable}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Deliverable
+                </button>
+              </div>
+            </div>
 
             {/* Expected Impact Stats Section */}
             <div className="border border-[#e2e8e0] p-5 rounded-3xl bg-[#f9fbf8]/50 space-y-4">
@@ -624,13 +821,6 @@ export default function HomepageCMSPage() {
             <div className="border-t border-[#e2e8e0] pt-6 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">Key Programme Deliverables</h3>
-                <button
-                  type="button"
-                  onClick={handleAddDeliverable}
-                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
-                >
-                  <Plus className="w-3 h-3" /> Add Deliverable
-                </button>
               </div>
               <div className="space-y-4">
                 {deliverablesForm.map((item, idx) => (
@@ -675,23 +865,43 @@ export default function HomepageCMSPage() {
                 ))}
               </div>
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Deliverables Section"
+              styles={deliverablesStyles}
+              onChange={setDeliverablesStyles}
+            />
           </div>
         )}
-
-        {/* TAB 7: ECOSYSTEM */}
+        {/* TAB 7: ECOSYSTEM */}
         {activeTab === "industries" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
-              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-[#4e8c4a]" /> Ecosystem Integration (Industries We Serve)
-              </h2>
-              <button
-                type="button"
-                onClick={handleAddIndustry}
-                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <Plus className="w-3 h-3" /> Add Sector
-              </button>
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-[#4e8c4a]" />
+                <h2 className="text-base font-bold text-[#1c3c24]">Ecosystem Integration (Industries We Serve)</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Revert Ecosystem changes to current saved state?")) {
+                      setIndustriesForm(data.industries || []);
+                      setIndustriesStyles((data.homepage as any)?.industriesStyles || {});
+                    }
+                  }}
+                  className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                >
+                  Reset Section
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddIndustry}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Sector
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -737,25 +947,44 @@ export default function HomepageCMSPage() {
                 </div>
               ))}
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Ecosystem Section"
+              styles={industriesStyles}
+              onChange={setIndustriesStyles}
+            />
           </div>
         )}
-
-
 
         {/* TAB 9: TESTIMONIALS */}
         {activeTab === "testimonials" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-3">
-              <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
-                <Quote className="w-4 h-4 text-[#4e8c4a]" /> Grower Testimonials & Feedback
-              </h2>
-              <button
-                type="button"
-                onClick={handleAddTestimonial}
-                className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
-              >
-                <Plus className="w-3 h-3" /> Add Testimonial
-              </button>
+              <div className="flex items-center gap-2">
+                <Quote className="w-4 h-4 text-[#4e8c4a]" />
+                <h2 className="text-base font-bold text-[#1c3c24]">Grower Testimonials & Feedback</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.confirm("Revert Testimonials changes to current saved state?")) {
+                      setTestimonialsForm(data.testimonials || []);
+                      setTestimonialsStyles((data.homepage as any)?.testimonialsStyles || {});
+                    }
+                  }}
+                  className="px-3 py-1.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] text-[10px] font-bold rounded-lg transition-colors cursor-pointer"
+                >
+                  Reset Section
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddTestimonial}
+                  className="px-3 py-1.5 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white text-[10px] font-bold rounded-lg flex items-center gap-1 transition-colors"
+                >
+                  <Plus className="w-3 h-3" /> Add Testimonial
+                </button>
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -816,6 +1045,12 @@ export default function HomepageCMSPage() {
                 </div>
               ))}
             </div>
+
+            <BrandingSectionStylesControls
+              sectionName="Testimonials Section"
+              styles={testimonialsStyles}
+              onChange={setTestimonialsStyles}
+            />
           </div>
         )}
       </div>

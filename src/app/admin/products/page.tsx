@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useCMS } from "@/lib/cms-context";
 import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 import { 
   Plus, 
   Edit2, 
@@ -323,6 +324,8 @@ export default function ProductsCMSPage() {
                       label="Product Thumbnail Photo"
                       value={editingProduct.thumbnail || ""}
                       onChange={(url) => setEditingProduct({ ...editingProduct, thumbnail: url, images: [url] })}
+                      requiredWidth={600}
+                      requiredHeight={600}
                     />
                   </div>
                   <div>
@@ -657,10 +660,30 @@ export default function ProductsCMSPage() {
                 </div>
               )}
 
+            <BrandingSectionStylesControls
+              sectionName="Product Display Style"
+              styles={editingProduct.styles}
+              onChange={(newStyles) => setEditingProduct({ ...editingProduct, styles: newStyles })}
+            />
+
             </div>
 
             {/* Modal Footer actions */}
             <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#e2e8e0]">
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm("Revert product changes to current saved state?")) {
+                    const original = data.products.find((p) => p.id === editingProduct.id);
+                    if (original) {
+                      setEditingProduct({ ...original });
+                    }
+                  }
+                }}
+                className="px-5 py-2.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer font-sans"
+              >
+                Reset
+              </button>
               <button
                 type="button"
                 onClick={() => setEditingProduct(null)}

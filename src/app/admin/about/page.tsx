@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 import { 
   Save, 
   CheckCircle2, 
@@ -122,6 +123,35 @@ export default function AboutUsCMSPage() {
             </span>
           )}
           <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert About Page changes to current saved state?")) {
+                if (data?.about) {
+                  setAboutForm({
+                    ...data.about,
+                    heroTitle: data.about.heroTitle || "",
+                    heroSubtitle: data.about.heroSubtitle || "",
+                    whoWeAreTitle: data.about.whoWeAreTitle || "",
+                    whoWeAreParagraph1: data.about.whoWeAreParagraph1 || "",
+                    whoWeAreParagraph2: data.about.whoWeAreParagraph2 || "",
+                    whoWeAreImage: data.about.whoWeAreImage || "",
+                    journeySteps: data.about.journeySteps || [],
+                    scienceCards: data.about.scienceCards || [],
+                    qualityCards: data.about.qualityCards || [],
+                    partnershipCards: data.about.partnershipCards || [],
+                    whyChooseCards: data.about.whyChooseCards || [],
+                    processSteps: data.about.processSteps || [],
+                    techBadges: data.about.techBadges || [],
+                    aboutGallery: data.about.aboutGallery || [],
+                  });
+                }
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
+          <button
             onClick={handleSave}
             disabled={saving}
             className="flex items-center gap-2 px-6 py-3 bg-[#1c3c24] hover:bg-[#2c5e37] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow transition-all cursor-pointer"
@@ -238,6 +268,8 @@ export default function AboutUsCMSPage() {
               label="Who We Are Section Image"
               value={aboutForm.whoWeAreImage || ""}
               onChange={(url) => setAboutForm({ ...aboutForm, whoWeAreImage: url })}
+              requiredWidth={1200}
+              requiredHeight={800}
             />
           </div>
         </div>
@@ -680,6 +712,8 @@ export default function AboutUsCMSPage() {
                       label="Gallery Image Photo"
                       value={img.url || ""}
                       onChange={(url) => updateArrayItem("aboutGallery", index, "url", url)}
+                      requiredWidth={800}
+                      requiredHeight={600}
                     />
                   </div>
                   <div>
@@ -698,6 +732,11 @@ export default function AboutUsCMSPage() {
         </div>
       )}
 
+      <BrandingSectionStylesControls
+        sectionName="About Page Sections"
+        styles={aboutForm.styles}
+        onChange={(newStyles) => setAboutForm({ ...aboutForm, styles: newStyles })}
+      />
     </div>
   );
 }

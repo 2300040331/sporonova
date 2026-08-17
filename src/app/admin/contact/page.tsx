@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
 import { Save, CheckCircle2, Mail, Info, MapPin, Phone, MessageSquare } from "lucide-react";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function ContactCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const [contactForm, setContactForm] = useState({
+  const [contactForm, setContactForm] = useState<any>({
     badge: "",
     title: "",
     subtitle: "",
@@ -21,6 +22,7 @@ export default function ContactCMSPage() {
     footerTag: "",
     whatsappNumber: "",
     mapIframeUrl: "",
+    styles: {},
   });
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function ContactCMSPage() {
         footerTag: data.contact.footerTag || "",
         whatsappNumber: data.contact.whatsappNumber || "",
         mapIframeUrl: data.contact.mapIframeUrl || "",
+        styles: data.contact.styles || {},
       });
     }
   }, [data]);
@@ -79,6 +82,32 @@ export default function ContactCMSPage() {
               <CheckCircle2 className="w-4 h-4 text-[#4e8c4a]" /> Contact Page Saved Live!
             </span>
           )}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert Contact Page changes to current saved state?")) {
+                if (data?.contact) {
+                  setContactForm({
+                    badge: data.contact.badge || "",
+                    title: data.contact.title || "",
+                    subtitle: data.contact.subtitle || "",
+                    getInTouchTitle: data.contact.getInTouchTitle || "",
+                    getInTouchParagraph: data.contact.getInTouchParagraph || "",
+                    phone: data.contact.phone || "",
+                    address: data.contact.address || "",
+                    email: data.contact.email || "",
+                    footerTag: data.contact.footerTag || "",
+                    whatsappNumber: data.contact.whatsappNumber || "",
+                    mapIframeUrl: data.contact.mapIframeUrl || "",
+                    styles: data.contact.styles || {},
+                  });
+                }
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
           <button
             onClick={handleSave}
             disabled={saving}
@@ -259,6 +288,12 @@ export default function ContactCMSPage() {
             placeholder="https://www.google.com/maps/embed..."
           />
         </div>
+        
+        <BrandingSectionStylesControls
+          sectionName="Contact Details Section"
+          styles={contactForm.styles}
+          onChange={(newStyles) => setContactForm({ ...contactForm, styles: newStyles })}
+        />
       </div>
     </div>
   );

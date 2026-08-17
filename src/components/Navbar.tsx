@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Leaf, ArrowRight, Menu, X, ChevronDown } from "lucide-react";
 
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 export default function Navbar() {
   const { data } = useCMS();
@@ -40,6 +41,7 @@ export default function Navbar() {
             ? "bg-white/98 backdrop-blur-md border-b border-[#e2e8e0] py-3.5 shadow-sm"
             : "bg-white border-b border-[#e8ece6] py-4"
         }`}
+        style={getSectionStyles(header?.styles)}
       >
         <div className="max-w-[1680px] w-full mx-auto px-6 sm:px-10 lg:px-16 flex items-center justify-between">
           
@@ -52,8 +54,10 @@ export default function Navbar() {
             />
           </Link>
  
-        {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-7 xl:gap-8 text-xs xl:text-[13px] font-extrabold uppercase tracking-wider text-[#1c3c24]">
+        <nav 
+          className="hidden lg:flex items-center gap-7 xl:gap-8 text-xs xl:text-[13px] font-extrabold uppercase tracking-wider text-[#1c3c24]"
+          style={{ fontFamily: header?.styles?.fontFamily || undefined }}
+        >
           {(header?.navLinks || [
             { name: "Home", href: "/" },
             { name: "Production Process", href: "/process" },
@@ -64,7 +68,13 @@ export default function Navbar() {
             if (idx === 0) {
               return (
                 <React.Fragment key={link.name}>
-                  <Link href={link.href} className="hover:text-[#4e8c4a] transition-colors py-2">{link.name}</Link>
+                  <Link 
+                    href={link.href} 
+                    className="hover:text-[#4e8c4a] transition-colors py-2"
+                    style={{ color: header?.styles?.textColor || undefined }}
+                  >
+                    {link.name}
+                  </Link>
                   
                   {/* Products Dropdown */}
                   <div
@@ -72,7 +82,10 @@ export default function Navbar() {
                     onMouseEnter={() => setShowProductsDropdown(true)}
                     onMouseLeave={() => setShowProductsDropdown(false)}
                   >
-                    <button className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-extrabold text-xs xl:text-[13px]">
+                    <button 
+                      className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-extrabold text-xs xl:text-[13px]"
+                      style={{ color: header?.styles?.textColor || undefined }}
+                    >
                       Products <ChevronDown className="w-3.5 h-3.5 text-[#4e8c4a]" />
                     </button>
                     {showProductsDropdown && (
@@ -95,7 +108,12 @@ export default function Navbar() {
               );
             }
             return (
-              <Link key={link.name} href={link.href} className="hover:text-[#4e8c4a] transition-colors py-2">
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className="hover:text-[#4e8c4a] transition-colors py-2"
+                style={{ color: header?.styles?.textColor || undefined }}
+              >
                 {link.name}
               </Link>
             );
@@ -107,6 +125,7 @@ export default function Navbar() {
           <Link
             href={header?.ctaLink || "/contact"}
             className="flex items-center gap-2 px-7 py-3.5 bg-[#1c3c24] text-[11px] font-extrabold uppercase tracking-wider text-white rounded-full hover:bg-[#4e8c4a] hover:scale-[1.03] transition-all shadow-md shadow-[#1c3c24]/10"
+            style={getButtonStyles(header?.styles)}
           >
             {header?.ctaText || "Contact Us"} <ArrowRight className="w-4 h-4" />
           </Link>

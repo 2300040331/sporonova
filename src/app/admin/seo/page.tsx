@@ -66,6 +66,22 @@ export default function SeoCMSPage() {
             </span>
           )}
           <button
+            type="button"
+            onClick={() => {
+              if (window.confirm("Revert SEO changes for this route to current saved state?")) {
+                if (data?.seo) {
+                  setSeoForm(data.seo[selectedRoute] || {
+                    ...defaultSeo,
+                    canonicalUrl: `https://sporonova.com/${selectedRoute === "home" ? "" : selectedRoute}`,
+                  });
+                }
+              }
+            }}
+            className="px-5 py-3 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+          >
+            Reset
+          </button>
+          <button
             onClick={handleSaveSeo}
             disabled={saving}
             className="flex items-center gap-2 px-6 py-3 bg-[#1c3c24] hover:bg-[#2c5e37] text-white font-bold text-xs uppercase tracking-wider rounded-2xl shadow transition-all cursor-pointer"

@@ -7,6 +7,7 @@ import { Phone, MapPin, Mail, ClipboardList, ArrowLeft, Download } from "lucide-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useCMS } from "@/lib/cms-context";
+import { getSectionStyles, getHeadingStyles, getParagraphStyles, getButtonStyles } from "@/lib/styles-helper";
 
 export const INQUIRY_MAPPINGS: Record<string, { title: string; message: string }> = {
   "Request Product Catalogue": {
@@ -152,7 +153,7 @@ function ContactContent() {
   };
 
   return (
-    <main className="flex-1 bg-[#f9faf7] pt-28 pb-20 min-h-screen">
+    <main className="flex-1 bg-[#f9faf7] pt-28 pb-20 min-h-screen" style={getSectionStyles(data?.contact?.styles)}>
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         
         {/* Back Link & Header */}
@@ -168,10 +169,16 @@ function ContactContent() {
             <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block font-extrabold">
               {data?.contact?.badge || "SporoNova Contact & Technical Center"}
             </span>
-            <h1 className="font-display text-4xl md:text-5xl font-black text-[#1c3c24] leading-tight">
+            <h1 
+              className="font-display text-4xl md:text-5xl font-black text-[#1c3c24] leading-tight font-sans"
+              style={getHeadingStyles(data?.contact?.styles)}
+            >
               {data?.contact?.title || "Get In Touch With Our Team"}
             </h1>
-            <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed">
+            <p 
+              className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed font-sans"
+              style={getParagraphStyles(data?.contact?.styles)}
+            >
               {data?.contact?.subtitle || "Request product catalogues, official technical PDF datasheets, bulk spawn pricing, or expert cultivation support."}
             </p>
             <div className="w-16 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
@@ -198,7 +205,14 @@ function ContactContent() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column - Contact Details */}
-          <div className="lg:col-span-4 bg-white border border-[#e6e4dc] p-8 rounded-[2rem] flex flex-col justify-between space-y-8 shadow-sm">
+          <div 
+            className="lg:col-span-4 bg-white border border-[#e6e4dc] p-8 rounded-[2rem] flex flex-col justify-between space-y-8 shadow-sm"
+            style={{
+              backgroundColor: data?.contact?.styles?.cardBgColor || undefined,
+              borderColor: data?.contact?.styles?.cardBorderColor || undefined,
+              borderRadius: data?.contact?.styles?.cardBorderRadius !== undefined ? `${data?.contact?.styles.cardBorderRadius}px` : undefined,
+            }}
+          >
             <div className="space-y-6">
               <h3 className="text-[#1c3c24] font-display text-xl font-extrabold tracking-tight">
                 {data?.contact?.getInTouchTitle || "Get in Touch"}
@@ -248,7 +262,14 @@ function ContactContent() {
           </div>
 
           {/* Middle Column - Form */}
-          <div className="lg:col-span-4 bg-white border border-[#e6e4dc] p-8 rounded-[2rem] shadow-sm">
+          <div 
+            className="lg:col-span-4 bg-white border border-[#e6e4dc] p-8 rounded-[2rem] shadow-sm"
+            style={{
+              backgroundColor: data?.contact?.styles?.cardBgColor || undefined,
+              borderColor: data?.contact?.styles?.cardBorderColor || undefined,
+              borderRadius: data?.contact?.styles?.cardBorderRadius !== undefined ? `${data?.contact?.styles.cardBorderRadius}px` : undefined,
+            }}
+          >
             <form className="space-y-5" onSubmit={handleContactSubmit}>
               <div className="space-y-1.5">
                 <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Your Name</label>
@@ -318,6 +339,7 @@ function ContactContent() {
               <button
                 type="submit"
                 className="w-full py-3.5 bg-[#1c3c24] text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-[#4e8c4a] transition-all shadow-md shadow-[#1c3c24]/5 flex items-center justify-center gap-2 cursor-pointer"
+                style={getButtonStyles(data?.contact?.styles)}
               >
                 <ClipboardList className="w-3.5 h-3.5" /> Send Message via WhatsApp
               </button>
