@@ -57,17 +57,25 @@ export default function SettingsCMSPage() {
           <button
             type="button"
             onClick={() => {
-              if (window.confirm("Revert Settings changes to current saved state?")) {
-                setSettingsForm(data?.settings || {
-                  siteName: "", primaryColor: "#1F5E38", secondaryColor: "#2E7D32", accentColor: "#4e8c4a",
-                  backgroundColor: "#f8f7f3", textColor: "#333333", fontFamilyHeading: "Outfit, sans-serif",
-                  fontFamilyBody: "Inter, sans-serif", containerWidth: "1280px", sectionPadding: "64px", borderRadius: "16px",
+              if (window.confirm("Reset all settings to factory default brand colors and styles?")) {
+                setSettingsForm({
+                  siteName: data?.settings?.siteName || "SporoNova Biotech",
+                  primaryColor: "#1F5E38",
+                  secondaryColor: "#2E7D32",
+                  accentColor: "#4e8c4a",
+                  backgroundColor: "#f8f7f3",
+                  textColor: "#333333",
+                  fontFamilyHeading: "Outfit, sans-serif",
+                  fontFamilyBody: "Inter, sans-serif",
+                  containerWidth: "1280px",
+                  sectionPadding: "64px",
+                  borderRadius: "16px",
                 });
               }
             }}
             className="px-5 py-3 border border-emerald-500/30 hover:bg-emerald-800/50 text-white font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
           >
-            Reset
+            Reset to Defaults
           </button>
           <button
             onClick={handleSave}
@@ -100,14 +108,21 @@ export default function SettingsCMSPage() {
                 type="color"
                 value={settingsForm.primaryColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, primaryColor: e.target.value })}
-                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer flex-shrink-0"
               />
               <input
                 type="text"
                 value={settingsForm.primaryColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, primaryColor: e.target.value })}
-                className="w-full px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+                className="flex-1 px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
               />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, primaryColor: "#1F5E38" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
             </div>
           </div>
 
@@ -120,14 +135,21 @@ export default function SettingsCMSPage() {
                 type="color"
                 value={settingsForm.secondaryColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, secondaryColor: e.target.value })}
-                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer flex-shrink-0"
               />
               <input
                 type="text"
                 value={settingsForm.secondaryColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, secondaryColor: e.target.value })}
-                className="w-full px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+                className="flex-1 px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
               />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, secondaryColor: "#2E7D32" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
             </div>
           </div>
 
@@ -140,14 +162,75 @@ export default function SettingsCMSPage() {
                 type="color"
                 value={settingsForm.accentColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, accentColor: e.target.value })}
-                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer flex-shrink-0"
               />
               <input
                 type="text"
                 value={settingsForm.accentColor}
                 onChange={(e) => setSettingsForm({ ...settingsForm, accentColor: e.target.value })}
-                className="w-full px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+                className="flex-1 px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
               />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, accentColor: "#4e8c4a" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
+              Site Background Color
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={settingsForm.backgroundColor || "#f8f7f3"}
+                onChange={(e) => setSettingsForm({ ...settingsForm, backgroundColor: e.target.value })}
+                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer flex-shrink-0"
+              />
+              <input
+                type="text"
+                value={settingsForm.backgroundColor || ""}
+                onChange={(e) => setSettingsForm({ ...settingsForm, backgroundColor: e.target.value })}
+                className="flex-1 px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, backgroundColor: "#f8f7f3" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
+              Main Body Text Color
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={settingsForm.textColor || "#333333"}
+                onChange={(e) => setSettingsForm({ ...settingsForm, textColor: e.target.value })}
+                className="w-10 h-10 rounded-xl bg-transparent border-0 cursor-pointer flex-shrink-0"
+              />
+              <input
+                type="text"
+                value={settingsForm.textColor || ""}
+                onChange={(e) => setSettingsForm({ ...settingsForm, textColor: e.target.value })}
+                className="flex-1 px-3 py-2 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, textColor: "#333333" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
             </div>
           </div>
         </div>
@@ -161,24 +244,42 @@ export default function SettingsCMSPage() {
             <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
               Heading Font Family
             </label>
-            <input
-              type="text"
-              value={settingsForm.fontFamilyHeading}
-              onChange={(e) => setSettingsForm({ ...settingsForm, fontFamilyHeading: e.target.value })}
-              className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settingsForm.fontFamilyHeading}
+                onChange={(e) => setSettingsForm({ ...settingsForm, fontFamilyHeading: e.target.value })}
+                className="flex-1 px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, fontFamilyHeading: "Outfit, sans-serif" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
               Body Text Font Family
             </label>
-            <input
-              type="text"
-              value={settingsForm.fontFamilyBody}
-              onChange={(e) => setSettingsForm({ ...settingsForm, fontFamilyBody: e.target.value })}
-              className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settingsForm.fontFamilyBody}
+                onChange={(e) => setSettingsForm({ ...settingsForm, fontFamilyBody: e.target.value })}
+                className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, fontFamilyBody: "Inter, sans-serif" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
           </div>
         </div>
 
@@ -191,36 +292,63 @@ export default function SettingsCMSPage() {
             <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
               Container Max Width
             </label>
-            <input
-              type="text"
-              value={settingsForm.containerWidth}
-              onChange={(e) => setSettingsForm({ ...settingsForm, containerWidth: e.target.value })}
-              className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settingsForm.containerWidth}
+                onChange={(e) => setSettingsForm({ ...settingsForm, containerWidth: e.target.value })}
+                className="flex-1 px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, containerWidth: "1280px" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
               Section Vertical Padding
             </label>
-            <input
-              type="text"
-              value={settingsForm.sectionPadding}
-              onChange={(e) => setSettingsForm({ ...settingsForm, sectionPadding: e.target.value })}
-              className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settingsForm.sectionPadding}
+                onChange={(e) => setSettingsForm({ ...settingsForm, sectionPadding: e.target.value })}
+                className="flex-1 px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, sectionPadding: "64px" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
               Card Border Radius
             </label>
-            <input
-              type="text"
-              value={settingsForm.borderRadius}
-              onChange={(e) => setSettingsForm({ ...settingsForm, borderRadius: e.target.value })}
-              className="w-full px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={settingsForm.borderRadius}
+                onChange={(e) => setSettingsForm({ ...settingsForm, borderRadius: e.target.value })}
+                className="flex-1 px-4 py-2.5 bg-black/30 border border-white/15 rounded-xl text-white text-xs font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setSettingsForm({ ...settingsForm, borderRadius: "16px" })}
+                className="px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-800/40 hover:bg-emerald-700 hover:text-white text-emerald-200 rounded-lg transition-all cursor-pointer"
+              >
+                Default
+              </button>
+            </div>
           </div>
         </div>
       </div>

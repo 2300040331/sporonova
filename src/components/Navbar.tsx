@@ -58,26 +58,29 @@ export default function Navbar() {
           className="hidden lg:flex items-center gap-7 xl:gap-8 text-xs xl:text-[13px] font-extrabold uppercase tracking-wider text-[#1c3c24]"
           style={{ fontFamily: header?.styles?.fontFamily || undefined }}
         >
-          {(header?.navLinks || [
-            { name: "Home", href: "/" },
-            { name: "Production Process", href: "/process" },
-            { name: "About Us", href: "/about" },
-            { name: "Why Choose Us", href: "/#why-choose-us" },
-            { name: "Knowledge Center", href: "/knowledge" },
-          ]).map((link: any, idx: number) => {
-            if (idx === 0) {
-              return (
-                <React.Fragment key={link.name}>
-                  <Link 
-                    href={link.href} 
-                    className="hover:text-[#4e8c4a] transition-colors py-2"
-                    style={{ color: header?.styles?.textColor || undefined }}
-                  >
-                    {link.name}
-                  </Link>
-                  
-                  {/* Products Dropdown */}
+          {(() => {
+            const rawLinks = header?.navLinks && header.navLinks.length > 0
+              ? header.navLinks
+              : [
+                  { name: "Home", href: "/" },
+                  { name: "Production Process", href: "/process" },
+                  { name: "About Us", href: "/about" },
+                  { name: "Why Choose Us", href: "/#why-choose-us" },
+                  { name: "Knowledge Center", href: "/knowledge" },
+                ];
+            const hasProductsLink = rawLinks.some((l: any) => l.name?.toLowerCase() === "products");
+            const processedLinks = [...rawLinks] as any[];
+            if (!hasProductsLink) {
+              const homeIdx = processedLinks.findIndex((l: any) => l.name?.toLowerCase() === "home");
+              const insertIdx = homeIdx !== -1 ? homeIdx + 1 : 1;
+              processedLinks.splice(insertIdx, 0, { name: "Products", href: "#", isDropdown: true });
+            }
+
+            return processedLinks.map((link: any) => {
+              if (link.isDropdown || link.name?.toLowerCase() === "products") {
+                return (
                   <div
+                    key="products-desktop"
                     className="relative"
                     onMouseEnter={() => setShowProductsDropdown(true)}
                     onMouseLeave={() => setShowProductsDropdown(false)}
@@ -104,20 +107,20 @@ export default function Navbar() {
                       </div>
                     )}
                   </div>
-                </React.Fragment>
+                );
+              }
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className="hover:text-[#4e8c4a] transition-colors py-2"
+                  style={{ color: header?.styles?.textColor || undefined }}
+                >
+                  {link.name}
+                </Link>
               );
-            }
-            return (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className="hover:text-[#4e8c4a] transition-colors py-2"
-                style={{ color: header?.styles?.textColor || undefined }}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
+            });
+          })()}
         </nav>
  
         {/* Action Button & Contact Info */}
@@ -144,26 +147,28 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-[#e6e4dc] shadow-md py-6 px-6 space-y-4 animate-slideDown">
-          {(header?.navLinks || [
-            { name: "Home", href: "/" },
-            { name: "Production Process", href: "/process" },
-            { name: "About Us", href: "/about" },
-            { name: "Why Choose Us", href: "/#why-choose-us" },
-            { name: "Knowledge Center", href: "/knowledge" },
-          ]).map((link: any, idx: number) => {
-            if (idx === 0) {
-              return (
-                <React.Fragment key={link.name}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-                  >
-                    {link.name}
-                  </Link>
+          {(() => {
+            const rawLinks = header?.navLinks && header.navLinks.length > 0
+              ? header.navLinks
+              : [
+                  { name: "Home", href: "/" },
+                  { name: "Production Process", href: "/process" },
+                  { name: "About Us", href: "/about" },
+                  { name: "Why Choose Us", href: "/#why-choose-us" },
+                  { name: "Knowledge Center", href: "/knowledge" },
+                ];
+            const hasProductsLink = rawLinks.some((l: any) => l.name?.toLowerCase() === "products");
+            const processedLinks = [...rawLinks] as any[];
+            if (!hasProductsLink) {
+              const homeIdx = processedLinks.findIndex((l: any) => l.name?.toLowerCase() === "home");
+              const insertIdx = homeIdx !== -1 ? homeIdx + 1 : 1;
+              processedLinks.splice(insertIdx, 0, { name: "Products", href: "#", isDropdown: true });
+            }
 
-                  {/* Products Section */}
-                  <div className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
+            return processedLinks.map((link: any) => {
+              if (link.isDropdown || link.name?.toLowerCase() === "products") {
+                return (
+                  <div key="products-mobile" className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
                     <span className="block text-[9px] font-mono text-gray-400 uppercase tracking-widest">Products</span>
                     {productsList.map((p) => (
                       <Link
@@ -176,20 +181,20 @@ export default function Navbar() {
                       </Link>
                     ))}
                   </div>
-                </React.Fragment>
+                );
+              }
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+                >
+                  {link.name}
+                </Link>
               );
-            }
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-              >
-                {link.name}
-              </Link>
-            );
-          })}
+            });
+          })()}
           
           <Link
             href={header?.ctaLink || "/contact"}
