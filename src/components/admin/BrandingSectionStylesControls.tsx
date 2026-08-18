@@ -245,18 +245,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="headingSizeList"
                       type="text"
                       placeholder={DEFAULTS.headingSize}
                       value={styles.headingSize ?? ""}
                       onChange={(e) => updateStyle("headingSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="headingSizeList">
-                      {FONT_SIZES.map((s) => (
-                        <option key={s} value={s} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("headingSize")} />
                 </div>
@@ -268,18 +262,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="paragraphSizeList"
                       type="text"
                       placeholder={DEFAULTS.paragraphSize}
                       value={styles.paragraphSize ?? ""}
                       onChange={(e) => updateStyle("paragraphSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="paragraphSizeList">
-                      {FONT_SIZES.map((s) => (
-                        <option key={s} value={s} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("paragraphSize")} />
                 </div>
@@ -309,18 +297,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="lineHeightList"
                       type="text"
                       placeholder={DEFAULTS.lineHeight}
                       value={styles.lineHeight || ""}
                       onChange={(e) => updateStyle("lineHeight", e.target.value)}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="lineHeightList">
-                      {LINE_HEIGHTS.map((lh) => (
-                        <option key={lh} value={lh} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("lineHeight")} />
                 </div>
@@ -332,18 +314,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="letterSpacingList"
                       type="text"
                       placeholder={DEFAULTS.letterSpacing}
                       value={styles.letterSpacing || ""}
                       onChange={(e) => updateStyle("letterSpacing", e.target.value)}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="letterSpacingList">
-                      {LETTER_SPACINGS.map((ls) => (
-                        <option key={ls} value={ls} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("letterSpacing")} />
                 </div>
@@ -472,18 +448,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="btnTextSizeList"
                       type="text"
                       placeholder={DEFAULTS.buttonTextSize}
                       value={styles.buttonTextSize ?? ""}
                       onChange={(e) => updateStyle("buttonTextSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="btnTextSizeList">
-                      {FONT_SIZES.map((s) => (
-                        <option key={s} value={s} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("buttonTextSize")} />
                 </div>
@@ -495,18 +465,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="borderRadiusList"
                       type="text"
                       placeholder={DEFAULTS.borderRadius}
                       value={styles.borderRadius ?? ""}
                       onChange={(e) => updateStyle("borderRadius", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="borderRadiusList">
-                      {BORDER_RADII.map((r) => (
-                        <option key={r} value={r} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("borderRadius")} />
                 </div>
@@ -518,18 +482,12 @@ export default function BrandingSectionStylesControls({
                 <div className="flex gap-1.5">
                   <div className="flex-1 relative">
                     <input
-                      list="iconSizeList"
                       type="text"
                       placeholder={DEFAULTS.iconSize}
                       value={styles.iconSize ?? ""}
                       onChange={(e) => updateStyle("iconSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
                       className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
                     />
-                    <datalist id="iconSizeList">
-                      {FONT_SIZES.map((s) => (
-                        <option key={s} value={s} />
-                      ))}
-                    </datalist>
                   </div>
                   <DefaultBtn onClick={() => applyDefault("iconSize")} />
                 </div>
