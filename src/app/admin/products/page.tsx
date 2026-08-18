@@ -554,7 +554,12 @@ export default function ProductsCMSPage() {
                         type="text"
                         value={editingProduct.faqs?.[0]?.q || ""}
                         onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs || [{ q: "", a: "" }, { q: "", a: "" }])];
+                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                            ? editingProduct.faqs 
+                            : [
+                                editingProduct.faqs?.[0] || { q: "", a: "" },
+                                editingProduct.faqs?.[1] || { q: "", a: "" }
+                              ])];
                           faqs[0] = { ...faqs[0], q: e.target.value };
                           setEditingProduct({ ...editingProduct, faqs });
                         }}
@@ -567,7 +572,12 @@ export default function ProductsCMSPage() {
                         rows={2}
                         value={editingProduct.faqs?.[0]?.a || ""}
                         onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs || [{ q: "", a: "" }, { q: "", a: "" }])];
+                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                            ? editingProduct.faqs 
+                            : [
+                                editingProduct.faqs?.[0] || { q: "", a: "" },
+                                editingProduct.faqs?.[1] || { q: "", a: "" }
+                              ])];
                           faqs[0] = { ...faqs[0], a: e.target.value };
                           setEditingProduct({ ...editingProduct, faqs });
                         }}
@@ -585,7 +595,12 @@ export default function ProductsCMSPage() {
                         type="text"
                         value={editingProduct.faqs?.[1]?.q || ""}
                         onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs || [{ q: "", a: "" }, { q: "", a: "" }])];
+                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                            ? editingProduct.faqs 
+                            : [
+                                editingProduct.faqs?.[0] || { q: "", a: "" },
+                                editingProduct.faqs?.[1] || { q: "", a: "" }
+                              ])];
                           faqs[1] = { ...faqs[1], q: e.target.value };
                           setEditingProduct({ ...editingProduct, faqs });
                         }}
@@ -598,7 +613,12 @@ export default function ProductsCMSPage() {
                         rows={2}
                         value={editingProduct.faqs?.[1]?.a || ""}
                         onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs || [{ q: "", a: "" }, { q: "", a: "" }])];
+                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                            ? editingProduct.faqs 
+                            : [
+                                editingProduct.faqs?.[0] || { q: "", a: "" },
+                                editingProduct.faqs?.[1] || { q: "", a: "" }
+                              ])];
                           faqs[1] = { ...faqs[1], a: e.target.value };
                           setEditingProduct({ ...editingProduct, faqs });
                         }}
@@ -621,7 +641,9 @@ export default function ProductsCMSPage() {
                           type="text"
                           value={editingProduct.papers?.[0]?.title || ""}
                           onChange={(e) => {
-                            const papers = [...(editingProduct.papers || [{ title: "", author: "", journal: "" }])];
+                            const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                              ? editingProduct.papers
+                              : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
                             papers[0] = { ...papers[0], title: e.target.value };
                             setEditingProduct({ ...editingProduct, papers });
                           }}
@@ -634,7 +656,9 @@ export default function ProductsCMSPage() {
                           type="text"
                           value={editingProduct.papers?.[0]?.author || ""}
                           onChange={(e) => {
-                            const papers = [...(editingProduct.papers || [{ title: "", author: "", journal: "" }])];
+                            const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                              ? editingProduct.papers
+                              : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
                             papers[0] = { ...papers[0], author: e.target.value };
                             setEditingProduct({ ...editingProduct, papers });
                           }}
@@ -648,7 +672,9 @@ export default function ProductsCMSPage() {
                         type="text"
                         value={editingProduct.papers?.[0]?.journal || ""}
                         onChange={(e) => {
-                          const papers = [...(editingProduct.papers || [{ title: "", author: "", journal: "" }])];
+                          const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                            ? editingProduct.papers
+                            : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
                           papers[0] = { ...papers[0], journal: e.target.value };
                           setEditingProduct({ ...editingProduct, papers });
                         }}

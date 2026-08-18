@@ -200,7 +200,7 @@ export default function HomepageCMSPage() {
       partnerships: partnershipsForm,
       deliverables: deliverablesForm,
       industries: industriesForm,
-      successNumbers: statsForm.map((s: any) => ({ value: s.value, label: s.label })),
+      successNumbers: successNumbersForm,
       testimonials: testimonialsForm,
     };
 

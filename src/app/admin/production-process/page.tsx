@@ -56,8 +56,17 @@ export default function ProcessCMSPage() {
 
   const handleDeleteStep = (index: number) => {
     if (confirm("Are you sure you want to delete this process step?")) {
-      const updated = steps.filter((_, i) => i !== index);
-      setSteps(updated);
+      const filtered = steps.filter((_, i) => i !== index);
+      const reindexed = filtered.map((st, i) => {
+        const nextNum = i + 1;
+        const formattedStep = nextNum < 10 ? `0${nextNum}` : `${nextNum}`;
+        return {
+          ...st,
+          stepNumber: nextNum,
+          step: formattedStep,
+        };
+      });
+      setSteps(reindexed);
     }
   };
 

@@ -101,7 +101,10 @@ export default function AboutUsCMSPage() {
   };
 
   const removeArrayItem = (key: string, index: number) => {
-    const updated = (aboutForm[key] || []).filter((_: any, i: number) => i !== index);
+    const filtered = (aboutForm[key] || []).filter((_: any, i: number) => i !== index);
+    const updated = (key === "journeySteps" || key === "processSteps")
+      ? filtered.map((item: any, i: number) => ({ ...item, stepNumber: i + 1 }))
+      : filtered;
     setAboutForm({ ...aboutForm, [key]: updated });
   };
 

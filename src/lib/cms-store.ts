@@ -1083,13 +1083,13 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
   changed ||= homepageChanged;
 
   let processSteps = savedData.processSteps;
-  if (!processSteps || processSteps.length < INITIAL_DATA.processSteps.length) {
+  if (processSteps === undefined || processSteps === null) {
     processSteps = INITIAL_DATA.processSteps;
     changed = true;
   }
 
   let values = savedData.values;
-  if (!values || values.length === 0) {
+  if (values === undefined || values === null) {
     values = INITIAL_DATA.values;
     changed = true;
   }
