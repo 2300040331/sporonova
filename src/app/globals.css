@@ -1,25 +1,20 @@
 @import "tailwindcss";
 
-/* Hide native number input stepper arrows (▲▼) globally */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-/* Hide datalist dropdown arrow indicator in Chrome/Edge */
-input[list]::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  display: none;
-}
-input[list]::-webkit-list-button {
+/* Hide native number input stepper arrows, spin buttons, and datalist dropdown indicators globally on all inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button,
+input::-webkit-calendar-picker-indicator,
+input::-webkit-list-button {
+  -webkit-appearance: none !important;
   display: none !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+input {
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
 }
 @theme {
   --color-primary-white: #ffffff;
