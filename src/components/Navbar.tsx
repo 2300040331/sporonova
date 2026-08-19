@@ -63,63 +63,23 @@ export default function Navbar() {
               ? header.navLinks
               : [
                   { name: "Home", href: "/" },
+                  { name: "Products", href: "/#products" },
                   { name: "Production Process", href: "/process" },
                   { name: "About Us", href: "/about" },
                   { name: "Why Choose Us", href: "/#why-choose-us" },
                   { name: "Knowledge Center", href: "/knowledge" },
                 ];
-            const hasProductsLink = rawLinks.some((l: any) => l.name?.toLowerCase() === "products");
-            const processedLinks = [...rawLinks] as any[];
-            if (!hasProductsLink) {
-              const homeIdx = processedLinks.findIndex((l: any) => l.name?.toLowerCase() === "home");
-              const insertIdx = homeIdx !== -1 ? homeIdx + 1 : 1;
-              processedLinks.splice(insertIdx, 0, { name: "Products", href: "#", isDropdown: true });
-            }
 
-            return processedLinks.map((link: any) => {
-              if (link.isDropdown || link.name?.toLowerCase() === "products") {
-                return (
-                  <div
-                    key="products-desktop"
-                    className="relative"
-                    onMouseEnter={() => setShowProductsDropdown(true)}
-                    onMouseLeave={() => setShowProductsDropdown(false)}
-                  >
-                    <button 
-                      className="hover:text-[#4e8c4a] transition-colors flex items-center gap-1 uppercase cursor-pointer py-2 font-extrabold text-xs xl:text-[13px]"
-                      style={{ color: header?.styles?.textColor || undefined }}
-                    >
-                      Products <ChevronDown className="w-3.5 h-3.5 text-[#4e8c4a]" />
-                    </button>
-                    {showProductsDropdown && (
-                      <div className="absolute top-full left-0 w-56 pt-2 z-50">
-                        <div className="bg-white border border-[#e6e4dc] rounded-2xl shadow-xl py-3">
-                          {productsList.map((p) => (
-                            <Link
-                              key={p.name}
-                              href={p.href}
-                              className="block px-6 py-2.5 text-xs font-bold text-[#1c3c24] hover:bg-[#f9faf7] hover:text-[#4e8c4a] transition-colors"
-                            >
-                              {p.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-              return (
-                <Link 
-                  key={link.name} 
-                  href={link.href} 
-                  className="hover:text-[#4e8c4a] transition-colors py-2"
-                  style={{ color: header?.styles?.textColor || undefined }}
-                >
-                  {link.name}
-                </Link>
-              );
-            });
+            return rawLinks.map((link: any) => (
+              <Link 
+                key={link.name} 
+                href={link.href} 
+                className="hover:text-[#4e8c4a] transition-colors py-2"
+                style={{ color: header?.styles?.textColor || undefined }}
+              >
+                {link.name}
+              </Link>
+            ));
           })()}
         </nav>
  
@@ -152,48 +112,23 @@ export default function Navbar() {
               ? header.navLinks
               : [
                   { name: "Home", href: "/" },
+                  { name: "Products", href: "/#products" },
                   { name: "Production Process", href: "/process" },
                   { name: "About Us", href: "/about" },
                   { name: "Why Choose Us", href: "/#why-choose-us" },
                   { name: "Knowledge Center", href: "/knowledge" },
                 ];
-            const hasProductsLink = rawLinks.some((l: any) => l.name?.toLowerCase() === "products");
-            const processedLinks = [...rawLinks] as any[];
-            if (!hasProductsLink) {
-              const homeIdx = processedLinks.findIndex((l: any) => l.name?.toLowerCase() === "home");
-              const insertIdx = homeIdx !== -1 ? homeIdx + 1 : 1;
-              processedLinks.splice(insertIdx, 0, { name: "Products", href: "#", isDropdown: true });
-            }
 
-            return processedLinks.map((link: any) => {
-              if (link.isDropdown || link.name?.toLowerCase() === "products") {
-                return (
-                  <div key="products-mobile" className="space-y-1.5 pl-3 border-l border-[#e6e4dc]">
-                    <span className="block text-[9px] font-mono text-gray-400 uppercase tracking-widest">Products</span>
-                    {productsList.map((p) => (
-                      <Link
-                        key={p.name}
-                        href={p.href}
-                        onClick={() => setIsOpen(false)}
-                        className="block text-[10px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-                      >
-                        {p.name}
-                      </Link>
-                    ))}
-                  </div>
-                );
-              }
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
-                >
-                  {link.name}
-                </Link>
-              );
-            });
+            return rawLinks.map((link: any) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+              >
+                {link.name}
+              </Link>
+            ));
           })()}
           
           <Link

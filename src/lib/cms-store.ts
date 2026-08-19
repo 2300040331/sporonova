@@ -292,10 +292,11 @@ const INITIAL_DATA: CMSData = {
     sticky: true,
     navLinks: [
       { name: "Home", href: "/", order: 1 },
-      { name: "Production Process", href: "/process", order: 2 },
-      { name: "About Us", href: "/about", order: 3 },
-      { name: "Why Choose Us", href: "/#why-choose-us", order: 4 },
-      { name: "Knowledge Center", href: "/knowledge", order: 5 },
+      { name: "Products", href: "/#products", order: 2 },
+      { name: "Production Process", href: "/process", order: 3 },
+      { name: "About Us", href: "/about", order: 4 },
+      { name: "Why Choose Us", href: "/#why-choose-us", order: 5 },
+      { name: "Knowledge Center", href: "/knowledge", order: 6 },
     ],
     productsDropdown: [
       { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },

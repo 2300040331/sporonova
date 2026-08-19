@@ -656,6 +656,41 @@ export default function Homepage() {
                 </div>
               </div>
 
+              {/* Additional Products Grid (Rendered only when > 4 products exist in CMS catalog) */}
+              {productsList.length > 4 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
+                  {productsList.slice(4).map((product: any, idx: number) => (
+                    <div
+                      key={product.id || `product-extra-${idx}`}
+                      className="bg-white border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
+                          <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">
+                            {product.category || "Certified Spawn"}
+                          </span>
+                        </div>
+                        <h4 className="text-[#1c3c24] font-display font-extrabold text-xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                          {product.name}
+                        </h4>
+                        <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                          {product.desc}
+                        </p>
+                      </div>
+                      <div className="pt-6">
+                        <Link
+                          href={product.href || `/spawn/${product.id}`}
+                          className="inline-flex items-center justify-center w-full px-6 py-3 bg-[#1c3c24] hover:bg-[#4e8c4a] rounded-full text-[10px] font-bold uppercase tracking-wider text-white transition-all text-center"
+                        >
+                          View Specifications &rarr;
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
             </div>
 
           </div>
