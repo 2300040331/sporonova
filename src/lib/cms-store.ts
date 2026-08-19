@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
-import { list, put } from "@vercel/blob";
 import { SectionStylesConfig } from "./styles-helper";
 
 export interface UserRecord {
@@ -1131,49 +1130,16 @@ function ensureDataDirectoryExists() {
   }
 }
 
-/**
- * The local JSON file is a development fallback only. In Vercel, the CMS
- * document lives in Blob so every server instance and every deployment reads
- * the same content.
- */
-const CMS_BLOB_PATH = "cms/content.json";
-
-function isBlobConfigured() {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
-}
-
 function getLocalCMSData(): CMSData {
   if (inMemoryDataCache) {
     // Guarantee Super Admin exists even if in memory
     if (!inMemoryDataCache.users || inMemoryDataCache.users.length === 0) {
-      const defaultPasswordHash = bcrypt.hashSync("admin123", 10);
-      inMemoryDataCache.users = [
-        {
-          id: "usr-super-admin",
-          name: "Super Admin",
-          email: "admin@sporonova.com",
-          passwordHash: defaultPasswordHash,
-          role: "Super Admin",
-          status: "Active",
-          createdAt: new Date().toISOString(),
-        },
-      ];
+      inMemoryDataCache.users = [DEFAULT_ADMIN_USER];
     }
     return inMemoryDataCache;
   }
 
   ensureDataDirectoryExists();
-
-  const defaultPasswordHash = bcrypt.hashSync("admin123", 10);
-  const defaultAdminUser: UserRecord = {
-    id: "usr-super-admin",
-    name: "Super Admin",
-    email: "admin@sporonova.com",
-    passwordHash: defaultPasswordHash,
-    role: "Super Admin",
-    status: "Active",
-    createdAt: new Date().toISOString(),
-  };
 
   if (fs.existsSync(DB_PATH)) {
     try {
@@ -1190,8 +1156,8 @@ function getLocalCMSData(): CMSData {
         }
       }
 
-      if (!inMemoryDataCache!.users || inMemoryDataCache!.users.length === 0) {
-        inMemoryDataCache!.users = [defaultAdminUser];
+      if (!inMemoryDataCache.users || inMemoryDataCache.users.length === 0) {
+        inMemoryDataCache.users = [DEFAULT_ADMIN_USER];
         try {
           fs.writeFileSync(DB_PATH, JSON.stringify(inMemoryDataCache, null, 2), "utf-8");
         } catch (err) {
@@ -1199,13 +1165,13 @@ function getLocalCMSData(): CMSData {
         }
       }
 
-      return inMemoryDataCache!;
+      return inMemoryDataCache;
     } catch (e) {
       console.error("Error reading cms-db.json, re-initializing:", e);
     }
   }
 
-  INITIAL_DATA.users = [defaultAdminUser];
+  INITIAL_DATA.users = [DEFAULT_ADMIN_USER];
   inMemoryDataCache = INITIAL_DATA;
   try {
     fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DATA, null, 2), "utf-8");
@@ -1226,61 +1192,9 @@ function saveLocalCMSData(data: CMSData): void {
 }
 
 export async function getCMSData(): Promise<CMSData> {
-  if (!isBlobConfigured()) {
-    return getLocalCMSData();
-  }
-
-  try {
-    const result = await list({ prefix: CMS_BLOB_PATH, limit: 1 });
-    const existing = result.blobs.find((blob) => blob.pathname === CMS_BLOB_PATH);
-
-    if (existing) {
-      const response = await fetch(existing.url, { cache: "no-store" });
-      if (response.ok) {
-        const json = (await response.json()) as CMSData;
-        const restored = restoreMissingContent(json);
-        inMemoryDataCache = restored.data;
-        return restored.data;
-      }
-      console.warn("Blob fetch failed with status:", response.status, "- falling back to local CMS data");
-    } else {
-      // Seed the Blob store from the project's current CMS content the first time
-      // a newly connected store is used.
-      const initialData = getLocalCMSData();
-      try {
-        await put(CMS_BLOB_PATH, JSON.stringify(initialData), {
-          access: "public",
-          addRandomSuffix: false,
-          allowOverwrite: true,
-          contentType: "application/json",
-        });
-      } catch (seedErr) {
-        console.warn("Failed to seed CMS Blob store:", seedErr);
-      }
-      return initialData;
-    }
-  } catch (error) {
-    console.error("Vercel Blob getCMSData error, falling back to local data:", error);
-  }
-
   return getLocalCMSData();
 }
 
 export async function saveCMSData(data: CMSData): Promise<void> {
   saveLocalCMSData(data);
-
-  if (!isBlobConfigured()) {
-    return;
-  }
-
-  try {
-    await put(CMS_BLOB_PATH, JSON.stringify(data), {
-      access: "public",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-      contentType: "application/json",
-    });
-  } catch (err) {
-    console.warn("Failed to persist CMS data to Vercel Blob:", err);
-  }
 }

@@ -427,7 +427,7 @@ export default function GalleryCMSPage() {
           <div className="flex flex-col items-center gap-3 text-[#1c3c24]">
             <div className="w-10 h-10 border-4 border-[#1c3c24] border-t-transparent rounded-full animate-spin" />
             <div className="text-sm font-bold text-[#1c3c24]">
-              {uploadProgressText || "Uploading photos to Vercel Blob..."}
+              {uploadProgressText || "Uploading photos to media library..."}
             </div>
             <p className="text-xs text-gray-500 font-medium">Please wait while files are uploaded and saved.</p>
           </div>
@@ -440,7 +440,7 @@ export default function GalleryCMSPage() {
               Drag & Drop Photos Here to Upload
             </div>
             <p className="text-xs text-gray-500 max-w-md">
-              Drop single or multiple images directly from your computer. Files are instantly stored in Vercel Blob cloud and added to your media catalog.
+              Drop single or multiple images directly from your computer. Files are instantly saved and added to your media catalog.
             </p>
             <div className="mt-1 inline-flex items-center gap-1.5 px-3 py-1 bg-[#f0f5ef] border border-[#d2e4d0] rounded-full text-[10px] font-mono font-bold text-[#2c5e37]">
               Supports PNG, JPG, WebP, SVG · Up to 5 MB each
