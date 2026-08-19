@@ -13,7 +13,6 @@ import {
   Search,
   Check,
   Eye,
-  Paintbrush,
 } from "lucide-react";
 import { SectionStylesConfig } from "@/lib/styles-helper";
 
@@ -77,11 +76,6 @@ const GOOGLE_FONTS = [
   "Unbounded",
 ];
 
-// Preset Font Sizes & Spacings
-const HEADING_SIZES = ["16", "18", "20", "24", "28", "32", "36", "40", "44", "48", "56", "64", "72"];
-const PARAGRAPH_SIZES = ["10", "12", "14", "16", "18", "20", "22", "24"];
-const LINE_HEIGHTS = ["1.0", "1.15", "1.25", "1.35", "1.4", "1.5", "1.6", "1.75", "1.8", "2.0"];
-const LETTER_SPACINGS = ["-0.05em", "-0.02em", "0em", "0.02em", "0.05em", "0.08em", "0.1em"];
 const FONT_WEIGHTS = [
   { value: "100", label: "100 - Thin" },
   { value: "200", label: "200 - Extra Light" },
@@ -126,8 +120,8 @@ interface SuggestedTheme {
   styles: SectionStylesConfig;
 }
 
-// Tailored Suggested Themes Dictionary
-function getSuggestedThemes(sectionName: string): SuggestedTheme[] {
+// Section-Tailored Smart Suggestions Dictionary (3 Themes Per Section Type)
+function getSmartSuggestions(sectionName: string): SuggestedTheme[] {
   const nameLower = sectionName.toLowerCase();
 
   if (nameLower.includes("hero") || nameLower.includes("banner")) {
@@ -223,7 +217,7 @@ function getSuggestedThemes(sectionName: string): SuggestedTheme[] {
       },
       {
         id: "prod-2",
-        name: "Premium Golden Spawner",
+        name: "Golden Gourmet",
         desc: "Rich amber & bronze tones for luxury gourmet varieties.",
         styles: {
           backgroundColor: "#faf6f0",
@@ -266,7 +260,143 @@ function getSuggestedThemes(sectionName: string): SuggestedTheme[] {
     ];
   }
 
-  // Universal Fallback 3 Themes for all other sections
+  if (nameLower.includes("process") || nameLower.includes("production")) {
+    return [
+      {
+        id: "proc-1",
+        name: "Sterile Laboratory",
+        desc: "Crisp white & sterile green for clean room step displays.",
+        styles: {
+          backgroundColor: "#ffffff",
+          textColor: "#1f2937",
+          headingColor: "#15803d",
+          headingWeight: "700",
+          iconColor: "#16a34a",
+          buttonColor: "#15803d",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#f8fafc",
+          cardTextColor: "#1e293b",
+          cardBorderColor: "#e2e8f0",
+          fontFamily: "Inter, sans-serif",
+          headingSize: 32,
+          paragraphSize: 14,
+          borderRadius: 16,
+        },
+      },
+      {
+        id: "proc-2",
+        name: "Mycelium Incubation",
+        desc: "Deep dark slate with bioluminescent green progress lines.",
+        styles: {
+          backgroundColor: "#0f172a",
+          textColor: "#94a3b8",
+          headingColor: "#4ade80",
+          headingWeight: "700",
+          iconColor: "#4ade80",
+          buttonColor: "#22c55e",
+          buttonTextColor: "#052e16",
+          cardBgColor: "#1e293b",
+          cardTextColor: "#f1f5f9",
+          cardBorderColor: "#334155",
+          fontFamily: "Space Grotesk, sans-serif",
+          headingSize: 34,
+          paragraphSize: 14,
+          borderRadius: 20,
+        },
+      },
+      {
+        id: "proc-3",
+        name: "Bio-Industrial Emerald",
+        desc: "Industrial strength forest tones for large-scale operations.",
+        styles: {
+          backgroundColor: "#f4f7f4",
+          textColor: "#1c3c24",
+          headingColor: "#1c3c24",
+          headingWeight: "800",
+          iconColor: "#2d6a4f",
+          buttonColor: "#1c3c24",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#ffffff",
+          cardTextColor: "#1c3c24",
+          cardBorderColor: "#c8dad0",
+          fontFamily: "Poppins, sans-serif",
+          headingSize: 36,
+          paragraphSize: 14,
+          borderRadius: 12,
+        },
+      },
+    ];
+  }
+
+  if (nameLower.includes("testimonial") || nameLower.includes("review")) {
+    return [
+      {
+        id: "test-1",
+        name: "Trust & Integrity",
+        desc: "Calm sage green with white review cards & trusted badges.",
+        styles: {
+          backgroundColor: "#f2f7f1",
+          textColor: "#2c5e37",
+          headingColor: "#1c3c24",
+          headingWeight: "700",
+          iconColor: "#4e8c4a",
+          buttonColor: "#1c3c24",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#ffffff",
+          cardTextColor: "#2c5e37",
+          cardBorderColor: "#d2e4d0",
+          fontFamily: "Outfit, sans-serif",
+          headingSize: 32,
+          paragraphSize: 14,
+          borderRadius: 20,
+        },
+      },
+      {
+        id: "test-2",
+        name: "Academic Review",
+        desc: "Refined editorial typography with warm stone backgrounds.",
+        styles: {
+          backgroundColor: "#faf9f6",
+          textColor: "#443931",
+          headingColor: "#2b1c11",
+          headingWeight: "600",
+          iconColor: "#b45309",
+          buttonColor: "#2b1c11",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#ffffff",
+          cardTextColor: "#443931",
+          cardBorderColor: "#eee8dd",
+          fontFamily: "Lora, serif",
+          headingSize: 32,
+          paragraphSize: 15,
+          borderRadius: 16,
+        },
+      },
+      {
+        id: "test-3",
+        name: "Modern Farmer",
+        desc: "Vibrant high-contrast layout for high impact social proof.",
+        styles: {
+          backgroundColor: "#163824",
+          textColor: "#d8f3dc",
+          headingColor: "#ffffff",
+          headingWeight: "700",
+          iconColor: "#74c69d",
+          buttonColor: "#74c69d",
+          buttonTextColor: "#081c15",
+          cardBgColor: "#2d6a4f",
+          cardTextColor: "#ffffff",
+          cardBorderColor: "#40916c",
+          fontFamily: "Plus Jakarta Sans, sans-serif",
+          headingSize: 34,
+          paragraphSize: 14,
+          borderRadius: 24,
+        },
+      },
+    ];
+  }
+
+  // Universal Fallback 3 Smart Suggestions for all other sections
   return [
     {
       id: "gen-1",
@@ -353,7 +483,7 @@ export default function BrandingSectionStylesControls({
   sectionName,
 }: BrandingSectionStylesControlsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"themes" | "typography" | "colors" | "spacing" | "cards">("themes");
+  const [activeTab, setActiveTab] = useState<"suggestions" | "typography" | "colors" | "spacing" | "cards">("suggestions");
   const [fontSearch, setFontSearch] = useState("");
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -407,7 +537,7 @@ export default function BrandingSectionStylesControls({
     return GOOGLE_FONTS.filter((f) => f.toLowerCase().includes(fontSearch.toLowerCase()));
   }, [fontSearch]);
 
-  const suggestedThemes = useMemo(() => getSuggestedThemes(sectionName), [sectionName]);
+  const smartSuggestions = useMemo(() => getSmartSuggestions(sectionName), [sectionName]);
 
   const currentFontFamilyName = styles.fontFamily ? styles.fontFamily.split(",")[0].replace(/['"]/g, "").trim() : "Outfit";
 
@@ -431,7 +561,7 @@ export default function BrandingSectionStylesControls({
         <div className="p-5 space-y-4">
           <div className="flex border-b border-[#e2e8e0] gap-1 pb-1 overflow-x-auto">
             {[
-              { id: "themes", label: "Suggested Themes", icon: Sparkles },
+              { id: "suggestions", label: "Smart Suggestions (3 Themes)", icon: Sparkles },
               { id: "typography", label: "Typography", icon: Type },
               { id: "colors", label: "Colors", icon: Palette },
               { id: "spacing", label: "Layout & Spacing", icon: LayoutGrid },
@@ -456,18 +586,18 @@ export default function BrandingSectionStylesControls({
             })}
           </div>
 
-          {/* ───── SUGGESTED THEMES TAB ───── */}
-          {activeTab === "themes" && (
+          {/* ───── SMART SUGGESTIONS TAB ───── */}
+          {activeTab === "suggestions" && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
-                  Select a Curated Theme for {sectionName}
+                  Smart Suggestions Tailored for {sectionName}
                 </span>
                 <span className="text-[10px] font-mono text-gray-400">1-Click Instant Apply</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {suggestedThemes.map((t) => {
+                {smartSuggestions.map((t) => {
                   const bg = (t.styles.backgroundColor as string) || "#ffffff";
                   const cardBg = (t.styles.cardBgColor as string) || "#ffffff";
                   const txt = (t.styles.textColor as string) || "#000000";
@@ -657,26 +787,10 @@ export default function BrandingSectionStylesControls({
                   </div>
                 </div>
 
-                {/* Heading Size (px) with Select & Manual Text Input */}
+                {/* Heading Size (px) - Option-free Manual Text Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Heading Size (px)</label>
                   <div className="flex gap-1.5">
-                    <select
-                      value={HEADING_SIZES.includes(String(styles.headingSize)) ? String(styles.headingSize) : "custom"}
-                      onChange={(e) => {
-                        if (e.target.value !== "custom") {
-                          updateStyle("headingSize", parseInt(e.target.value) || e.target.value);
-                        }
-                      }}
-                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
-                    >
-                      <option value="custom">Preset</option>
-                      {HEADING_SIZES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}px
-                        </option>
-                      ))}
-                    </select>
                     <input
                       type="text"
                       placeholder={DEFAULTS.headingSize}
@@ -688,26 +802,10 @@ export default function BrandingSectionStylesControls({
                   </div>
                 </div>
 
-                {/* Paragraph Size (px) with Select & Manual Text Input */}
+                {/* Paragraph Size (px) - Option-free Manual Text Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Paragraph Size (px)</label>
                   <div className="flex gap-1.5">
-                    <select
-                      value={PARAGRAPH_SIZES.includes(String(styles.paragraphSize)) ? String(styles.paragraphSize) : "custom"}
-                      onChange={(e) => {
-                        if (e.target.value !== "custom") {
-                          updateStyle("paragraphSize", parseInt(e.target.value) || e.target.value);
-                        }
-                      }}
-                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
-                    >
-                      <option value="custom">Preset</option>
-                      {PARAGRAPH_SIZES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}px
-                        </option>
-                      ))}
-                    </select>
                     <input
                       type="text"
                       placeholder={DEFAULTS.paragraphSize}
@@ -719,26 +817,10 @@ export default function BrandingSectionStylesControls({
                   </div>
                 </div>
 
-                {/* Line Height with Select & Manual Text Input */}
+                {/* Line Height - Option-free Manual Text Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Line Height</label>
                   <div className="flex gap-1.5">
-                    <select
-                      value={LINE_HEIGHTS.includes(String(styles.lineHeight)) ? String(styles.lineHeight) : "custom"}
-                      onChange={(e) => {
-                        if (e.target.value !== "custom") {
-                          updateStyle("lineHeight", e.target.value);
-                        }
-                      }}
-                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
-                    >
-                      <option value="custom">Preset</option>
-                      {LINE_HEIGHTS.map((lh) => (
-                        <option key={lh} value={lh}>
-                          {lh}
-                        </option>
-                      ))}
-                    </select>
                     <input
                       type="text"
                       placeholder={DEFAULTS.lineHeight}
@@ -750,26 +832,10 @@ export default function BrandingSectionStylesControls({
                   </div>
                 </div>
 
-                {/* Letter Spacing with Select & Manual Text Input */}
+                {/* Letter Spacing - Option-free Manual Text Input */}
                 <div>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Letter Spacing</label>
                   <div className="flex gap-1.5">
-                    <select
-                      value={LETTER_SPACINGS.includes(String(styles.letterSpacing)) ? String(styles.letterSpacing) : "custom"}
-                      onChange={(e) => {
-                        if (e.target.value !== "custom") {
-                          updateStyle("letterSpacing", e.target.value);
-                        }
-                      }}
-                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
-                    >
-                      <option value="custom">Preset</option>
-                      {LETTER_SPACINGS.map((ls) => (
-                        <option key={ls} value={ls}>
-                          {ls}
-                        </option>
-                      ))}
-                    </select>
                     <input
                       type="text"
                       placeholder={DEFAULTS.letterSpacing}
