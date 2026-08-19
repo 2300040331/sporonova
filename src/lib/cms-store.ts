@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
+import { list, put } from "@vercel/blob";
 import { SectionStylesConfig } from "./styles-helper";
 
 export interface UserRecord {
@@ -1191,10 +1192,73 @@ function saveLocalCMSData(data: CMSData): void {
   }
 }
 
+/**
+ * In Vercel, the CMS document lives in Vercel Blob so every server instance
+ * and every deployment reads the same content. If Blob is uninitialized,
+ * empty, or temporarily unavailable, we safely use and seed the default CMS data.
+ */
+const CMS_BLOB_PATH = "cms/content.json";
+
+function isBlobConfigured(): boolean {
+  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+}
+
 export async function getCMSData(): Promise<CMSData> {
+  if (!isBlobConfigured()) {
+    return getLocalCMSData();
+  }
+
+  try {
+    const result = await list({ prefix: CMS_BLOB_PATH, limit: 1 });
+    const existing = result.blobs.find((blob) => blob.pathname === CMS_BLOB_PATH);
+
+    if (existing) {
+      const response = await fetch(existing.url, { cache: "no-store" });
+      if (response.ok) {
+        const json = (await response.json()) as CMSData;
+        const restored = restoreMissingContent(json);
+        inMemoryDataCache = restored.data;
+        return restored.data;
+      }
+      console.warn(`Vercel Blob read returned status ${response.status}. Using default CMS structure safely.`);
+    } else {
+      // Seed the Blob store from the project's current CMS content the first time
+      const initialData = getLocalCMSData();
+      try {
+        await put(CMS_BLOB_PATH, JSON.stringify(initialData), {
+          access: "public",
+          addRandomSuffix: false,
+          allowOverwrite: true,
+          contentType: "application/json",
+        });
+      } catch (seedErr) {
+        console.warn("Vercel Blob initial seed attempt logged:", seedErr);
+      }
+      return initialData;
+    }
+  } catch (error) {
+    // Log technical error server-side for debugging without throwing or breaking page load
+    console.error("Server-side Vercel Blob read error (handled safely with default CMS fallback):", error);
+  }
+
   return getLocalCMSData();
 }
 
 export async function saveCMSData(data: CMSData): Promise<void> {
   saveLocalCMSData(data);
+
+  if (!isBlobConfigured()) {
+    return;
+  }
+
+  try {
+    await put(CMS_BLOB_PATH, JSON.stringify(data), {
+      access: "public",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType: "application/json",
+    });
+  } catch (error) {
+    console.error("Server-side Vercel Blob save error:", error);
+  }
 }
