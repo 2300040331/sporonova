@@ -221,6 +221,9 @@ export interface CMSData {
   successNumbers?: Array<{ value: string; label: string }>;
   partnerships?: Array<{ title: string; points: string[] }>;
   gallery: Array<{ id: string; url: string; title: string; category: string }>;
+  galleryStyles?: SectionStylesConfig;
+  formsStyles?: SectionStylesConfig;
+  iconsStyles?: SectionStylesConfig;
   media: Array<{
     id: string;
     filename: string;

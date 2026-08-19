@@ -512,8 +512,41 @@ export default function BrandingSectionStylesControls({
     updateStyle(key as keyof SectionStylesConfig, DEFAULTS[key]);
   };
 
+  const resetTypography = () => {
+    if (window.confirm(`Reset typography (fonts, sizes, weights) to default for ${sectionName}?`)) {
+      const updated = { ...styles };
+      delete updated.fontFamily;
+      delete updated.headingWeight;
+      delete updated.textAlign;
+      delete updated.headingSize;
+      delete updated.paragraphSize;
+      delete updated.lineHeight;
+      delete updated.letterSpacing;
+      delete updated.bold;
+      delete updated.italic;
+      onChange(updated);
+    }
+  };
+
+  const resetColors = () => {
+    if (window.confirm(`Reset colors (background, text, headings, buttons, cards) to default for ${sectionName}?`)) {
+      const updated = { ...styles };
+      delete updated.backgroundColor;
+      delete updated.textColor;
+      delete updated.headingColor;
+      delete updated.borderColor;
+      delete updated.iconColor;
+      delete updated.buttonColor;
+      delete updated.buttonTextColor;
+      delete updated.cardBgColor;
+      delete updated.cardTextColor;
+      delete updated.cardBorderColor;
+      onChange(updated);
+    }
+  };
+
   const clearStyles = () => {
-    if (window.confirm(`Reset all styling customizations for ${sectionName}?`)) {
+    if (window.confirm(`Reset all styling customizations to original defaults for ${sectionName}?`)) {
       onChange({});
     }
   };
@@ -543,27 +576,38 @@ export default function BrandingSectionStylesControls({
 
   return (
     <div className="border border-[#e2e8e0] rounded-2xl bg-white shadow-sm overflow-hidden mt-6">
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-[#f9fbf8] hover:bg-[#f2f7f1] transition-colors cursor-pointer border-b border-[#e2e8e0]"
-      >
-        <div className="flex items-center gap-2">
-          <Palette className="w-4 h-4 text-[#4e8c4a]" />
-          <span className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">
-            🎨 Section Branding & Customization: {sectionName}
-          </span>
-        </div>
-        {isOpen ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
-      </button>
+      <div className="w-full flex items-center justify-between px-5 py-4 bg-[#f9fbf8] border-b border-[#e2e8e0]">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex-1 flex items-center justify-between text-left cursor-pointer hover:opacity-80 transition-opacity"
+        >
+          <div className="flex items-center gap-2">
+            <Palette className="w-4 h-4 text-[#4e8c4a]" />
+            <span className="text-xs font-bold text-[#1c3c24] uppercase tracking-wider">
+              🎨 Section Branding & Customization: {sectionName}
+            </span>
+          </div>
+          {isOpen ? <ChevronUp className="w-4 h-4 text-gray-500 mr-3" /> : <ChevronDown className="w-4 h-4 text-gray-500 mr-3" />}
+        </button>
+
+        <button
+          type="button"
+          onClick={clearStyles}
+          title="Reset all colors & fonts to default"
+          className="px-3 py-1.5 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white border border-[#d2e4d0] text-[#2c5e37] rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+        >
+          <RotateCcw className="w-3 h-3" /> Reset Colors & Fonts
+        </button>
+      </div>
 
       {isOpen && (
         <div className="p-5 space-y-4">
           <div className="flex border-b border-[#e2e8e0] gap-1 pb-1 overflow-x-auto">
             {[
               { id: "suggestions", label: "Smart Suggestions (3 Themes)", icon: Sparkles },
-              { id: "typography", label: "Typography", icon: Type },
-              { id: "colors", label: "Colors", icon: Palette },
+              { id: "typography", label: "Typography & Fonts", icon: Type },
+              { id: "colors", label: "Colors & Palettes", icon: Palette },
               { id: "spacing", label: "Layout & Spacing", icon: LayoutGrid },
               { id: "cards", label: "Buttons & Cards", icon: Sliders },
             ].map((tab) => {
@@ -684,6 +728,19 @@ export default function BrandingSectionStylesControls({
           {/* ───── TYPOGRAPHY TAB ───── */}
           {activeTab === "typography" && (
             <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
+                  Typography & Font Family Controls
+                </span>
+                <button
+                  type="button"
+                  onClick={resetTypography}
+                  className="px-3 py-1 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white border border-[#d2e4d0] text-[#2c5e37] rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3 h-3" /> Reset Typography
+                </button>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
                 {/* Searchable Font Picker */}
                 <div className="relative">
@@ -921,7 +978,21 @@ export default function BrandingSectionStylesControls({
 
           {/* ───── COLORS TAB ───── */}
           {activeTab === "colors" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
+                  Colors & Theme Palette Controls
+                </span>
+                <button
+                  type="button"
+                  onClick={resetColors}
+                  className="px-3 py-1 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white border border-[#d2e4d0] text-[#2c5e37] rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer"
+                >
+                  <RotateCcw className="w-3 h-3" /> Reset Colors
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
               {[
                 { key: "backgroundColor", label: "Background Color" },
                 { key: "textColor", label: "Text Color" },
@@ -949,6 +1020,7 @@ export default function BrandingSectionStylesControls({
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           )}
 

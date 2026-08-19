@@ -16,6 +16,8 @@ import {
   FolderOpen,
   LayoutGrid
 } from "lucide-react";
+import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
+import { SectionStylesConfig } from "@/lib/styles-helper";
 
 function GalleryThumbnail({ src, alt }: { src: string; alt: string }) {
   const [imgError, setImgError] = useState(false);
@@ -46,6 +48,7 @@ export default function GalleryCMSPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [gallery, setGallery] = useState<any[]>([]);
   const [media, setMedia] = useState<any[]>([]);
+  const [galleryStyles, setGalleryStyles] = useState<SectionStylesConfig>({});
   
   // Search & Copy States
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -127,6 +130,7 @@ export default function GalleryCMSPage() {
   useEffect(() => {
     if (data?.gallery) setGallery(data.gallery);
     if (data?.media) setMedia(data.media);
+    if ((data as any)?.galleryStyles) setGalleryStyles((data as any).galleryStyles);
   }, [data]);
 
   if (isLoading || !data) {
@@ -147,7 +151,7 @@ export default function GalleryCMSPage() {
   // Save changes to database
   const handleSaveGallery = async () => {
     setSaving(true);
-    const success = await updateData({ gallery });
+    const success = await updateData({ gallery, galleryStyles } as any);
     setSaving(false);
     if (success) {
       setSaveSuccess(true);
@@ -705,6 +709,12 @@ export default function GalleryCMSPage() {
           </form>
         </div>
       )}
+
+      <BrandingSectionStylesControls
+        sectionName="Media & Photo Gallery"
+        styles={galleryStyles}
+        onChange={setGalleryStyles}
+      />
     </div>
   );
 }

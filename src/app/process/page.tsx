@@ -153,7 +153,13 @@ export default function ProcessPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-[#f9faf7] pt-24 min-h-screen">
+      <main 
+        className="flex-1 pt-24 min-h-screen"
+        style={{ 
+          backgroundColor: processStyles?.backgroundColor || "#f9faf7",
+          fontFamily: processStyles?.fontFamily || undefined,
+        }}
+      >
         
         {/* Header split banner */}
         <section className="py-8 px-6 max-w-7xl mx-auto" style={getSectionStyles(processStyles)}>
@@ -173,15 +179,15 @@ export default function ProcessPage() {
               </Link>
               
               <h1 
-                className="text-white font-display text-3xl md:text-4xl font-black tracking-tight leading-tight relative z-10 font-sans"
-                style={getHeadingStyles(processStyles)}
+                className="text-white font-display text-3xl md:text-4xl font-black tracking-tight leading-tight relative z-10"
+                style={{ fontFamily: processStyles?.fontFamily || undefined, ...getHeadingStyles(processStyles) }}
               >
                 Our Manufacturing Process
               </h1>
               
               <p 
-                className="text-white/80 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed relative z-10 font-sans"
-                style={getParagraphStyles(processStyles)}
+                className="text-white/80 text-xs sm:text-sm font-semibold max-w-xl leading-relaxed relative z-10"
+                style={{ fontFamily: processStyles?.fontFamily || undefined, ...getParagraphStyles(processStyles) }}
               >
                 SporoNova operates automated industrial pipelines. Below is the detailed step-by-step manufacturing journey for our signature Liquid Spawn Broth formulation.
               </p>
@@ -222,8 +228,8 @@ export default function ProcessPage() {
                 <div>
                   <span className="text-[9px] text-[#4e8c4a] font-mono uppercase tracking-widest block mb-0.5 font-bold">Manufacturing Stage</span>
                   <h3 
-                    className="text-[#1c3c24] font-display text-lg md:text-xl font-bold tracking-wide font-sans"
-                    style={getHeadingStyles(processStyles)}
+                    className="text-[#1c3c24] font-display text-lg md:text-xl font-bold tracking-wide"
+                    style={{ fontFamily: processStyles?.fontFamily || undefined, ...getHeadingStyles(processStyles) }}
                   >
                     {stage.name}
                   </h3>
@@ -231,8 +237,8 @@ export default function ProcessPage() {
 
                 {/* Purpose */}
                 <p 
-                  className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed font-sans"
-                  style={getParagraphStyles(processStyles)}
+                  className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed"
+                  style={{ fontFamily: processStyles?.fontFamily || undefined, ...getParagraphStyles(processStyles) }}
                 >
                   {stage.purpose}
                 </p>
