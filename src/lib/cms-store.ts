@@ -267,6 +267,17 @@ export interface CMSData {
 
 const DB_PATH = path.join(process.cwd(), "src", "data", "cms-db.json");
 
+const DEFAULT_PASSWORD_HASH = bcrypt.hashSync("admin123", 10);
+const DEFAULT_ADMIN_USER: UserRecord = {
+  id: "usr-super-admin",
+  name: "Super Admin",
+  email: "admin@sporonova.com",
+  passwordHash: DEFAULT_PASSWORD_HASH,
+  role: "Super Admin",
+  status: "Active",
+  createdAt: "2026-01-01T00:00:00.000Z",
+};
+
 // Default initial data matching Sporonova public website
 const INITIAL_DATA: CMSData = {
   header: {
@@ -1036,8 +1047,7 @@ const INITIAL_DATA: CMSData = {
       { device: "Desktop", percentage: 38 },
       { device: "Tablet", percentage: 4 },
     ],
-  },
-  users: [],
+  users: [DEFAULT_ADMIN_USER],
   backups: [
     { id: "bak-1", filename: "sporonova_backup_2026-08-01.json", createdAt: "2026-08-01T00:00:00Z", size: "2.4 MB", type: "Automated Daily" },
   ],
@@ -1054,7 +1064,7 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
   let changed = false;
   const defaultProducts = new Map(INITIAL_DATA.products.map((product) => [product.id, product]));
 
-  const products = savedData.products.map((product) => {
+  const products = (savedData.products || INITIAL_DATA.products).map((product) => {
     const defaultProduct = defaultProducts.get(product.id);
     if (!defaultProduct) return product;
 
@@ -1094,7 +1104,19 @@ function restoreMissingContent(savedData: CMSData): { data: CMSData; changed: bo
     changed = true;
   }
 
-  return { data: { ...savedData, homepage, products, about, processSteps, values }, changed };
+  let users = savedData.users;
+  if (!users || !Array.isArray(users) || users.length === 0) {
+    users = [DEFAULT_ADMIN_USER];
+    changed = true;
+  } else {
+    const hasAdmin = users.some((u) => u.email && u.email.toLowerCase() === "admin@sporonova.com");
+    if (!hasAdmin) {
+      users = [DEFAULT_ADMIN_USER, ...users];
+      changed = true;
+    }
+  }
+
+  return { data: { ...savedData, homepage, products, about, processSteps, values, users }, changed };
 }
 
 function ensureDataDirectoryExists() {

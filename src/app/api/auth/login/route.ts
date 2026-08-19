@@ -11,7 +11,11 @@ export async function POST(request: Request) {
     const cleanPassword = (password || "").trim();
 
     const data = await getCMSData();
-    let user = data.users.find((u) => u.email.toLowerCase() === cleanEmail);
+    if (!data.users || !Array.isArray(data.users)) {
+      data.users = [];
+    }
+
+    let user = data.users.find((u) => u.email && u.email.toLowerCase() === cleanEmail);
 
     if (isGoogleLogin) {
       if (!user) {
@@ -25,7 +29,11 @@ export async function POST(request: Request) {
           createdAt: new Date().toISOString(),
         };
         data.users.push(user);
-        await saveCMSData(data);
+        try {
+          await saveCMSData(data);
+        } catch (e) {
+          console.warn("Could not save new Google user to persistent store:", e);
+        }
       }
     } else {
       // Check default fallback admin or user match
@@ -44,7 +52,11 @@ export async function POST(request: Request) {
             createdAt: new Date().toISOString(),
           };
           data.users.push(user);
-          await saveCMSData(data);
+          try {
+            await saveCMSData(data);
+          } catch (e) {
+            console.warn("Could not save default admin user to persistent store:", e);
+          }
         } else {
           return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
         }
@@ -67,7 +79,11 @@ export async function POST(request: Request) {
     }
 
     user.lastLogin = new Date().toISOString();
-    await saveCMSData(data);
+    try {
+      await saveCMSData(data);
+    } catch (e) {
+      console.warn("Could not update lastLogin to persistent store:", e);
+    }
 
     const sessionPayload = {
       id: user.id,
@@ -88,6 +104,7 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error: any) {
+    console.error("Login endpoint error:", error);
     return NextResponse.json({ error: error.message || "Authentication failed" }, { status: 500 });
   }
 }
