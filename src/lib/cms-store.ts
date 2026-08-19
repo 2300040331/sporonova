@@ -1047,6 +1047,7 @@ const INITIAL_DATA: CMSData = {
       { device: "Desktop", percentage: 38 },
       { device: "Tablet", percentage: 4 },
     ],
+  },
   users: [DEFAULT_ADMIN_USER],
   backups: [
     { id: "bak-1", filename: "sporonova_backup_2026-08-01.json", createdAt: "2026-08-01T00:00:00Z", size: "2.4 MB", type: "Automated Daily" },
