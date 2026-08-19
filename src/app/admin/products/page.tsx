@@ -139,6 +139,532 @@ export default function ProductsCMSPage() {
     setEditingProduct({ ...editingProduct, [field]: arr });
   };
 
+  if (editingProduct) {
+    return (
+      <div className="space-y-6 max-w-5xl mx-auto pb-16 animate-fadeIn">
+        {/* Full Page Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-[#e2e8e0] p-6 rounded-3xl shadow-sm">
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setEditingProduct(null)}
+              className="px-4 py-2.5 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white border border-[#d2e4d0] text-[#2c5e37] rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 font-sans"
+            >
+              &larr; Back to Catalog
+            </button>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#f0f5ef] border border-[#d2e4d0] text-[9px] font-bold uppercase tracking-wider text-[#2c5e37] font-mono">
+                <Package className="w-3 h-3 text-[#4e8c4a]" /> Product Specification Editor
+              </div>
+              <h1 className="text-xl font-bold text-[#1c3c24] tracking-tight mt-1">{editingProduct.name || "New Product"}</h1>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (window.confirm("Revert product changes to current saved state?")) {
+                  const original = data.products.find((p) => p.id === editingProduct.id);
+                  if (original) {
+                    setEditingProduct({ ...original });
+                  }
+                }
+              }}
+              className="px-5 py-2.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditingProduct(null)}
+              className="px-5 py-2.5 bg-[#f0f5ef] hover:bg-gray-200 border border-[#d2e4d0] rounded-2xl text-xs font-bold text-[#1c3c24] cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSaveProduct(editingProduct)}
+              disabled={saving}
+              className="px-6 py-2.5 bg-[#1c3c24] hover:bg-[#2c5e37] text-white rounded-2xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow cursor-pointer"
+            >
+              {saving ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <Save className="w-4 h-4" /> Save Product
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Selection & Editor Container */}
+        <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex flex-wrap gap-2 bg-[#f0f5ef] border border-[#d2e4d0] p-1.5 rounded-2xl">
+            {[
+              { id: "basic", label: "Basic Info", icon: Settings },
+              { id: "science", label: "Science Parameters", icon: BookOpen },
+              { id: "ingredients", label: "Ingredients & Composition", icon: Award },
+              { id: "process", label: "Process & Tech", icon: Cpu },
+              { id: "logistics", label: "Logistics & Storage", icon: Truck },
+              { id: "faqs", label: "FAQs & Papers", icon: HelpCircle }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setModalTab(tab.id as any)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    modalTab === tab.id
+                      ? "bg-[#1c3c24] text-white shadow-sm font-bold"
+                      : "text-[#2d5034] hover:bg-white/60 hover:text-[#1c3c24]"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="space-y-6 pt-2">
+            {/* TAB 1: BASIC INFO */}
+            {modalTab === "basic" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Product Name</label>
+                    <input
+                      type="text"
+                      value={editingProduct.name || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Category</label>
+                    <input
+                      type="text"
+                      value={editingProduct.category || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Brief Description (Catalog Grid)</label>
+                  <textarea
+                    rows={2}
+                    value={editingProduct.desc || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, desc: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+
+                <div>
+                  <ImageUploadDropzone
+                    label="Product Thumbnail Photo"
+                    value={editingProduct.thumbnail || ""}
+                    onChange={(url) => setEditingProduct({ ...editingProduct, thumbnail: url, images: [url] })}
+                    requiredWidth={600}
+                    requiredHeight={600}
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">URL Route Slug</label>
+                  <input
+                    type="text"
+                    value={editingProduct.href || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, href: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: SCIENCE PARAMETERS */}
+            {modalTab === "science" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Scientific / Formulation Name</label>
+                    <input
+                      type="text"
+                      value={editingProduct.scientificName || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, scientificName: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                      placeholder="e.g. Mycelial Biomass Broth"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Introductory Subtitle</label>
+                    <input
+                      type="text"
+                      value={editingProduct.introduction || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, introduction: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Historical Context</label>
+                  <textarea
+                    rows={2}
+                    value={editingProduct.history || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, history: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Scientific Principles</label>
+                  <textarea
+                    rows={2}
+                    value={editingProduct.principle || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, principle: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: INGREDIENTS & ADVANTAGES */}
+            {modalTab === "ingredients" && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Biomass Nutrient Composition (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={(editingProduct.composition || []).join(", ")}
+                    onChange={(e) => syncArrayField("composition", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Cultivation Advantages (Comma-separated)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={(editingProduct.advantages || []).join(", ")}
+                    onChange={(e) => syncArrayField("advantages", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Cultivation Limitations / Disadvantages (Comma-separated)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={(editingProduct.disadvantages || []).join(", ")}
+                    onChange={(e) => syncArrayField("disadvantages", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: PROCESS & REQUIREMENTS */}
+            {modalTab === "process" && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Lab Production Timeline Stages (Comma-separated)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={(editingProduct.process || []).join(", ")}
+                    onChange={(e) => syncArrayField("process", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Cleanroom Laboratory Hardware Requirements (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={(editingProduct.labSpecs || []).join(", ")}
+                    onChange={(e) => syncArrayField("labSpecs", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Quality Testing Procedures (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={(editingProduct.qualityTesting || []).join(", ")}
+                    onChange={(e) => syncArrayField("qualityTesting", e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 5: LOGISTICS & STORAGE */}
+            {modalTab === "logistics" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Optimal Storage Protocol</label>
+                    <input
+                      type="text"
+                      value={editingProduct.storage || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, storage: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Shelf Life Viability</label>
+                    <input
+                      type="text"
+                      value={editingProduct.shelfLife || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, shelfLife: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Cold Chain Freight Logistics</label>
+                  <textarea
+                    rows={2}
+                    value={editingProduct.transport || ""}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, transport: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Commercial Grower Applications</label>
+                    <input
+                      type="text"
+                      value={editingProduct.commercialUses || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, commercialUses: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Govt & NGO Agri Deployments</label>
+                    <input
+                      type="text"
+                      value={editingProduct.govApplications || ""}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, govApplications: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 6: FAQS & PAPERS */}
+            {modalTab === "faqs" && (
+              <div className="space-y-4">
+                <div className="border-b border-[#e2e8e0] pb-2">
+                  <span className="text-[10px] font-mono text-[#2c5e37] font-bold uppercase">Technical FAQs (Q&A)</span>
+                </div>
+                
+                {/* FAQ 1 */}
+                <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-2xl space-y-2">
+                  <div>
+                    <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Question 1</label>
+                    <input
+                      type="text"
+                      value={editingProduct.faqs?.[0]?.q || ""}
+                      onChange={(e) => {
+                        const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 1 
+                          ? editingProduct.faqs 
+                          : [editingProduct.faqs?.[0] || { q: "", a: "" }])];
+                        faqs[0] = { ...faqs[0], q: e.target.value };
+                        setEditingProduct({ ...editingProduct, faqs });
+                      }}
+                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Answer 1</label>
+                    <textarea
+                      rows={2}
+                      value={editingProduct.faqs?.[0]?.a || ""}
+                      onChange={(e) => {
+                        const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 1 
+                          ? editingProduct.faqs 
+                          : [editingProduct.faqs?.[0] || { q: "", a: "" }])];
+                        faqs[0] = { ...faqs[0], a: e.target.value };
+                        setEditingProduct({ ...editingProduct, faqs });
+                      }}
+                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                    />
+                  </div>
+                </div>
+
+                {/* FAQ 2 */}
+                <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-2xl space-y-2">
+                  <div>
+                    <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Question 2</label>
+                    <input
+                      type="text"
+                      value={editingProduct.faqs?.[1]?.q || ""}
+                      onChange={(e) => {
+                        const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                          ? editingProduct.faqs 
+                          : [
+                              editingProduct.faqs?.[0] || { q: "", a: "" },
+                              editingProduct.faqs?.[1] || { q: "", a: "" }
+                            ])];
+                        faqs[1] = { ...faqs[1], q: e.target.value };
+                        setEditingProduct({ ...editingProduct, faqs });
+                      }}
+                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Answer 2</label>
+                    <textarea
+                      rows={2}
+                      value={editingProduct.faqs?.[1]?.a || ""}
+                      onChange={(e) => {
+                        const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
+                          ? editingProduct.faqs 
+                          : [
+                              editingProduct.faqs?.[0] || { q: "", a: "" },
+                              editingProduct.faqs?.[1] || { q: "", a: "" }
+                            ])];
+                        faqs[1] = { ...faqs[1], a: e.target.value };
+                        setEditingProduct({ ...editingProduct, faqs });
+                      }}
+                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
+                    />
+                  </div>
+                </div>
+
+                <div className="border-b border-[#e2e8e0] pb-2 pt-2">
+                  <span className="text-[10px] font-mono text-[#2c5e37] font-bold uppercase">Genomic Whitepapers & Publications</span>
+                </div>
+
+                {/* Scientific Paper 1 */}
+                <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-2xl space-y-2">
+                  <span className="text-[9px] font-mono font-bold text-[#4e8c4a]">Whitepaper Publication Reference</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    <div className="md:col-span-2">
+                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Paper Title</label>
+                      <input
+                        type="text"
+                        value={editingProduct.papers?.[0]?.title || ""}
+                        onChange={(e) => {
+                          const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                            ? editingProduct.papers
+                            : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
+                          papers[0] = { ...papers[0], title: e.target.value };
+                          setEditingProduct({ ...editingProduct, papers });
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Author</label>
+                      <input
+                        type="text"
+                        value={editingProduct.papers?.[0]?.author || ""}
+                        onChange={(e) => {
+                          const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                            ? editingProduct.papers
+                            : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
+                          papers[0] = { ...papers[0], author: e.target.value };
+                          setEditingProduct({ ...editingProduct, papers });
+                        }}
+                        className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Journal & Year</label>
+                    <input
+                      type="text"
+                      value={editingProduct.papers?.[0]?.journal || ""}
+                      onChange={(e) => {
+                        const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
+                          ? editingProduct.papers
+                          : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
+                        papers[0] = { ...papers[0], journal: e.target.value };
+                        setEditingProduct({ ...editingProduct, papers });
+                      }}
+                      className="w-full px-3 py-1.5 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-semibold"
+                      placeholder="e.g. Journal of Applied Mycology, 2024"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Section Branding & Customization for this product */}
+        <BrandingSectionStylesControls
+          sectionName="Product Display Style"
+          styles={editingProduct.styles}
+          onChange={(newStyles) => setEditingProduct({ ...editingProduct, styles: newStyles })}
+        />
+
+        {/* Bottom Save & Cancel Bar */}
+        <div className="flex items-center justify-between bg-white border border-[#e2e8e0] p-6 rounded-3xl shadow-sm">
+          <button
+            type="button"
+            onClick={() => setEditingProduct(null)}
+            className="px-5 py-2.5 bg-[#f0f5ef] hover:bg-gray-200 border border-[#d2e4d0] rounded-2xl text-xs font-bold text-[#1c3c24] cursor-pointer"
+          >
+            &larr; Back to Products Catalog
+          </button>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (window.confirm("Revert product changes to current saved state?")) {
+                  const original = data.products.find((p) => p.id === editingProduct.id);
+                  if (original) {
+                    setEditingProduct({ ...original });
+                  }
+                }
+              }}
+              className="px-5 py-2.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-2xl transition-all cursor-pointer font-sans"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSaveProduct(editingProduct)}
+              disabled={saving}
+              className="px-6 py-2.5 bg-[#1c3c24] hover:bg-[#2c5e37] text-white rounded-2xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow cursor-pointer"
+            >
+              {saving ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <Save className="w-4 h-4" /> Save Product
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-[#e2e8e0] p-6 rounded-3xl shadow-sm">
@@ -232,509 +758,19 @@ export default function ProductsCMSPage() {
         </div>
       </div>
 
-      {/* Edit Product Modal */}
-      {editingProduct && (
-        <div className="fixed inset-0 bg-black/45 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white border border-[#e2e8e0] rounded-3xl p-6 sm:p-8 max-w-3xl w-full text-[#1c3c24] shadow-2xl space-y-5 my-8">
-            
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-4">
-              <div className="flex items-center gap-2">
-                <Package className="w-5 h-5 text-[#4e8c4a]" />
-                <div>
-                  <h3 className="text-base font-bold text-[#1c3c24]">Edit Spawn Specifications</h3>
-                  <p className="text-[10px] text-gray-500 font-bold">{editingProduct.name}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setEditingProduct(null)}
-                className="p-2 text-gray-400 hover:text-gray-700 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Modal Tab Headers */}
-            <div className="flex flex-wrap gap-1 bg-[#f0f5ef] border border-[#d2e4d0] p-1 rounded-xl">
-              {[
-                { id: "basic", label: "Basic Info", icon: Settings },
-                { id: "science", label: "Science Parameters", icon: BookOpen },
-                { id: "ingredients", label: "Ingredients", icon: Award },
-                { id: "process", label: "Process & Tech", icon: Cpu },
-                { id: "logistics", label: "Logistics", icon: Truck },
-                { id: "faqs", label: "FAQs & Papers", icon: HelpCircle }
-              ].map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setModalTab(tab.id as any)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
-                      modalTab === tab.id
-                        ? "bg-[#1c3c24] text-white shadow-sm font-bold"
-                        : "text-[#2d5034] hover:bg-white/50 hover:text-[#1c3c24]"
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Modal Body - Tab contents (Scrollable max height) */}
-            <div className="max-h-[50vh] overflow-y-auto space-y-4 pr-1 scrollbar-thin">
-              
-              {/* TAB 1: BASIC INFO */}
-              {modalTab === "basic" && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Product Name</label>
-                      <input
-                        type="text"
-                        value={editingProduct.name || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Category</label>
-                      <input
-                        type="text"
-                        value={editingProduct.category || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Brief Description (Catalog Grid)</label>
-                    <textarea
-                      rows={2}
-                      value={editingProduct.desc || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, desc: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <ImageUploadDropzone
-                      label="Product Thumbnail Photo"
-                      value={editingProduct.thumbnail || ""}
-                      onChange={(url) => setEditingProduct({ ...editingProduct, thumbnail: url, images: [url] })}
-                      requiredWidth={600}
-                      requiredHeight={600}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">URL Route Slug</label>
-                    <input
-                      type="text"
-                      value={editingProduct.href || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, href: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-bold"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 2: SCIENCE PARAMETERS */}
-              {modalTab === "science" && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Scientific / Formulation Name</label>
-                      <input
-                        type="text"
-                        value={editingProduct.scientificName || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, scientificName: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                        placeholder="e.g. Mycelial Biomass Broth"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Introductory Subtitle</label>
-                      <input
-                        type="text"
-                        value={editingProduct.introduction || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, introduction: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Historical Context</label>
-                    <textarea
-                      rows={2}
-                      value={editingProduct.history || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, history: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Scientific Principles</label>
-                    <textarea
-                      rows={2}
-                      value={editingProduct.principle || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, principle: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 3: INGREDIENTS & ADVANTAGES */}
-              {modalTab === "ingredients" && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Biomass Nutrient Composition (Comma-separated)
-                    </label>
-                    <input
-                      type="text"
-                      value={(editingProduct.composition || []).join(", ")}
-                      onChange={(e) => syncArrayField("composition", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Cultivation Advantages (Comma-separated)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={(editingProduct.advantages || []).join(", ")}
-                      onChange={(e) => syncArrayField("advantages", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Cultivation Limitations / Disadvantages (Comma-separated)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={(editingProduct.disadvantages || []).join(", ")}
-                      onChange={(e) => syncArrayField("disadvantages", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 4: PROCESS & REQUIREMENTS */}
-              {modalTab === "process" && (
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Lab Production Timeline Stages (Comma-separated)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={(editingProduct.process || []).join(", ")}
-                      onChange={(e) => syncArrayField("process", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Cleanroom Laboratory Hardware Requirements (Comma-separated)
-                    </label>
-                    <input
-                      type="text"
-                      value={(editingProduct.labSpecs || []).join(", ")}
-                      onChange={(e) => syncArrayField("labSpecs", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Recommended Practical Applications (Comma-separated)
-                    </label>
-                    <input
-                      type="text"
-                      value={(editingProduct.applications || []).join(", ")}
-                      onChange={(e) => syncArrayField("applications", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 5: LOGISTICS */}
-              {modalTab === "logistics" && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Storage Mode & Temp</label>
-                      <input
-                        type="text"
-                        value={editingProduct.storage || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, storage: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Shelf Life Duration</label>
-                      <input
-                        type="text"
-                        value={editingProduct.shelfLife || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, shelfLife: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Logistics Pipeline & Transport Details</label>
-                    <input
-                      type="text"
-                      value={editingProduct.transport || ""}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, transport: e.target.value })}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
-                      Sterility Quality testing items (Comma-separated)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={(editingProduct.qualityTesting || []).join(", ")}
-                      onChange={(e) => syncArrayField("qualityTesting", e.target.value)}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-medium"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Commercial Uses</label>
-                      <input
-                        type="text"
-                        value={editingProduct.commercialUses || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, commercialUses: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Government/Aid Applications</label>
-                      <input
-                        type="text"
-                        value={editingProduct.govApplications || ""}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, govApplications: e.target.value })}
-                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* TAB 6: FAQS & PAPERS */}
-              {modalTab === "faqs" && (
-                <div className="space-y-4">
-                  <div className="border-b border-[#e2e8e0] pb-2">
-                    <span className="text-[10px] font-mono text-[#2c5e37] font-bold uppercase">Frequently Asked Questions</span>
-                  </div>
-
-                  {/* FAQ 1 */}
-                  <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-xl space-y-2">
-                    <span className="text-[9px] font-mono font-bold text-[#4e8c4a]">FAQ #1</span>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Question</label>
-                      <input
-                        type="text"
-                        value={editingProduct.faqs?.[0]?.q || ""}
-                        onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
-                            ? editingProduct.faqs 
-                            : [
-                                editingProduct.faqs?.[0] || { q: "", a: "" },
-                                editingProduct.faqs?.[1] || { q: "", a: "" }
-                              ])];
-                          faqs[0] = { ...faqs[0], q: e.target.value };
-                          setEditingProduct({ ...editingProduct, faqs });
-                        }}
-                        className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Answer</label>
-                      <textarea
-                        rows={2}
-                        value={editingProduct.faqs?.[0]?.a || ""}
-                        onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
-                            ? editingProduct.faqs 
-                            : [
-                                editingProduct.faqs?.[0] || { q: "", a: "" },
-                                editingProduct.faqs?.[1] || { q: "", a: "" }
-                              ])];
-                          faqs[0] = { ...faqs[0], a: e.target.value };
-                          setEditingProduct({ ...editingProduct, faqs });
-                        }}
-                        className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  {/* FAQ 2 */}
-                  <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-xl space-y-2">
-                    <span className="text-[9px] font-mono font-bold text-[#4e8c4a]">FAQ #2</span>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Question</label>
-                      <input
-                        type="text"
-                        value={editingProduct.faqs?.[1]?.q || ""}
-                        onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
-                            ? editingProduct.faqs 
-                            : [
-                                editingProduct.faqs?.[0] || { q: "", a: "" },
-                                editingProduct.faqs?.[1] || { q: "", a: "" }
-                              ])];
-                          faqs[1] = { ...faqs[1], q: e.target.value };
-                          setEditingProduct({ ...editingProduct, faqs });
-                        }}
-                        className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-bold"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Answer</label>
-                      <textarea
-                        rows={2}
-                        value={editingProduct.faqs?.[1]?.a || ""}
-                        onChange={(e) => {
-                          const faqs = [...(editingProduct.faqs && editingProduct.faqs.length >= 2 
-                            ? editingProduct.faqs 
-                            : [
-                                editingProduct.faqs?.[0] || { q: "", a: "" },
-                                editingProduct.faqs?.[1] || { q: "", a: "" }
-                              ])];
-                          faqs[1] = { ...faqs[1], a: e.target.value };
-                          setEditingProduct({ ...editingProduct, faqs });
-                        }}
-                        className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="border-b border-[#e2e8e0] pb-2 pt-2">
-                    <span className="text-[10px] font-mono text-[#2c5e37] font-bold uppercase">Genomic Whitepapers & Publications</span>
-                  </div>
-
-                  {/* Scientific Paper 1 */}
-                  <div className="bg-[#f9fbf8] border border-[#dce4da] p-3 rounded-xl space-y-2">
-                    <span className="text-[9px] font-mono font-bold text-[#4e8c4a]">Whitepaper Publication Reference</span>
-                    <div className="grid grid-cols-3 gap-2">
-                      <div className="col-span-2">
-                        <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Paper Title</label>
-                        <input
-                          type="text"
-                          value={editingProduct.papers?.[0]?.title || ""}
-                          onChange={(e) => {
-                            const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
-                              ? editingProduct.papers
-                              : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
-                            papers[0] = { ...papers[0], title: e.target.value };
-                            setEditingProduct({ ...editingProduct, papers });
-                          }}
-                          className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-bold"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Author</label>
-                        <input
-                          type="text"
-                          value={editingProduct.papers?.[0]?.author || ""}
-                          onChange={(e) => {
-                            const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
-                              ? editingProduct.papers
-                              : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
-                            papers[0] = { ...papers[0], author: e.target.value };
-                            setEditingProduct({ ...editingProduct, papers });
-                          }}
-                          className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-bold"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-[9px] font-bold text-[#2c5e37] uppercase">Journal & Year</label>
-                      <input
-                        type="text"
-                        value={editingProduct.papers?.[0]?.journal || ""}
-                        onChange={(e) => {
-                          const papers = [...(editingProduct.papers && editingProduct.papers.length >= 1
-                            ? editingProduct.papers
-                            : [editingProduct.papers?.[0] || { title: "", author: "", journal: "" }])];
-                          papers[0] = { ...papers[0], journal: e.target.value };
-                          setEditingProduct({ ...editingProduct, papers });
-                        }}
-                        className="w-full px-2 py-1 bg-white border border-[#dce4da] rounded-lg text-[#1c3c24] text-xs font-semibold"
-                        placeholder="e.g. Journal of Applied Mycology, 2024"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-            <BrandingSectionStylesControls
-              sectionName="Product Display Style"
-              styles={editingProduct.styles}
-              onChange={(newStyles) => setEditingProduct({ ...editingProduct, styles: newStyles })}
-            />
-
-            </div>
-
-            {/* Modal Footer actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#e2e8e0]">
-              <button
-                type="button"
-                onClick={() => {
-                  if (window.confirm("Revert product changes to current saved state?")) {
-                    const original = data.products.find((p) => p.id === editingProduct.id);
-                    if (original) {
-                      setEditingProduct({ ...original });
-                    }
-                  }
-                }}
-                className="px-5 py-2.5 border border-[#dce4da] hover:bg-[#f0f5ef] text-[#2c5e37] font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer font-sans"
-              >
-                Reset
-              </button>
-              <button
-                type="button"
-                onClick={() => setEditingProduct(null)}
-                className="px-5 py-2.5 bg-[#f0f5ef] hover:bg-gray-200 border border-[#d2e4d0] rounded-xl text-xs font-bold text-[#1c3c24]"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSaveProduct(editingProduct)}
-                disabled={saving}
-                className="px-6 py-2.5 bg-[#1c3c24] hover:bg-[#2c5e37] text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow cursor-pointer"
-              >
-                {saving ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Save className="w-4 h-4" /> Save Product
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Catalog Level Branding Customizer */}
+      <BrandingSectionStylesControls
+        sectionName="Product Cards & Catalog"
+        styles={(data.homepage as any)?.productsHeaderStyles}
+        onChange={(newStyles) =>
+          updateData({
+            homepage: {
+              ...data.homepage,
+              productsHeaderStyles: newStyles,
+            },
+          } as any)
+        }
+      />
     </div>
   );
 }
