@@ -1207,40 +1207,57 @@ export async function getCMSData(): Promise<CMSData> {
     return getLocalCMSData();
   }
 
-  const result = await list({ prefix: CMS_BLOB_PATH, limit: 1 });
-  const existing = result.blobs.find((blob) => blob.pathname === CMS_BLOB_PATH);
+  try {
+    const result = await list({ prefix: CMS_BLOB_PATH, limit: 1 });
+    const existing = result.blobs.find((blob) => blob.pathname === CMS_BLOB_PATH);
 
-  if (existing) {
-    const response = await fetch(existing.url, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error("Unable to read the shared CMS data from Vercel Blob.");
+    if (existing) {
+      const response = await fetch(existing.url, { cache: "no-store" });
+      if (response.ok) {
+        const json = (await response.json()) as CMSData;
+        const restored = restoreMissingContent(json);
+        inMemoryDataCache = restored.data;
+        return restored.data;
+      }
+      console.warn("Blob fetch failed with status:", response.status, "- falling back to local CMS data");
+    } else {
+      // Seed the Blob store from the project's current CMS content the first time
+      // a newly connected store is used.
+      const initialData = getLocalCMSData();
+      try {
+        await put(CMS_BLOB_PATH, JSON.stringify(initialData), {
+          access: "public",
+          addRandomSuffix: false,
+          allowOverwrite: true,
+          contentType: "application/json",
+        });
+      } catch (seedErr) {
+        console.warn("Failed to seed CMS Blob store:", seedErr);
+      }
+      return initialData;
     }
-    const restored = restoreMissingContent((await response.json()) as CMSData);
-    return restored.data;
+  } catch (error) {
+    console.error("Vercel Blob getCMSData error, falling back to local data:", error);
   }
 
-  // Seed the Blob store from the project's current CMS content the first time
-  // a newly connected store is used.
-  const initialData = getLocalCMSData();
-  await put(CMS_BLOB_PATH, JSON.stringify(initialData), {
-    access: "public",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
-  return initialData;
+  return getLocalCMSData();
 }
 
 export async function saveCMSData(data: CMSData): Promise<void> {
+  saveLocalCMSData(data);
+
   if (!isBlobConfigured()) {
-    saveLocalCMSData(data);
     return;
   }
 
-  await put(CMS_BLOB_PATH, JSON.stringify(data), {
-    access: "public",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    contentType: "application/json",
-  });
+  try {
+    await put(CMS_BLOB_PATH, JSON.stringify(data), {
+      access: "public",
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType: "application/json",
+    });
+  } catch (err) {
+    console.warn("Failed to persist CMS data to Vercel Blob:", err);
+  }
 }
