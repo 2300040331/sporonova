@@ -1,7 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ChevronDown, ChevronUp, Palette, Type, LayoutGrid, Sliders, RotateCcw, Sparkles } from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Palette,
+  Type,
+  LayoutGrid,
+  Sliders,
+  RotateCcw,
+  Sparkles,
+  Search,
+  Check,
+  Eye,
+  Paintbrush,
+} from "lucide-react";
 import { SectionStylesConfig } from "@/lib/styles-helper";
 
 interface BrandingSectionStylesControlsProps {
@@ -10,7 +23,80 @@ interface BrandingSectionStylesControlsProps {
   sectionName: string;
 }
 
-// Sporonova default theme values
+// 50+ Top Google Fonts
+const GOOGLE_FONTS = [
+  "Outfit",
+  "Inter",
+  "Poppins",
+  "Montserrat",
+  "Roboto",
+  "Open Sans",
+  "Lato",
+  "Raleway",
+  "Nunito",
+  "Work Sans",
+  "DM Sans",
+  "Manrope",
+  "Playfair Display",
+  "Merriweather",
+  "Lora",
+  "PT Serif",
+  "Libre Baskerville",
+  "EB Garamond",
+  "DM Serif Display",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Space Grotesk",
+  "Sora",
+  "Plus Jakarta Sans",
+  "Fira Code",
+  "JetBrains Mono",
+  "Space Mono",
+  "Quicksand",
+  "Barlow",
+  "Josefin Sans",
+  "Rubik",
+  "Ubuntu",
+  "Cabin",
+  "Arvo",
+  "Alegreya",
+  "Bitter",
+  "Crimson Text",
+  "Domine",
+  "Karma",
+  "Newsreader",
+  "Spectral",
+  "Vollkorn",
+  "Caveat",
+  "Pacifico",
+  "Satisfy",
+  "Bebas Neue",
+  "Oswald",
+  "Anton",
+  "Syne",
+  "Unbounded",
+];
+
+// Preset Font Sizes & Spacings
+const HEADING_SIZES = ["16", "18", "20", "24", "28", "32", "36", "40", "44", "48", "56", "64", "72"];
+const PARAGRAPH_SIZES = ["10", "12", "14", "16", "18", "20", "22", "24"];
+const LINE_HEIGHTS = ["1.0", "1.15", "1.25", "1.35", "1.4", "1.5", "1.6", "1.75", "1.8", "2.0"];
+const LETTER_SPACINGS = ["-0.05em", "-0.02em", "0em", "0.02em", "0.05em", "0.08em", "0.1em"];
+const FONT_WEIGHTS = [
+  { value: "100", label: "100 - Thin" },
+  { value: "200", label: "200 - Extra Light" },
+  { value: "300", label: "300 - Light" },
+  { value: "400", label: "400 - Normal" },
+  { value: "500", label: "500 - Medium" },
+  { value: "600", label: "600 - Semi Bold" },
+  { value: "700", label: "700 - Bold" },
+  { value: "800", label: "800 - Extra Bold" },
+  { value: "900", label: "900 - Black" },
+];
+
+const TEXT_ALIGNS = ["left", "center", "right", "justify"];
+
+// Sporonova default theme fallback values
 const DEFAULTS: Record<string, string> = {
   backgroundColor: "#f9faf7",
   textColor: "#1c3c24",
@@ -21,6 +107,7 @@ const DEFAULTS: Record<string, string> = {
   buttonTextColor: "#ffffff",
   cardBgColor: "#ffffff",
   cardTextColor: "#1c3c24",
+  cardBorderColor: "#e6e4dc",
   headingSize: "36",
   paragraphSize: "14",
   buttonTextSize: "12",
@@ -32,678 +119,220 @@ const DEFAULTS: Record<string, string> = {
   letterSpacing: "0em",
 };
 
-// 54 Selectable Google Fonts as requested
-const GOOGLE_FONTS = [
-  "Inter", "Poppins", "Roboto", "Open Sans", "Lato", "Montserrat", "Nunito", "Nunito Sans",
-  "Raleway", "Merriweather", "Playfair Display", "Oswald", "Source Sans 3", "Source Serif 4",
-  "Ubuntu", "Work Sans", "DM Sans", "Manrope", "Plus Jakarta Sans", "Outfit", "Quicksand",
-  "Rubik", "Mulish", "Cabin", "Figtree", "Lexend", "Libre Baskerville", "Crimson Pro",
-  "Cormorant Garamond", "Libre Franklin", "IBM Plex Sans", "IBM Plex Serif", "Roboto Slab",
-  "PT Sans", "PT Serif", "Noto Sans", "Noto Serif", "Barlow", "Barlow Condensed", "Archivo",
-  "Space Grotesk", "Space Mono", "Sora", "Urbanist", "Josefin Sans", "Bebas Neue", "Abril Fatface",
-  "Bitter", "Karla", "Hind", "Assistant", "Exo 2", "Titillium Web", "Oxygen"
-];
-
-// Predefined spacing lists
-const PREDEFINED_HEADING_SIZES = [
-  "12", "14", "16", "18", "20", "22", "24", "26", "28", "30",
-  "32", "34", "36", "38", "40", "42", "44", "48", "52", "56",
-  "60", "64", "72"
-];
-
-const PREDEFINED_PARAGRAPH_SIZES = [
-  "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-  "20", "22", "24"
-];
-
-const PREDEFINED_LINE_HEIGHTS = [
-  "1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "2.0"
-];
-
-const PREDEFINED_LETTER_SPACINGS = [
-  "-0.05em", "-0.03em", "-0.02em", "-0.01em", "0em", "0.01em", "0.02em", "0.03em", "0.05em", "0.08em", "0.1em"
-];
-
-const TEXT_ALIGNS = ["left", "center", "right", "justify"];
-
 interface SuggestedTheme {
+  id: string;
   name: string;
-  description: string;
-  colors: {
-    bg: string;
-    card: string;
-    text: string;
-    primary: string;
-  };
-  values: Partial<SectionStylesConfig>;
+  desc: string;
+  styles: SectionStylesConfig;
 }
 
-// Map sectionName to 3 tailored suggested themes
-const getSuggestedThemes = (sectionName: string): SuggestedTheme[] => {
-  const norm = sectionName.toLowerCase().trim();
-  
-  if (norm.includes("homepage")) {
+// Tailored Suggested Themes Dictionary
+function getSuggestedThemes(sectionName: string): SuggestedTheme[] {
+  const nameLower = sectionName.toLowerCase();
+
+  if (nameLower.includes("hero") || nameLower.includes("banner")) {
     return [
       {
-        name: "Premium Healthcare",
-        description: "Elegant Obsidian styling for deep clinical impact.",
-        colors: { bg: "#0c0f17", card: "#1b1e2a", text: "#cbd5e1", primary: "#00f2fe" },
-        values: {
-          backgroundColor: "#0c0f17",
-          textColor: "#cbd5e1",
+        id: "hero-1",
+        name: "Majestic Forest",
+        desc: "Deep emerald tones with luminous sage accents & bold headings.",
+        styles: {
+          backgroundColor: "#0d2818",
+          textColor: "#e8f5e9",
           headingColor: "#ffffff",
-          cardBgColor: "#1b1e2a",
-          cardTextColor: "#f8fafc",
-          buttonColor: "#00f2fe",
-          buttonTextColor: "#0c0f17",
+          headingWeight: "700",
+          iconColor: "#52b788",
+          buttonColor: "#52b788",
+          buttonTextColor: "#0d2818",
+          cardBgColor: "#163824",
+          cardTextColor: "#e8f5e9",
+          cardBorderColor: "#2d6a4f",
           fontFamily: "Outfit, sans-serif",
+          headingSize: 44,
+          paragraphSize: 16,
+          borderRadius: 20,
+        },
+      },
+      {
+        id: "hero-2",
+        name: "Bioluminescent Dark",
+        desc: "Futuristic obsidian atmosphere with electric cyan accents.",
+        styles: {
+          backgroundColor: "#0b0f19",
+          textColor: "#94a3b8",
+          headingColor: "#00f2fe",
+          headingWeight: "800",
+          iconColor: "#00f2fe",
+          buttonColor: "#00f2fe",
+          buttonTextColor: "#0b0f19",
+          cardBgColor: "#151c2e",
+          cardTextColor: "#f1f5f9",
+          cardBorderColor: "#1e293b",
+          fontFamily: "Space Grotesk, sans-serif",
           headingSize: 48,
           paragraphSize: 16,
           borderRadius: 24,
-          iconColor: "#00f2fe",
-          headingWeight: "700"
-        }
+        },
       },
       {
-        name: "Modern Green",
-        description: "Fresh, trustworthy agricultural tone.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
+        id: "hero-3",
+        name: "Clean Ivory Harvest",
+        desc: "Warm editorial palette with refined serif typography.",
+        styles: {
+          backgroundColor: "#fcfbfa",
+          textColor: "#332c27",
           headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 44,
-          paragraphSize: 15,
-          borderRadius: 16,
-          iconColor: "#4e8c4a",
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Corporate Trust",
-        description: "Balanced obsidian accents with professional type.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#334155", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#0f172a",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
+          headingWeight: "600",
+          iconColor: "#d97706",
           buttonColor: "#1c3c24",
           buttonTextColor: "#ffffff",
-          fontFamily: "Poppins, sans-serif",
-          headingSize: 40,
-          paragraphSize: 14,
-          borderRadius: 12,
-          iconColor: "#1c3c24",
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("header")) {
-    return [
-      {
-        name: "Elegant Brand",
-        description: "Full colored brand header with high contrast.",
-        colors: { bg: "#1c3c24", card: "#1c3c24", text: "#ffffff", primary: "#7baa6b" },
-        values: {
-          backgroundColor: "#1c3c24",
-          textColor: "#ffffff",
-          headingColor: "#ffffff",
-          fontFamily: "Outfit, sans-serif",
-          headingSize: 24,
-          paragraphSize: 14,
-          iconColor: "#7baa6b",
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Clean Navigation",
-        description: "Crisp white headers with solid link colors.",
-        colors: { bg: "#ffffff", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 20,
-          paragraphSize: 14,
-          iconColor: "#4e8c4a",
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Premium Minimal",
-        description: "Soft clean branding with modern spacing.",
-        colors: { bg: "#f9faf7", card: "#f9faf7", text: "#333333", primary: "#00f2fe" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#333333",
-          headingColor: "#1c3c24",
-          fontFamily: "Montserrat, sans-serif",
-          headingSize: 18,
-          paragraphSize: 14,
-          iconColor: "#00f2fe",
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("product")) {
-    return [
-      {
-        name: "Fresh Pharma",
-        description: "Vibrant herbal accents on clean white backgrounds.",
-        colors: { bg: "#f4f9f4", card: "#ffffff", text: "#1c3c24", primary: "#2e7d32" },
-        values: {
-          backgroundColor: "#f4f9f4",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
           cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#2e7d32",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Plus Jakarta Sans, sans-serif",
-          headingSize: 36,
-          paragraphSize: 14,
-          borderRadius: 16,
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Clinical Product",
-        description: "Highly structured corporate card presentation.",
-        colors: { bg: "#f8fafc", card: "#ffffff", text: "#334155", primary: "#0f172a" },
-        values: {
-          backgroundColor: "#f8fafc",
-          textColor: "#475569",
-          headingColor: "#0f172a",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#334155",
-          buttonColor: "#0f172a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 32,
-          paragraphSize: 14,
-          borderRadius: 12,
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Trust & Care",
-        description: "Soft clinical design with round card frames.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#1e293b", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#1e293b",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#1c3c24",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Raleway, sans-serif",
-          headingSize: 34,
-          paragraphSize: 14,
-          borderRadius: 20,
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("process")) {
-    return [
-      {
-        name: "Scientific Blue",
-        description: "Sleek dark obsidian tech lab styling.",
-        colors: { bg: "#070911", card: "#1b1e2a", text: "#f1f5f9", primary: "#00f2fe" },
-        values: {
-          backgroundColor: "#070911",
-          textColor: "#e2e8f0",
-          headingColor: "#ffffff",
-          cardBgColor: "#1b1e2a",
-          cardTextColor: "#f1f5f9",
-          buttonColor: "#00f2fe",
-          buttonTextColor: "#070911",
-          fontFamily: "Space Grotesk, sans-serif",
-          headingSize: 36,
-          paragraphSize: 14,
-          borderRadius: 24,
-          iconColor: "#00f2fe",
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Manufacturing Green",
-        description: "Clean organic process timeline tones.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#2d3748",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Work Sans, sans-serif",
-          headingSize: 32,
-          paragraphSize: 14,
-          borderRadius: 16,
-          iconColor: "#4e8c4a",
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Industrial Clean",
-        description: "High contrast professional step navigation.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#334155", primary: "#0f172a" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#0f172a",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#0f172a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Outfit, sans-serif",
-          headingSize: 30,
-          paragraphSize: 14,
-          borderRadius: 12,
-          iconColor: "#0f172a",
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("about")) {
-    return [
-      {
-        name: "Corporate Trust",
-        description: "Clean research-institution-inspired design.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#334155", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#0f172a",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#1c3c24",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 36,
-          paragraphSize: 14,
-          borderRadius: 16,
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Heritage Green",
-        description: "Elegant serif type with natural shades.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
+          cardTextColor: "#332c27",
+          cardBorderColor: "#f1eee7",
           fontFamily: "Playfair Display, serif",
           headingSize: 40,
-          paragraphSize: 14,
-          borderRadius: 16,
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Premium Healthcare",
-        description: "Modern obsidian theme with bioluminescent badges.",
-        colors: { bg: "#070911", card: "#1b1e2a", text: "#ffffff", primary: "#39ff14" },
-        values: {
-          backgroundColor: "#070911",
-          textColor: "#cbd5e1",
-          headingColor: "#ffffff",
-          cardBgColor: "#1b1e2a",
-          cardTextColor: "#ffffff",
-          buttonColor: "#39ff14",
-          buttonTextColor: "#070911",
-          fontFamily: "Outfit, sans-serif",
-          headingSize: 38,
-          paragraphSize: 14,
-          borderRadius: 24,
-          headingWeight: "800"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("why-choose-us") || norm.includes("choose")) {
-    return [
-      {
-        name: "Excellence Green",
-        description: "Premium green accents with rounded card slots.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Outfit, sans-serif",
-          headingSize: 36,
-          paragraphSize: 14,
-          borderRadius: 24,
-          iconColor: "#4e8c4a",
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Modern Trust",
-        description: "High readability, clean contrast business card cells.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#0f172a", primary: "#1e293b" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#0f172a",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#1e293b",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Poppins, sans-serif",
-          headingSize: 34,
-          paragraphSize: 14,
-          borderRadius: 16,
-          iconColor: "#1e293b",
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Premium Care",
-        description: "Vibrant dark mode cells for biotech services.",
-        colors: { bg: "#070911", card: "#1b1e2a", text: "#e2e8f0", primary: "#00f2fe" },
-        values: {
-          backgroundColor: "#070911",
-          textColor: "#cbd5e1",
-          headingColor: "#ffffff",
-          cardBgColor: "#1b1e2a",
-          cardTextColor: "#e2e8f0",
-          buttonColor: "#00f2fe",
-          buttonTextColor: "#070911",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 36,
-          paragraphSize: 14,
-          borderRadius: 20,
-          iconColor: "#00f2fe",
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("knowledge")) {
-    return [
-      {
-        name: "Editorial Clean",
-        description: "Elegant serif reading panel with soft card dividers.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#1e293b", primary: "#0f172a" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#1e293b",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#0f172a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Merriweather, serif",
-          headingSize: 36,
           paragraphSize: 15,
-          borderRadius: 8,
-          lineHeight: "1.8",
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Medical Research",
-        description: "Modern professional clinical reading layout.",
-        colors: { bg: "#f8fafc", card: "#ffffff", text: "#334155", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#f8fafc",
-          textColor: "#334155",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#334155",
-          buttonColor: "#1c3c24",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Source Serif 4, serif",
-          headingSize: 34,
-          paragraphSize: 14,
-          borderRadius: 12,
-          lineHeight: "1.7",
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Knowledge Green",
-        description: "Clean organic styling for reading guides.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 32,
-          paragraphSize: 14,
           borderRadius: 16,
-          lineHeight: "1.6",
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("gallery")) {
-    return [
-      {
-        name: "Minimal Showcase",
-        description: "Clean minimal backdrop for photographic alignment.",
-        colors: { bg: "#ffffff", card: "#ffffff", text: "#333333", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#333333",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#333333",
-          buttonColor: "#1c3c24",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Montserrat, sans-serif",
-          headingSize: 30,
-          paragraphSize: 14,
-          borderRadius: 16,
-          headingWeight: "700"
-        }
+        },
       },
-      {
-        name: "Premium White",
-        description: "Soft grey backing with white photographic slots.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Outfit, sans-serif",
-          headingSize: 28,
-          paragraphSize: 14,
-          borderRadius: 24,
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Elegant Medical",
-        description: "High-contrast obsidian showcase panels.",
-        colors: { bg: "#0c0f17", card: "#1b1e2a", text: "#ffffff", primary: "#00f2fe" },
-        values: {
-          backgroundColor: "#0c0f17",
-          textColor: "#cbd5e1",
-          headingColor: "#ffffff",
-          cardBgColor: "#1b1e2a",
-          cardTextColor: "#ffffff",
-          buttonColor: "#00f2fe",
-          buttonTextColor: "#0c0f17",
-          fontFamily: "Space Grotesk, sans-serif",
-          headingSize: 32,
-          paragraphSize: 14,
-          borderRadius: 20,
-          headingWeight: "500"
-        }
-      }
-    ];
-  }
-  
-  if (norm.includes("form") || norm.includes("contact")) {
-    return [
-      {
-        name: "Friendly Support",
-        description: "Clean input boxes with round corner edges.",
-        colors: { bg: "#ffffff", card: "#f8fafc", text: "#1e293b", primary: "#4e8c4a" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#1e293b",
-          cardBgColor: "#f8fafc",
-          cardTextColor: "#334155",
-          buttonColor: "#4e8c4a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Quicksand, sans-serif",
-          headingSize: 30,
-          paragraphSize: 14,
-          borderRadius: 20,
-          headingWeight: "600"
-        }
-      },
-      {
-        name: "Clean Healthcare",
-        description: "Clinical look with pure white focus boxes.",
-        colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#1c3c24" },
-        values: {
-          backgroundColor: "#f9faf7",
-          textColor: "#1c3c24",
-          headingColor: "#1c3c24",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#1c3c24",
-          buttonColor: "#1c3c24",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Inter, sans-serif",
-          headingSize: 28,
-          paragraphSize: 14,
-          borderRadius: 12,
-          headingWeight: "700"
-        }
-      },
-      {
-        name: "Professional Trust",
-        description: "Strong border shapes and solid dark highlights.",
-        colors: { bg: "#ffffff", card: "#ffffff", text: "#0f172a", primary: "#0f172a" },
-        values: {
-          backgroundColor: "#ffffff",
-          textColor: "#334155",
-          headingColor: "#0f172a",
-          cardBgColor: "#ffffff",
-          cardTextColor: "#0f172a",
-          buttonColor: "#0f172a",
-          buttonTextColor: "#ffffff",
-          fontFamily: "Poppins, sans-serif",
-          headingSize: 32,
-          paragraphSize: 14,
-          borderRadius: 8,
-          headingWeight: "600"
-        }
-      }
     ];
   }
 
-  // Generic Fallback for other settings
+  if (nameLower.includes("product") || nameLower.includes("catalog")) {
+    return [
+      {
+        id: "prod-1",
+        name: "Pure Spore Lab",
+        desc: "Clinical mint clarity highlighting scientific purity.",
+        styles: {
+          backgroundColor: "#f4f8f4",
+          textColor: "#2d3748",
+          headingColor: "#1a4d2e",
+          headingWeight: "700",
+          iconColor: "#4e8c4a",
+          buttonColor: "#1a4d2e",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#ffffff",
+          cardTextColor: "#2d3748",
+          cardBorderColor: "#d2e4d0",
+          fontFamily: "Inter, sans-serif",
+          headingSize: 32,
+          paragraphSize: 14,
+          borderRadius: 16,
+        },
+      },
+      {
+        id: "prod-2",
+        name: "Premium Golden Spawner",
+        desc: "Rich amber & bronze tones for luxury gourmet varieties.",
+        styles: {
+          backgroundColor: "#faf6f0",
+          textColor: "#4a3b32",
+          headingColor: "#78350f",
+          headingWeight: "700",
+          iconColor: "#d97706",
+          buttonColor: "#78350f",
+          buttonTextColor: "#ffffff",
+          cardBgColor: "#ffffff",
+          cardTextColor: "#4a3b32",
+          cardBorderColor: "#fef3c7",
+          fontFamily: "Montserrat, sans-serif",
+          headingSize: 36,
+          paragraphSize: 14,
+          borderRadius: 20,
+        },
+      },
+      {
+        id: "prod-3",
+        name: "Obsidian Cultivation",
+        desc: "High-contrast dark grid with glowing emerald borders.",
+        styles: {
+          backgroundColor: "#111827",
+          textColor: "#9ca3af",
+          headingColor: "#34d399",
+          headingWeight: "700",
+          iconColor: "#34d399",
+          buttonColor: "#10b981",
+          buttonTextColor: "#064e3b",
+          cardBgColor: "#1f2937",
+          cardTextColor: "#f3f4f6",
+          cardBorderColor: "#374151",
+          fontFamily: "Plus Jakarta Sans, sans-serif",
+          headingSize: 32,
+          paragraphSize: 14,
+          borderRadius: 16,
+        },
+      },
+    ];
+  }
+
+  // Universal Fallback 3 Themes for all other sections
   return [
     {
-      name: "Default Brand",
-      description: "Standard clean style mapping to corporate design.",
-      colors: { bg: "#f9faf7", card: "#ffffff", text: "#1c3c24", primary: "#1c3c24" },
-      values: {
+      id: "gen-1",
+      name: "Organic Spore",
+      desc: "Balanced natural greens with crisp white cards & clear typography.",
+      styles: {
         backgroundColor: "#f9faf7",
         textColor: "#1c3c24",
         headingColor: "#1c3c24",
-        cardBgColor: "#ffffff",
-        cardTextColor: "#1c3c24",
+        headingWeight: "700",
+        iconColor: "#4e8c4a",
         buttonColor: "#1c3c24",
         buttonTextColor: "#ffffff",
+        cardBgColor: "#ffffff",
+        cardTextColor: "#1c3c24",
+        cardBorderColor: "#e6e4dc",
         fontFamily: "Outfit, sans-serif",
         headingSize: 36,
         paragraphSize: 14,
         borderRadius: 16,
-        iconColor: "#4e8c4a",
-        headingWeight: "700"
-      }
+      },
     },
     {
-      name: "Eco Nature",
-      description: "Soft environmental focus styling with gentle type.",
-      colors: { bg: "#ffffff", card: "#ffffff", text: "#1c3c24", primary: "#4e8c4a" },
-      values: {
-        backgroundColor: "#ffffff",
-        textColor: "#2d3748",
-        headingColor: "#1c3c24",
-        cardBgColor: "#ffffff",
-        cardTextColor: "#1c3c24",
-        buttonColor: "#4e8c4a",
+      id: "gen-2",
+      name: "Bio-Tech Lab",
+      desc: "Modern cyan & obsidian contrast built for high-tech research.",
+      styles: {
+        backgroundColor: "#0c0f17",
+        textColor: "#cbd5e1",
+        headingColor: "#38bdf8",
+        headingWeight: "700",
+        iconColor: "#38bdf8",
+        buttonColor: "#0284c7",
         buttonTextColor: "#ffffff",
-        fontFamily: "Inter, sans-serif",
-        headingSize: 34,
-        paragraphSize: 14,
-        borderRadius: 12,
-        iconColor: "#4e8c4a",
-        headingWeight: "600"
-      }
-    },
-    {
-      name: "Clinical Modern",
-      description: "Crisp white elements with professional dark text.",
-      colors: { bg: "#f8fafc", card: "#ffffff", text: "#334155", primary: "#0f172a" },
-      values: {
-        backgroundColor: "#f8fafc",
-        textColor: "#334155",
-        headingColor: "#0f172a",
-        cardBgColor: "#ffffff",
-        cardTextColor: "#334155",
-        buttonColor: "#0f172a",
-        buttonTextColor: "#ffffff",
-        fontFamily: "Poppins, sans-serif",
-        headingSize: 32,
+        cardBgColor: "#1e293b",
+        cardTextColor: "#f8fafc",
+        cardBorderColor: "#334155",
+        fontFamily: "Space Grotesk, sans-serif",
+        headingSize: 36,
         paragraphSize: 14,
         borderRadius: 16,
-        iconColor: "#0f172a",
-        headingWeight: "500"
-      }
-    }
+      },
+    },
+    {
+      id: "gen-3",
+      name: "Editorial Warmth",
+      desc: "Warm earthy tones with elegant serif headings.",
+      styles: {
+        backgroundColor: "#fdfbf7",
+        textColor: "#443931",
+        headingColor: "#2b1c11",
+        headingWeight: "600",
+        iconColor: "#b45309",
+        buttonColor: "#2b1c11",
+        buttonTextColor: "#ffffff",
+        cardBgColor: "#ffffff",
+        cardTextColor: "#443931",
+        cardBorderColor: "#f3ede2",
+        fontFamily: "Playfair Display, serif",
+        headingSize: 36,
+        paragraphSize: 14,
+        borderRadius: 12,
+      },
+    },
   ];
-};
+}
 
 function DefaultBtn({ onClick, title }: { onClick: () => void; title?: string }) {
   return (
@@ -727,38 +356,26 @@ export default function BrandingSectionStylesControls({
   const [activeTab, setActiveTab] = useState<"themes" | "typography" | "colors" | "spacing" | "cards">("themes");
   const [fontSearch, setFontSearch] = useState("");
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Dynamically load Google Fonts on mount for visual preview
+  // Dynamically load Google Fonts stylesheet when panel opens
   useEffect(() => {
-    if (!isOpen) return;
-    
-    // Split fonts into batches to prevent URL length limits in browser
-    const fontNames = [
-      "Inter", "Poppins", "Roboto", "Open Sans", "Lato", "Montserrat", "Nunito", 
-      "Raleway", "Merriweather", "Playfair Display", "Oswald", "Ubuntu", 
-      "Work Sans", "DM Sans", "Manrope", "Plus Jakarta Sans", "Outfit", "Quicksand", 
-      "Rubik", "Mulish", "Cabin", "Figtree", "Lexend", "Libre Baskerville", "Crimson Pro", 
-      "Cormorant Garamond", "IBM Plex Sans", "IBM Plex Serif", "Roboto Slab", "PT Sans", 
-      "PT Serif", "Noto Sans", "Noto Serif", "Barlow", "Archivo", "Space Grotesk", 
-      "Space Mono", "Sora", "Urbanist", "Josefin Sans", "Bebas Neue", "Abril Fatface", 
-      "Bitter", "Karla", "Hind", "Assistant", "Exo 2", "Titillium Web", "Oxygen"
-    ];
-    
-    const families = fontNames.map(f => f.replace(/ /g, "+") + ":wght@400;700").join("&family=");
-    const href = `https://fonts.googleapis.com/css2?family=${families}&display=swap`;
-    
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = href;
-    document.head.appendChild(link);
-    
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, [isOpen]);
+    if (isOpen && !fontsLoaded) {
+      const linkId = "google-fonts-branding-customizer";
+      if (!document.getElementById(linkId)) {
+        const link = document.createElement("link");
+        link.id = linkId;
+        link.rel = "stylesheet";
+        const fontFamiliesParam = GOOGLE_FONTS.map((f) => f.replace(/ /g, "+") + ":wght@300;400;600;700").join("&family=");
+        link.href = `https://fonts.googleapis.com/css2?family=${fontFamiliesParam}&display=swap`;
+        document.head.appendChild(link);
+      }
+      setFontsLoaded(true);
+    }
+  }, [isOpen, fontsLoaded]);
 
   const updateStyle = (key: keyof SectionStylesConfig, value: any) => {
-    onChange({ ...styles, [key]: value === "" || value === "custom" ? undefined : value });
+    onChange({ ...styles, [key]: value === "" ? undefined : value });
   };
 
   const applyDefault = (key: string) => {
@@ -782,6 +399,18 @@ export default function BrandingSectionStylesControls({
     }
   };
 
+  const applyTheme = (theme: SuggestedTheme) => {
+    onChange({ ...styles, ...theme.styles });
+  };
+
+  const filteredFonts = useMemo(() => {
+    return GOOGLE_FONTS.filter((f) => f.toLowerCase().includes(fontSearch.toLowerCase()));
+  }, [fontSearch]);
+
+  const suggestedThemes = useMemo(() => getSuggestedThemes(sectionName), [sectionName]);
+
+  const currentFontFamilyName = styles.fontFamily ? styles.fontFamily.split(",")[0].replace(/['"]/g, "").trim() : "Outfit";
+
   return (
     <div className="border border-[#e2e8e0] rounded-2xl bg-white shadow-sm overflow-hidden mt-6">
       <button
@@ -800,7 +429,7 @@ export default function BrandingSectionStylesControls({
 
       {isOpen && (
         <div className="p-5 space-y-4">
-          <div className="flex border-b border-[#e2e8e0] gap-1 pb-1 overflow-x-auto scrollbar-none">
+          <div className="flex border-b border-[#e2e8e0] gap-1 pb-1 overflow-x-auto">
             {[
               { id: "themes", label: "Suggested Themes", icon: Sparkles },
               { id: "typography", label: "Typography", icon: Type },
@@ -814,7 +443,7 @@ export default function BrandingSectionStylesControls({
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer shrink-0 ${
                     activeTab === tab.id
                       ? "bg-[#1c3c24] text-white shadow-sm"
                       : "text-[#2c5e37] hover:bg-[#f0f5ef]"
@@ -829,63 +458,95 @@ export default function BrandingSectionStylesControls({
 
           {/* ───── SUGGESTED THEMES TAB ───── */}
           {activeTab === "themes" && (
-            <div className="space-y-4">
-              <div className="text-[10px] text-gray-500 font-medium pb-2 border-b border-[#e2e8e0]">
-                Apply a professionally suggested design preset for the <span className="font-extrabold text-[#1c3c24]">{sectionName}</span>. Manual custom settings remain fully adjustable afterwards.
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
+                  Select a Curated Theme for {sectionName}
+                </span>
+                <span className="text-[10px] font-mono text-gray-400">1-Click Instant Apply</span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {getSuggestedThemes(sectionName).map((theme) => (
-                  <div key={theme.name} className="flex flex-col bg-[#f9fbf8] border border-[#e2e8e0] rounded-2xl p-4 justify-between space-y-4 shadow-sm hover:shadow-md transition-all duration-300">
-                    <div>
-                      <h4 className="text-xs font-extrabold text-[#1c3c24]">{theme.name}</h4>
-                      <p className="text-[10px] text-gray-600 mt-1 leading-normal font-medium">{theme.description}</p>
-                    </div>
-                    
-                    {/* Visual Previews */}
-                    <div className="space-y-3 p-3 bg-white border border-[#dce4da] rounded-xl text-xs">
-                      {/* Color Palette Preview */}
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] text-gray-400 font-mono font-bold">Palette:</span>
-                        <div className="flex gap-1">
-                          <span className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: theme.colors.bg }} title="Background" />
-                          <span className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: theme.colors.card }} title="Card Background" />
-                          <span className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: theme.colors.text }} title="Text Color" />
-                          <span className="w-3.5 h-3.5 rounded-full border border-gray-200" style={{ backgroundColor: theme.colors.primary }} title="Primary Button Color" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {suggestedThemes.map((t) => {
+                  const bg = (t.styles.backgroundColor as string) || "#ffffff";
+                  const cardBg = (t.styles.cardBgColor as string) || "#ffffff";
+                  const txt = (t.styles.textColor as string) || "#000000";
+                  const btn = (t.styles.buttonColor as string) || "#1c3c24";
+                  const btnTxt = (t.styles.buttonTextColor as string) || "#ffffff";
+                  const font = (t.styles.fontFamily as string) || "Outfit";
+
+                  return (
+                    <div
+                      key={t.id}
+                      className="border border-[#e2e8e0] bg-[#f9fbf8] rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-[#4e8c4a] transition-all shadow-sm group"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-bold text-[#1c3c24] group-hover:text-[#4e8c4a] transition-colors">
+                            {t.name}
+                          </h4>
+                          <span
+                            className="px-2 py-0.5 rounded-md text-[9px] font-bold border border-gray-200"
+                            style={{ fontFamily: font, backgroundColor: bg, color: txt }}
+                          >
+                            Aa
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-gray-600 line-clamp-2">{t.desc}</p>
+                      </div>
+
+                      {/* Preview Box */}
+                      <div
+                        className="p-3 rounded-xl border border-gray-200 space-y-2 relative overflow-hidden"
+                        style={{ backgroundColor: bg }}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold" style={{ color: t.styles.headingColor || txt, fontFamily: font }}>
+                            Heading Preview
+                          </span>
+                          {/* Color Circles */}
+                          <div className="flex items-center gap-1">
+                            <span className="w-2.5 h-2.5 rounded-full border border-gray-300 shadow-xs" style={{ backgroundColor: bg }} title="BG" />
+                            <span className="w-2.5 h-2.5 rounded-full border border-gray-300 shadow-xs" style={{ backgroundColor: cardBg }} title="Card BG" />
+                            <span className="w-2.5 h-2.5 rounded-full border border-gray-300 shadow-xs" style={{ backgroundColor: txt }} title="Text" />
+                            <span className="w-2.5 h-2.5 rounded-full border border-gray-300 shadow-xs" style={{ backgroundColor: btn }} title="Accent" />
+                          </div>
+                        </div>
+
+                        {/* Mini Card Preview */}
+                        <div
+                          className="p-2 rounded-lg border text-[10px]"
+                          style={{
+                            backgroundColor: cardBg,
+                            color: t.styles.cardTextColor || txt,
+                            borderColor: t.styles.cardBorderColor || "#e2e8e0",
+                            fontFamily: font,
+                          }}
+                        >
+                          Mini Card Content
+                        </div>
+
+                        {/* Mini Button Preview */}
+                        <div className="pt-1 flex justify-end">
+                          <span
+                            className="px-2 py-1 text-[9px] font-bold rounded-md shadow-2xs"
+                            style={{ backgroundColor: btn, color: btnTxt }}
+                          >
+                            Sample Button
+                          </span>
                         </div>
                       </div>
-                      
-                      {/* Typography Preview */}
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] text-gray-400 font-mono font-bold">Type:</span>
-                        <span className="text-[10px] font-bold text-[#1c3c24]" style={{ fontFamily: theme.values.fontFamily }}>
-                          Aa {theme.values.fontFamily?.split(",")[0]}
-                        </span>
-                      </div>
-                      
-                      {/* Mini Card & Button Preview */}
-                      <div className="p-2 border rounded-lg space-y-1.5" style={{ backgroundColor: theme.colors.card, borderColor: theme.colors.primary + "33" }}>
-                        <span className="block text-[8px] font-bold" style={{ color: theme.colors.text }}>Sample Card Content</span>
-                        <span className="inline-block px-2 py-0.5 text-[8px] font-bold rounded uppercase tracking-wider text-center" style={{ backgroundColor: theme.colors.primary, color: theme.colors.bg === "#ffffff" || theme.colors.bg === "#f9faf7" ? "#ffffff" : theme.colors.bg }}>
-                          Mini Button
-                        </span>
-                      </div>
-                    </div>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const mergedStyles = {
-                          ...styles,
-                          ...theme.values
-                        };
-                        onChange(mergedStyles);
-                      }}
-                      className="w-full py-2 bg-[#1c3c24] hover:bg-[#4e8c4a] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer text-center"
-                    >
-                      Apply Theme
-                    </button>
-                  </div>
-                ))}
+                      <button
+                        type="button"
+                        onClick={() => applyTheme(t)}
+                        className="w-full py-2 bg-white border border-[#d2e4d0] hover:bg-[#1c3c24] hover:text-white text-[#2c5e37] text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 shadow-2xs"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" /> Apply Theme
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -894,268 +555,85 @@ export default function BrandingSectionStylesControls({
           {activeTab === "typography" && (
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-                {/* Searchable Font Family Picker */}
-                <div>
-                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Font Family</label>
+                {/* Searchable Font Picker */}
+                <div className="relative">
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">
+                    Font Family (50+ Google Fonts)
+                  </label>
                   <div className="flex gap-1.5">
                     <div className="flex-1 relative">
                       <button
                         type="button"
                         onClick={() => setFontDropdownOpen(!fontDropdownOpen)}
-                        className="w-full flex items-center justify-between px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] font-bold text-left min-w-0"
+                        className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-left flex items-center justify-between cursor-pointer"
                         style={{ fontFamily: styles.fontFamily || DEFAULTS.fontFamily }}
                       >
-                        <span className="truncate">{styles.fontFamily ? styles.fontFamily.split(",")[0] : "Outfit"}</span>
-                        <ChevronDown className="w-3.5 h-3.5 opacity-70 shrink-0 ml-1" />
+                        <span className="truncate">{currentFontFamilyName}</span>
+                        <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                       </button>
-                      
+
                       {fontDropdownOpen && (
-                        <>
-                          <div 
-                            className="fixed inset-0 z-[98]" 
-                            onClick={() => setFontDropdownOpen(false)} 
-                          />
-                          <div className="absolute z-[99] mt-1 w-full bg-white border border-[#e2e8e0] rounded-xl shadow-xl p-2 space-y-2">
+                        <div className="absolute z-50 left-0 right-0 mt-1 bg-white border border-[#dce4da] rounded-2xl shadow-xl p-2 space-y-2 max-h-64 overflow-hidden flex flex-col">
+                          <div className="relative">
+                            <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2.5" />
                             <input
                               type="text"
                               placeholder="Search fonts..."
                               value={fontSearch}
                               onChange={(e) => setFontSearch(e.target.value)}
-                              className="w-full px-3 py-1.5 bg-[#f9fbf8] border border-[#dce4da] rounded-lg text-xs font-medium text-[#1c3c24] outline-none"
+                              className="w-full pl-8 pr-3 py-1.5 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-xs"
+                              autoFocus
                             />
-                            <div className="max-h-56 overflow-y-auto divide-y divide-[#f0f5ef]">
-                              {GOOGLE_FONTS.filter(f => f.toLowerCase().includes(fontSearch.toLowerCase())).map((font) => (
+                          </div>
+
+                          <div className="overflow-y-auto flex-1 space-y-0.5 pr-1">
+                            {filteredFonts.map((f) => {
+                              const isSelected = currentFontFamilyName.toLowerCase() === f.toLowerCase();
+                              return (
                                 <button
-                                  key={font}
+                                  key={f}
                                   type="button"
                                   onClick={() => {
-                                    updateStyle("fontFamily", `${font}, sans-serif`);
+                                    updateStyle("fontFamily", `${f}, sans-serif`);
                                     setFontDropdownOpen(false);
-                                    setFontSearch("");
                                   }}
-                                  className="w-full text-left px-3 py-2 hover:bg-[#f0f5ef] text-[#1c3c24] font-medium text-xs block transition-all"
-                                  style={{ fontFamily: `${font}, sans-serif` }}
+                                  className={`w-full text-left px-3 py-1.5 rounded-lg text-xs flex items-center justify-between hover:bg-[#f0f5ef] cursor-pointer transition-colors ${
+                                    isSelected ? "bg-[#e8f2e6] text-[#1c3c24] font-bold" : "text-gray-700"
+                                  }`}
+                                  style={{ fontFamily: `${f}, sans-serif` }}
                                 >
-                                  {font} — Aa Bb Cc 123
+                                  <span>{f}</span>
+                                  {isSelected && <Check className="w-3.5 h-3.5 text-[#4e8c4a]" />}
                                 </button>
-                              ))}
-                              {GOOGLE_FONTS.filter(f => f.toLowerCase().includes(fontSearch.toLowerCase())).length === 0 && (
-                                <div className="text-center py-4 text-xs text-gray-400 font-medium">No matching fonts found</div>
-                              )}
-                            </div>
+                              );
+                            })}
+                            {filteredFonts.length === 0 && (
+                              <div className="p-3 text-center text-gray-400 text-xs font-mono">No matching fonts</div>
+                            )}
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
                     <DefaultBtn onClick={() => applyDefault("fontFamily")} />
                   </div>
                 </div>
 
-                {/* Font Weight */}
+                {/* Heading Weight */}
                 <div>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Font Weight</label>
                   <div className="flex gap-1.5">
                     <select
-                      value={styles.headingWeight || ""}
+                      value={styles.headingWeight || "700"}
                       onChange={(e) => updateStyle("headingWeight", e.target.value)}
                       className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] cursor-pointer"
                     >
-                      <option value="">Default</option>
-                      <option value="100">100 Thin</option>
-                      <option value="200">200 Extra Light</option>
-                      <option value="300">300 Light</option>
-                      <option value="400">400 Regular</option>
-                      <option value="500">500 Medium</option>
-                      <option value="600">600 Semi Bold</option>
-                      <option value="700">700 Bold</option>
-                      <option value="800">800 Extra Bold</option>
-                      <option value="900">900 Black</option>
+                      {FONT_WEIGHTS.map((w) => (
+                        <option key={w.value} value={w.value}>
+                          {w.label}
+                        </option>
+                      ))}
                     </select>
-                    <DefaultBtn onClick={() => updateStyle("headingWeight", undefined)} title="Clear" />
-                  </div>
-                </div>
-
-                {/* Predefined Heading Size Selector */}
-                <div>
-                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Heading Size</label>
-                  <div className="flex gap-1.5">
-                    <div className="flex-1 flex gap-1.5">
-                      <select
-                        value={
-                          !styles.headingSize 
-                            ? "" 
-                            : PREDEFINED_HEADING_SIZES.includes(styles.headingSize.toString().replace("px", "").trim()) 
-                              ? styles.headingSize.toString().replace("px", "").trim() 
-                              : "custom"
-                        }
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val === "custom") {
-                            updateStyle("headingSize", styles.headingSize || 40);
-                          } else if (val === "") {
-                            updateStyle("headingSize", undefined);
-                          } else {
-                            updateStyle("headingSize", parseInt(val) || val);
-                          }
-                        }}
-                        className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                      >
-                        <option value="">Default ({DEFAULTS.headingSize}px)</option>
-                        {PREDEFINED_HEADING_SIZES.map(s => (
-                          <option key={s} value={s}>{s} px</option>
-                        ))}
-                        <option value="custom">Custom...</option>
-                      </select>
-
-                      {styles.headingSize !== undefined && (!PREDEFINED_HEADING_SIZES.includes(styles.headingSize.toString().replace("px", "").trim())) && (
-                        <input
-                          type="text"
-                          placeholder="Size (px)"
-                          value={styles.headingSize}
-                          onChange={(e) => updateStyle("headingSize", e.target.value)}
-                          className="w-16 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] font-bold"
-                        />
-                      )}
-                    </div>
-                    <DefaultBtn onClick={() => applyDefault("headingSize")} />
-                  </div>
-                </div>
-
-                {/* Predefined Paragraph Size Selector */}
-                <div>
-                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Paragraph Size</label>
-                  <div className="flex gap-1.5">
-                    <div className="flex-1 flex gap-1.5">
-                      <select
-                        value={
-                          !styles.paragraphSize 
-                            ? "" 
-                            : PREDEFINED_PARAGRAPH_SIZES.includes(styles.paragraphSize.toString().replace("px", "").trim()) 
-                              ? styles.paragraphSize.toString().replace("px", "").trim() 
-                              : "custom"
-                        }
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val === "custom") {
-                            updateStyle("paragraphSize", styles.paragraphSize || 16);
-                          } else if (val === "") {
-                            updateStyle("paragraphSize", undefined);
-                          } else {
-                            updateStyle("paragraphSize", parseInt(val) || val);
-                          }
-                        }}
-                        className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                      >
-                        <option value="">Default ({DEFAULTS.paragraphSize}px)</option>
-                        {PREDEFINED_PARAGRAPH_SIZES.map(s => (
-                          <option key={s} value={s}>{s} px</option>
-                        ))}
-                        <option value="custom">Custom...</option>
-                      </select>
-
-                      {styles.paragraphSize !== undefined && (!PREDEFINED_PARAGRAPH_SIZES.includes(styles.paragraphSize.toString().replace("px", "").trim())) && (
-                        <input
-                          type="text"
-                          placeholder="Size (px)"
-                          value={styles.paragraphSize}
-                          onChange={(e) => updateStyle("paragraphSize", e.target.value)}
-                          className="w-16 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] font-bold"
-                        />
-                      )}
-                    </div>
-                    <DefaultBtn onClick={() => applyDefault("paragraphSize")} />
-                  </div>
-                </div>
-
-                {/* Predefined Line Height Selector */}
-                <div>
-                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Line Height</label>
-                  <div className="flex gap-1.5">
-                    <div className="flex-1 flex gap-1.5">
-                      <select
-                        value={
-                          !styles.lineHeight 
-                            ? "" 
-                            : PREDEFINED_LINE_HEIGHTS.includes(styles.lineHeight.toString().trim()) 
-                              ? styles.lineHeight.toString().trim() 
-                              : "custom"
-                        }
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val === "custom") {
-                            updateStyle("lineHeight", styles.lineHeight || "1.5");
-                          } else if (val === "") {
-                            updateStyle("lineHeight", undefined);
-                          } else {
-                            updateStyle("lineHeight", val);
-                          }
-                        }}
-                        className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                      >
-                        <option value="">Default ({DEFAULTS.lineHeight})</option>
-                        {PREDEFINED_LINE_HEIGHTS.map(s => (
-                          <option key={s} value={s}>{s}</option>
-                        ))}
-                        <option value="custom">Custom...</option>
-                      </select>
-
-                      {styles.lineHeight !== undefined && (!PREDEFINED_LINE_HEIGHTS.includes(styles.lineHeight.toString().trim())) && (
-                        <input
-                          type="text"
-                          placeholder="Line height"
-                          value={styles.lineHeight}
-                          onChange={(e) => updateStyle("lineHeight", e.target.value)}
-                          className="w-16 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] font-bold"
-                        />
-                      )}
-                    </div>
-                    <DefaultBtn onClick={() => applyDefault("lineHeight")} />
-                  </div>
-                </div>
-
-                {/* Predefined Letter Spacing Selector */}
-                <div>
-                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Letter Spacing</label>
-                  <div className="flex gap-1.5">
-                    <div className="flex-1 flex gap-1.5">
-                      <select
-                        value={
-                          !styles.letterSpacing 
-                            ? "" 
-                            : PREDEFINED_LETTER_SPACINGS.includes(styles.letterSpacing.toString().trim()) 
-                              ? styles.letterSpacing.toString().trim() 
-                              : "custom"
-                        }
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (val === "custom") {
-                            updateStyle("letterSpacing", styles.letterSpacing || "0.05em");
-                          } else if (val === "") {
-                            updateStyle("letterSpacing", undefined);
-                          } else {
-                            updateStyle("letterSpacing", val);
-                          }
-                        }}
-                        className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                      >
-                        <option value="">Default ({DEFAULTS.letterSpacing})</option>
-                        {PREDEFINED_LETTER_SPACINGS.map(s => (
-                          <option key={s} value={s}>{s}</option>
-                        ))}
-                        <option value="custom">Custom...</option>
-                      </select>
-
-                      {styles.letterSpacing !== undefined && (!PREDEFINED_LETTER_SPACINGS.includes(styles.letterSpacing.toString().trim())) && (
-                        <input
-                          type="text"
-                          placeholder="Spacing"
-                          value={styles.letterSpacing}
-                          onChange={(e) => updateStyle("letterSpacing", e.target.value)}
-                          className="w-16 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] font-bold"
-                        />
-                      )}
-                    </div>
-                    <DefaultBtn onClick={() => applyDefault("letterSpacing")} />
+                    <DefaultBtn onClick={() => applyDefault("headingWeight")} />
                   </div>
                 </div>
 
@@ -1170,15 +648,141 @@ export default function BrandingSectionStylesControls({
                     >
                       <option value="">— Select —</option>
                       {TEXT_ALIGNS.map((a) => (
-                        <option key={a} value={a}>{a.charAt(0).toUpperCase() + a.slice(1)}</option>
+                        <option key={a} value={a}>
+                          {a.charAt(0).toUpperCase() + a.slice(1)}
+                        </option>
                       ))}
                     </select>
                     <DefaultBtn onClick={() => applyDefault("textAlign")} />
                   </div>
                 </div>
 
+                {/* Heading Size (px) with Select & Manual Text Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Heading Size (px)</label>
+                  <div className="flex gap-1.5">
+                    <select
+                      value={HEADING_SIZES.includes(String(styles.headingSize)) ? String(styles.headingSize) : "custom"}
+                      onChange={(e) => {
+                        if (e.target.value !== "custom") {
+                          updateStyle("headingSize", parseInt(e.target.value) || e.target.value);
+                        }
+                      }}
+                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
+                    >
+                      <option value="custom">Preset</option>
+                      {HEADING_SIZES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}px
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={DEFAULTS.headingSize}
+                      value={styles.headingSize ?? ""}
+                      onChange={(e) => updateStyle("headingSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
+                      className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] min-w-0"
+                    />
+                    <DefaultBtn onClick={() => applyDefault("headingSize")} />
+                  </div>
+                </div>
+
+                {/* Paragraph Size (px) with Select & Manual Text Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Paragraph Size (px)</label>
+                  <div className="flex gap-1.5">
+                    <select
+                      value={PARAGRAPH_SIZES.includes(String(styles.paragraphSize)) ? String(styles.paragraphSize) : "custom"}
+                      onChange={(e) => {
+                        if (e.target.value !== "custom") {
+                          updateStyle("paragraphSize", parseInt(e.target.value) || e.target.value);
+                        }
+                      }}
+                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
+                    >
+                      <option value="custom">Preset</option>
+                      {PARAGRAPH_SIZES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}px
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={DEFAULTS.paragraphSize}
+                      value={styles.paragraphSize ?? ""}
+                      onChange={(e) => updateStyle("paragraphSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
+                      className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] min-w-0"
+                    />
+                    <DefaultBtn onClick={() => applyDefault("paragraphSize")} />
+                  </div>
+                </div>
+
+                {/* Line Height with Select & Manual Text Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Line Height</label>
+                  <div className="flex gap-1.5">
+                    <select
+                      value={LINE_HEIGHTS.includes(String(styles.lineHeight)) ? String(styles.lineHeight) : "custom"}
+                      onChange={(e) => {
+                        if (e.target.value !== "custom") {
+                          updateStyle("lineHeight", e.target.value);
+                        }
+                      }}
+                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
+                    >
+                      <option value="custom">Preset</option>
+                      {LINE_HEIGHTS.map((lh) => (
+                        <option key={lh} value={lh}>
+                          {lh}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={DEFAULTS.lineHeight}
+                      value={styles.lineHeight || ""}
+                      onChange={(e) => updateStyle("lineHeight", e.target.value)}
+                      className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] min-w-0"
+                    />
+                    <DefaultBtn onClick={() => applyDefault("lineHeight")} />
+                  </div>
+                </div>
+
+                {/* Letter Spacing with Select & Manual Text Input */}
+                <div>
+                  <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Letter Spacing</label>
+                  <div className="flex gap-1.5">
+                    <select
+                      value={LETTER_SPACINGS.includes(String(styles.letterSpacing)) ? String(styles.letterSpacing) : "custom"}
+                      onChange={(e) => {
+                        if (e.target.value !== "custom") {
+                          updateStyle("letterSpacing", e.target.value);
+                        }
+                      }}
+                      className="w-20 px-2 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs cursor-pointer shrink-0"
+                    >
+                      <option value="custom">Preset</option>
+                      {LETTER_SPACINGS.map((ls) => (
+                        <option key={ls} value={ls}>
+                          {ls}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={DEFAULTS.letterSpacing}
+                      value={styles.letterSpacing || ""}
+                      onChange={(e) => updateStyle("letterSpacing", e.target.value)}
+                      className="flex-1 px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24] min-w-0"
+                    />
+                    <DefaultBtn onClick={() => applyDefault("letterSpacing")} />
+                  </div>
+                </div>
+
                 {/* Bold / Italic toggles */}
-                <div className="flex gap-4 pt-4 items-center col-span-full">
+                <div className="flex gap-4 items-center col-span-full pt-2">
                   <label className="flex items-center gap-1.5 font-bold text-[#2c5e37] cursor-pointer text-xs">
                     <input
                       type="checkbox"
@@ -1186,7 +790,7 @@ export default function BrandingSectionStylesControls({
                       onChange={(e) => updateStyle("bold", e.target.checked)}
                       className="rounded text-[#4e8c4a] focus:ring-[#4e8c4a]"
                     />
-                    <span className="font-extrabold">B</span> Bold
+                    <span className="font-extrabold">B</span> Bold Heading
                   </label>
                   <label className="flex items-center gap-1.5 font-bold text-[#2c5e37] cursor-pointer text-xs">
                     <input
@@ -1195,44 +799,54 @@ export default function BrandingSectionStylesControls({
                       onChange={(e) => updateStyle("italic", e.target.checked)}
                       className="rounded text-[#4e8c4a] focus:ring-[#4e8c4a]"
                     />
-                    <span className="italic">I</span> Italic
+                    <span className="italic">I</span> Italic Text
                   </label>
                 </div>
               </div>
 
-              {/* Real-time Live Typography Preview */}
-              <div className="mt-4 p-4 border border-[#e2e8e0] bg-[#f9fbf8] rounded-xl space-y-2">
-                <span className="text-[9px] font-bold text-[#4e8c4a] uppercase tracking-wider block">Live Typography Preview</span>
-                <div 
+              {/* ───── LIVE TYPOGRAPHY PREVIEW BOX ───── */}
+              <div className="border border-[#dce4da] bg-[#f9fbf8] rounded-2xl p-4 space-y-2 mt-4">
+                <div className="flex items-center justify-between border-b border-[#e2e8e0] pb-2">
+                  <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider flex items-center gap-1">
+                    <Eye className="w-3.5 h-3.5 text-[#4e8c4a]" /> Live Typography Preview
+                  </span>
+                  <span className="text-[10px] font-mono text-gray-500">
+                    Font: {currentFontFamilyName} | Size: {styles.headingSize || DEFAULTS.headingSize}px
+                  </span>
+                </div>
+
+                <div
+                  className="p-4 rounded-xl transition-all"
                   style={{
-                    fontFamily: styles.fontFamily || DEFAULTS.fontFamily,
-                    textAlign: (styles.textAlign as any) || (DEFAULTS.textAlign as any),
+                    backgroundColor: styles.backgroundColor || "#ffffff",
+                    textAlign: (styles.textAlign as any) || "left",
                   }}
-                  className="space-y-1"
                 >
-                  <h4 
+                  <h3
                     style={{
-                      fontSize: styles.headingSize ? (isNaN(Number(styles.headingSize)) ? styles.headingSize : `${styles.headingSize}px`) : `${DEFAULTS.headingSize}px`,
-                      fontWeight: styles.bold ? "bold" : (styles.headingWeight || "bold"),
+                      fontFamily: styles.fontFamily || DEFAULTS.fontFamily,
+                      fontSize: styles.headingSize ? `${styles.headingSize}px` : `${DEFAULTS.headingSize}px`,
+                      fontWeight: styles.headingWeight || (styles.bold ? "700" : "600"),
                       fontStyle: styles.italic ? "italic" : "normal",
-                      color: styles.headingColor || DEFAULTS.headingColor,
+                      color: styles.headingColor || styles.textColor || "#1c3c24",
                       lineHeight: styles.lineHeight || DEFAULTS.lineHeight,
                       letterSpacing: styles.letterSpacing || DEFAULTS.letterSpacing,
                     }}
                   >
-                    Sporonova Healthcare
-                  </h4>
-                  <p 
+                    Engineered Mycelium & Fungi Cultivation
+                  </h3>
+                  <p
+                    className="mt-2"
                     style={{
-                      fontSize: styles.paragraphSize ? (isNaN(Number(styles.paragraphSize)) ? styles.paragraphSize : `${styles.paragraphSize}px`) : `${DEFAULTS.paragraphSize}px`,
-                      fontWeight: styles.bold ? "normal" : (styles.headingWeight || "normal"),
+                      fontFamily: styles.fontFamily || DEFAULTS.fontFamily,
+                      fontSize: styles.paragraphSize ? `${styles.paragraphSize}px` : `${DEFAULTS.paragraphSize}px`,
                       fontStyle: styles.italic ? "italic" : "normal",
-                      color: styles.textColor || DEFAULTS.textColor,
+                      color: styles.textColor || "#1c3c24",
                       lineHeight: styles.lineHeight || DEFAULTS.lineHeight,
                       letterSpacing: styles.letterSpacing || DEFAULTS.letterSpacing,
                     }}
                   >
-                    Professional pharmaceutical solutions
+                    High-yield, genetically validated mushroom strains engineered for commercial growers, laboratory research, and industrial spawn production.
                   </p>
                 </div>
               </div>
@@ -1304,12 +918,13 @@ export default function BrandingSectionStylesControls({
           {/* ───── BUTTONS & CARDS TAB ───── */}
           {activeTab === "cards" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
-              {/* Button colors */}
+              {/* Button & Card colors */}
               {[
                 { key: "buttonColor", label: "Button Background" },
                 { key: "buttonTextColor", label: "Button Text Color" },
                 { key: "cardBgColor", label: "Card Background" },
                 { key: "cardTextColor", label: "Card Text Color" },
+                { key: "cardBorderColor", label: "Card Border Color" },
               ].map(({ key, label }) => (
                 <div key={key}>
                   <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">{label}</label>
@@ -1336,15 +951,13 @@ export default function BrandingSectionStylesControls({
               <div>
                 <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Button Text Size (px)</label>
                 <div className="flex gap-1.5">
-                  <div className="flex-1 relative">
-                    <input
-                      type="text"
-                      placeholder={DEFAULTS.buttonTextSize}
-                      value={styles.buttonTextSize ?? ""}
-                      onChange={(e) => updateStyle("buttonTextSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    placeholder={DEFAULTS.buttonTextSize}
+                    value={styles.buttonTextSize ?? ""}
+                    onChange={(e) => updateStyle("buttonTextSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
+                    className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
+                  />
                   <DefaultBtn onClick={() => applyDefault("buttonTextSize")} />
                 </div>
               </div>
@@ -1353,15 +966,13 @@ export default function BrandingSectionStylesControls({
               <div>
                 <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Border Radius (px)</label>
                 <div className="flex gap-1.5">
-                  <div className="flex-1 relative">
-                    <input
-                      type="text"
-                      placeholder={DEFAULTS.borderRadius}
-                      value={styles.borderRadius ?? ""}
-                      onChange={(e) => updateStyle("borderRadius", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    placeholder={DEFAULTS.borderRadius}
+                    value={styles.borderRadius ?? ""}
+                    onChange={(e) => updateStyle("borderRadius", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
+                    className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
+                  />
                   <DefaultBtn onClick={() => applyDefault("borderRadius")} />
                 </div>
               </div>
@@ -1370,15 +981,13 @@ export default function BrandingSectionStylesControls({
               <div>
                 <label className="block text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider mb-1">Icon Size (px)</label>
                 <div className="flex gap-1.5">
-                  <div className="flex-1 relative">
-                    <input
-                      type="text"
-                      placeholder={DEFAULTS.iconSize}
-                      value={styles.iconSize ?? ""}
-                      onChange={(e) => updateStyle("iconSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
-                      className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    placeholder={DEFAULTS.iconSize}
+                    value={styles.iconSize ?? ""}
+                    onChange={(e) => updateStyle("iconSize", e.target.value ? parseInt(e.target.value) || e.target.value : "")}
+                    className="w-full px-3 py-2 bg-[#f9fbf8] border border-[#dce4da] rounded-xl text-[#1c3c24]"
+                  />
                   <DefaultBtn onClick={() => applyDefault("iconSize")} />
                 </div>
               </div>
