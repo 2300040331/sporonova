@@ -83,9 +83,9 @@ export default function Navbar() {
           {navLinks.map((link: any) => {
             const isProductsLink =
               link.name.toLowerCase().trim() === "products" ||
+              link.name.toLowerCase().trim() === "product" ||
               link.href === "/#products" ||
-              link.href === "/products" ||
-              link.name.toLowerCase().includes("product");
+              link.href === "/products";
 
             if (isProductsLink) {
               return (
