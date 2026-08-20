@@ -81,19 +81,13 @@ export default function Navbar() {
           style={{ fontFamily: header?.styles?.fontFamily || undefined }}
         >
           {navLinks.map((link: any) => {
-            const isProductsLink =
-              link.name.toLowerCase().trim() === "products" ||
-              link.name.toLowerCase().trim() === "product" ||
-              link.href === "/#products" ||
-              link.href === "/products";
+            const isProductsLink = link.name.trim().toLowerCase() === "products";
 
             if (isProductsLink) {
               return (
                 <div
                   key={link.name}
                   className="relative group py-2"
-                  onMouseEnter={() => setDesktopProductsOpen(true)}
-                  onMouseLeave={() => setDesktopProductsOpen(false)}
                 >
                   <Link 
                     href={link.href} 
@@ -102,21 +96,15 @@ export default function Navbar() {
                   >
                     <span>{link.name}</span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 text-[#4e8c4a] transition-transform duration-200 ${
-                        desktopProductsOpen ? "rotate-180" : "group-hover:rotate-180"
-                      }`}
+                      className="w-3.5 h-3.5 text-[#4e8c4a] transition-transform duration-200 group-hover:rotate-180"
                     />
                   </Link>
 
-                  {/* Sleek Rounded Dropdown Menu Matching Original Design */}
+                  {/* Single Sleek Rounded Dropdown Menu */}
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 transition-all duration-200 before:absolute before:-top-3 before:left-0 before:w-full before:h-4 ${
-                      desktopProductsOpen
-                        ? "opacity-100 visible pointer-events-auto block"
-                        : "opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto"
-                    }`}
+                    className="absolute top-full left-0 pt-2 z-50 transition-all duration-200 opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto before:absolute before:-top-3 before:left-0 before:w-full before:h-4"
                   >
-                    <div className="bg-white border border-[#e2e8e0] rounded-[1.75rem] shadow-xl py-5 px-6 min-w-[250px] space-y-4 backdrop-blur-md">
+                    <div className="bg-white border border-[#e2e8e0] rounded-[1.75rem] shadow-xl py-5 px-6 min-w-[260px] space-y-4 backdrop-blur-md">
                       {productsList.map((prod: any) => (
                         <Link
                           key={prod.id || prod.name}
