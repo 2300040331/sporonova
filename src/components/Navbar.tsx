@@ -102,12 +102,20 @@ export default function Navbar() {
                   >
                     <span>{link.name}</span>
                     <ChevronDown
-                      className="w-3.5 h-3.5 text-[#4e8c4a] group-hover:rotate-180 transition-transform duration-200"
+                      className={`w-3.5 h-3.5 text-[#4e8c4a] transition-transform duration-200 ${
+                        desktopProductsOpen ? "rotate-180" : "group-hover:rotate-180"
+                      }`}
                     />
                   </Link>
 
-                  {/* Rich Dropdown Menu On Hover with Invisible Bridge */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[420px] z-50 transition-all duration-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto pointer-events-none before:absolute before:-top-3 before:left-0 before:w-full before:h-4">
+                  {/* Rich Dropdown Menu On Hover with State + CSS Group Hover */}
+                  <div
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[420px] z-50 transition-all duration-200 before:absolute before:-top-3 before:left-0 before:w-full before:h-4 ${
+                      desktopProductsOpen
+                        ? "opacity-100 visible pointer-events-auto block"
+                        : "opacity-0 invisible pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto"
+                    }`}
+                  >
                     <div className="bg-white border border-[#e2e8e0] rounded-3xl shadow-2xl p-4 space-y-2.5 backdrop-blur-md">
                       <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
                         <span className="text-[10px] font-mono uppercase tracking-widest text-[#2c5e37] font-bold block">

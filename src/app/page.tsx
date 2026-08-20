@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Leaf, Shield, ShieldCheck, Award, CheckCircle2, ChevronRight, ChevronLeft, Star, Users, Phone, MapPin, Mail, ClipboardList, Building2, HelpingHand, CheckSquare, Globe, Sparkles, Clock } from "lucide-react";
+import { ArrowRight, Leaf, Shield, ShieldCheck, Award, CheckCircle2, ChevronRight, ChevronLeft, Star, Users, Phone, MapPin, Mail, ClipboardList, Building2, HelpingHand, CheckSquare, Globe, Sparkles, Clock, RotateCcw } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import TrustIndicators from "@/components/TrustIndicators";
