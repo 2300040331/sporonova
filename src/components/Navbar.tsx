@@ -91,75 +91,71 @@ export default function Navbar() {
               return (
                 <div
                   key={link.name}
-                  className="relative py-2"
+                  className="relative group py-2"
                   onMouseEnter={() => setDesktopProductsOpen(true)}
                   onMouseLeave={() => setDesktopProductsOpen(false)}
                 >
                   <Link 
                     href={link.href} 
-                    className="hover:text-[#4e8c4a] transition-colors py-2 flex items-center gap-1 cursor-pointer"
+                    className="hover:text-[#4e8c4a] transition-colors py-2 flex items-center gap-1.5 cursor-pointer font-extrabold text-xs xl:text-[13px]"
                     style={{ color: header?.styles?.textColor || undefined }}
                   >
                     <span>{link.name}</span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 text-[#4e8c4a] transition-transform duration-200 ${
-                        desktopProductsOpen ? "rotate-180" : ""
-                      }`}
+                      className="w-3.5 h-3.5 text-[#4e8c4a] group-hover:rotate-180 transition-transform duration-200"
                     />
                   </Link>
 
-                  {/* Rich Dropdown Menu On Hover */}
-                  {desktopProductsOpen && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[400px] z-50 animate-fadeIn">
-                      <div className="bg-white border border-[#e2e8e0] rounded-3xl shadow-2xl p-4 space-y-2.5 backdrop-blur-md">
-                        <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
-                          <span className="text-[10px] font-mono uppercase tracking-widest text-[#2c5e37] font-bold block">
-                            Certified Spawn Categories
-                          </span>
-                          <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">
-                            Lab Formulations
-                          </span>
-                        </div>
-                        
-                        <div className="space-y-1.5 max-h-[420px] overflow-y-auto pr-1">
-                          {productsList.map((prod: any) => (
-                            <Link
-                              key={prod.id || prod.name}
-                              href={prod.href || `/spawn/${prod.id}`}
-                              className="flex items-start gap-3 p-3 rounded-2xl hover:bg-[#f0f5ef] border border-transparent hover:border-[#d2e4d0] transition-all group/item"
-                            >
-                              <div className="w-9 h-9 rounded-xl bg-[#f9faf7] border border-[#e6e4dc] flex items-center justify-center shrink-0 group-hover/item:border-[#4e8c4a] group-hover/item:bg-white transition-all shadow-2xs mt-0.5">
-                                <Leaf className="w-4 h-4 text-[#4e8c4a]" />
-                              </div>
-                              <div className="flex-1 min-w-0 space-y-0.5">
-                                <div className="flex items-center justify-between gap-1">
-                                  <span className="text-xs font-extrabold text-[#1c3c24] group-hover/item:text-[#4e8c4a] block transition-colors truncate">
-                                    {prod.name}
-                                  </span>
-                                  <span className="text-[9px] font-mono font-bold text-gray-400 uppercase shrink-0">
-                                    {prod.category || "Inoculant"}
-                                  </span>
-                                </div>
-                                <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed font-medium">
-                                  {prod.desc || "High-potency laboratory certified mushroom spawn formulation."}
-                                </p>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-
-                        <div className="pt-2 border-t border-gray-100">
+                  {/* Rich Dropdown Menu On Hover with Invisible Bridge */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[420px] z-50 transition-all duration-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto pointer-events-none before:absolute before:-top-3 before:left-0 before:w-full before:h-4">
+                    <div className="bg-white border border-[#e2e8e0] rounded-3xl shadow-2xl p-4 space-y-2.5 backdrop-blur-md">
+                      <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#2c5e37] font-bold block">
+                          Certified Spawn Categories
+                        </span>
+                        <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">
+                          Lab Formulations
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-1.5 max-h-[440px] overflow-y-auto pr-1">
+                        {productsList.map((prod: any) => (
                           <Link
-                            href="/#products"
-                            className="flex items-center justify-between px-4 py-2.5 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white rounded-2xl text-[11px] font-bold uppercase tracking-wider text-[#2c5e37] transition-all group/cta"
+                            key={prod.id || prod.name}
+                            href={prod.href || `/spawn/${prod.id}`}
+                            className="flex items-start gap-3 p-3 rounded-2xl hover:bg-[#f0f5ef] border border-transparent hover:border-[#d2e4d0] transition-all group/item"
                           >
-                            <span>Explore Full Spawn Catalog</span>
-                            <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-0.5 transition-transform" />
+                            <div className="w-9 h-9 rounded-xl bg-[#f9faf7] border border-[#e6e4dc] flex items-center justify-center shrink-0 group-hover/item:border-[#4e8c4a] group-hover/item:bg-white transition-all shadow-2xs mt-0.5">
+                              <Leaf className="w-4 h-4 text-[#4e8c4a]" />
+                            </div>
+                            <div className="flex-1 min-w-0 space-y-0.5">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="text-xs font-extrabold text-[#1c3c24] group-hover/item:text-[#4e8c4a] block transition-colors truncate">
+                                  {prod.name}
+                                </span>
+                                <span className="text-[9px] font-mono font-bold text-gray-400 uppercase shrink-0">
+                                  {prod.category || "Inoculant"}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed font-medium">
+                                {prod.desc || "High-potency laboratory certified mushroom spawn formulation."}
+                              </p>
+                            </div>
                           </Link>
-                        </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2 border-t border-gray-100">
+                        <Link
+                          href="/#products"
+                          className="flex items-center justify-between px-4 py-2.5 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white rounded-2xl text-[11px] font-bold uppercase tracking-wider text-[#2c5e37] transition-all group/cta"
+                        >
+                          <span>Explore Full Spawn Catalog</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-0.5 transition-transform" />
+                        </Link>
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               );
             }
