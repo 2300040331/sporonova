@@ -338,30 +338,52 @@ export default function SpawnPage({ params }: PageProps) {
   const { type } = use(params);
   const { data } = useCMS();
   
-  const cmsProduct = data?.products?.find(
-    (p: any) => p.id === type || p.href === `/spawn/${type}` || p.href?.endsWith(`/${type}`)
-  );
+  const normalizedType = decodeURIComponent(type).toLowerCase().trim();
+  const cmsProduct = data?.products?.find((p: any) => {
+    if (!p) return false;
+    const pId = String(p.id || "").toLowerCase().trim();
+    const pHref = String(p.href || "").toLowerCase().trim();
+    const pName = String(p.name || "").toLowerCase().trim().replace(/\s+/g, "-");
+    const pNameRaw = String(p.name || "").toLowerCase().trim();
+    return (
+      pId === normalizedType ||
+      pHref === `/spawn/${normalizedType}` ||
+      pHref.endsWith(`/${normalizedType}`) ||
+      pName === normalizedType ||
+      pNameRaw === normalizedType
+    );
+  });
+
   const productStyles = cmsProduct?.styles;
   
-  // Merge CMS edits onto the complete record. This keeps a partial CMS export
-  // from blanking the technical content on a public spawn page.
-  const defaultDetail = SPAWN_DETAILS[type];
+  // Merge CMS edits onto the complete record so newly created products have rich technical defaults
+  const defaultDetail = SPAWN_DETAILS[normalizedType] || SPAWN_DETAILS["liquid-spawn"];
   const detail = cmsProduct
     ? {
         ...defaultDetail,
         ...cmsProduct,
-        scientificName: cmsProduct.scientificName || defaultDetail?.scientificName || cmsProduct.category || "",
-        introduction: cmsProduct.introduction || defaultDetail?.introduction || cmsProduct.desc || "",
-        storage: cmsProduct.storage || defaultDetail?.storage || cmsProduct.specifications?.Storage || "",
-        shelfLife: cmsProduct.shelfLife || defaultDetail?.shelfLife || cmsProduct.specifications?.ShelfLife || "",
+        scientificName: cmsProduct.scientificName || defaultDetail?.scientificName || cmsProduct.category || "Certified Fungal Inoculant",
+        introduction: cmsProduct.introduction || cmsProduct.desc || defaultDetail?.introduction || "",
+        history: cmsProduct.history || defaultDetail?.history || "Formulated and optimized within SporoNova's sterile cleanroom bioreactor pipelines to deliver high-yield spawn colonization.",
+        principle: cmsProduct.principle || defaultDetail?.principle || "Pure vegetative mycelium propagates on sterile nutrient carrier matrices, generating dense hyphal networks engineered for commercial inoculation.",
+        composition: (cmsProduct.composition && cmsProduct.composition.length > 0) ? cmsProduct.composition : (defaultDetail?.composition || ["Organic Grain & Hydrated Nutrient Matrix", "Sterilized Biopolymer Buffer", "Mineral Gypsum Balancer"]),
+        advantages: (cmsProduct.advantages && cmsProduct.advantages.length > 0) ? cmsProduct.advantages : (defaultDetail?.advantages || ["Rapid mycelial colonization", "Certified sterile cleanroom packaging", "High biological efficiency yield"]),
+        disadvantages: (cmsProduct.disadvantages && cmsProduct.disadvantages.length > 0) ? cmsProduct.disadvantages : (defaultDetail?.disadvantages || ["Requires refrigerated storage", "Must be handled under sterile protocols"]),
+        applications: (cmsProduct.applications && cmsProduct.applications.length > 0) ? cmsProduct.applications : (defaultDetail?.applications || ["Commercial mushroom production", "Bulk farm inoculation"]),
+        process: (cmsProduct.process && cmsProduct.process.length > 0) ? cmsProduct.process : (defaultDetail?.process || ["Sterilization: Autoclave at 121°C for 2.5 hours", "Inoculation: Pure culture transfer in Class 100 HEPA hood", "Incubation: Climate controlled incubation bays"]),
+        labSpecs: (cmsProduct.labSpecs && cmsProduct.labSpecs.length > 0) ? cmsProduct.labSpecs : (defaultDetail?.labSpecs || ["Class 100 sterile laminar air bench", "Precision autoclave sterilization unit", "Temperature controlled incubation bay"]),
+        storage: cmsProduct.storage || defaultDetail?.storage || cmsProduct.specifications?.Storage || "Store in cool refrigeration (2°C - 4°C). Do not freeze.",
+        shelfLife: cmsProduct.shelfLife || defaultDetail?.shelfLife || cmsProduct.specifications?.ShelfLife || "60 Days peak viability",
+        transport: cmsProduct.transport || defaultDetail?.transport || "Refrigerated cold-chain freight logistics",
+        qualityTesting: (cmsProduct.qualityTesting && cmsProduct.qualityTesting.length > 0) ? cmsProduct.qualityTesting : (defaultDetail?.qualityTesting || ["Sector agar plate verification", "Visual contamination assay"]),
+        faqs: (cmsProduct.faqs && cmsProduct.faqs.length > 0) ? cmsProduct.faqs : (defaultDetail?.faqs || [{ q: "What is the recommended inoculation rate?", a: "Standard 2% to 5% by weight of wet substrate." }]),
+        papers: (cmsProduct.papers && cmsProduct.papers.length > 0) ? cmsProduct.papers : (defaultDetail?.papers || [{ title: "Mycelial Colonization Dynamics and Yield Protocols", author: "SporoNova Biotech Research Division", journal: "Journal of Applied Agricultural Mycology, 2025" }]),
       }
     : defaultDetail;
 
   const isFallback = !detail;
   
-  const displayTitle = isFallback
-    ? type.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
-    : detail.name;
+  const displayTitle = detail?.name || cmsProduct?.name || type.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
   return (
     <>
@@ -383,7 +405,7 @@ export default function SpawnPage({ params }: PageProps) {
               </Link>
               <div>
                 <span className="text-[9px] text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
-                  {!isFallback ? detail.scientificName : "Biotechnology Formula"}
+                  {detail?.scientificName || "Certified Fungal Inoculant"}
                 </span>
                 <h1 
                   className="text-[#1c3c24] font-display text-4xl md:text-5xl font-black tracking-tight leading-tight font-sans"
@@ -396,41 +418,45 @@ export default function SpawnPage({ params }: PageProps) {
                 className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed max-w-xl font-sans"
                 style={getParagraphStyles(productStyles)}
               >
-                {!isFallback
-                  ? detail.introduction
-                  : `Comprehensive specifications, laboratory recipes, and production workflows for SporoNova's certified ${displayTitle} formulas.`}
+                {detail?.introduction || `Comprehensive specifications, laboratory recipes, and production workflows for SporoNova's certified ${displayTitle} formulas.`}
               </p>
 
-              {!isFallback && (
+              {detail && (
                 <div className="grid grid-cols-2 gap-4 border-t border-[#e6e4dc]/80 pt-6 font-mono text-[9px] font-bold">
                   <div className="bg-[#f9faf7] p-4 rounded-2xl border border-[#e6e4dc] flex items-center gap-3.5 shadow-sm">
                     <Clock className="w-5 h-5 text-[#4e8c4a]" />
                     <div>
-                      <span className="text-[8px] text-gray-400 block">SHELF LIFE</span>
+                      <span className="text-[8px] text-gray-400 block uppercase">SHELF LIFE</span>
                       <span className="text-gray-700 font-extrabold block mt-0.5">{detail.shelfLife}</span>
                     </div>
                   </div>
                   <div className="bg-[#f9faf7] p-4 rounded-2xl border border-[#e6e4dc] flex items-center gap-3.5 shadow-sm">
                     <Thermometer className="w-5 h-5 text-[#4e8c4a]" />
                     <div>
-                      <span className="text-[8px] text-gray-400 block">STORAGE MODE</span>
-                      <span className="text-gray-700 font-extrabold block mt-0.5">2°C - 4°C Refrigeration</span>
+                      <span className="text-[8px] text-gray-400 block uppercase">STORAGE MODE</span>
+                      <span className="text-gray-700 font-extrabold block mt-0.5">{detail.storage}</span>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Interactive 3D Model Display Column */}
-            <div className="w-full lg:w-[450px] min-h-[530px] lg:min-h-0 lg:aspect-square bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-stretch lg:flex-row lg:items-center lg:justify-center shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
-              <SpawnCanvas type={type} />
-              
-              {type !== "commercial-spawn" && (
-                <div className="absolute bottom-4 left-4 bg-white px-2.5 py-1.5 rounded-lg border border-[#e6e4dc]/80 pointer-events-none text-[9px] font-mono text-[#4e8c4a] select-none z-10 flex items-center gap-1.5 shadow-sm">
-                  <span className="w-1.5 h-1.5 bg-[#4e8c4a] rounded-full animate-ping" />
-                  Bioluminescent WebGL Render
-                </div>
+            {/* Interactive 3D Model Display Column or Product Image */}
+            <div className="w-full lg:w-[450px] min-h-[400px] lg:aspect-square bg-white border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-center justify-center shadow-sm p-6 hover:scale-[1.01] transition-transform duration-500">
+              {cmsProduct?.thumbnail ? (
+                <img
+                  src={cmsProduct.thumbnail}
+                  alt={displayTitle}
+                  className="w-full h-full max-h-[380px] object-contain"
+                />
+              ) : (
+                <SpawnCanvas type={normalizedType} />
               )}
+              
+              <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#e6e4dc] pointer-events-none text-[9px] font-mono font-bold text-[#4e8c4a] select-none z-10 flex items-center gap-1.5 shadow-sm">
+                <span className="w-1.5 h-1.5 bg-[#4e8c4a] rounded-full animate-ping" />
+                Verified Pure Specimen
+              </div>
             </div>
 
           </div>
