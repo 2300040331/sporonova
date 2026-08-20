@@ -46,6 +46,8 @@ export default function ProductsCMSPage() {
   const { data, updateData, isLoading } = useCMS();
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [brandingSaving, setBrandingSaving] = useState(false);
+  const [brandingSuccess, setBrandingSuccess] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [modalTab, setModalTab] = useState<"basic" | "science" | "ingredients" | "process" | "logistics" | "faqs">("basic");
 
@@ -759,18 +761,70 @@ export default function ProductsCMSPage() {
       </div>
 
       {/* Catalog Level Branding Customizer */}
-      <BrandingSectionStylesControls
-        sectionName="Product Cards & Catalog"
-        styles={(data.homepage as any)?.productsHeaderStyles}
-        onChange={(newStyles) =>
-          updateData({
-            homepage: {
-              ...data.homepage,
-              productsHeaderStyles: newStyles,
-            },
-          } as any)
-        }
-      />
+      <div className="space-y-3">
+        <BrandingSectionStylesControls
+          sectionName="Product Cards & Catalog"
+          styles={(data.homepage as any)?.productsHeaderStyles}
+          onChange={async (newStyles) => {
+            setBrandingSaving(true);
+            const success = await updateData({
+              homepage: {
+                ...data.homepage,
+                productsHeaderStyles: newStyles,
+              },
+            } as any);
+            setBrandingSaving(false);
+            if (success) {
+              setBrandingSuccess(true);
+              setTimeout(() => setBrandingSuccess(false), 3000);
+            }
+          }}
+        />
+
+        {/* Branding Live Sync Feedback Bar */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white border border-[#e2e8e0] p-4 rounded-2xl shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#4e8c4a] animate-pulse" />
+            <span className="text-xs text-[#1c3c24] font-bold">
+              Catalog Branding & Theme Settings
+            </span>
+            {brandingSuccess && (
+              <span className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 animate-fadeIn">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Changes Published Live!
+              </span>
+            )}
+            {brandingSaving && (
+              <span className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 animate-fadeIn">
+                <div className="w-3 h-3 border-2 border-amber-600 border-t-transparent rounded-full animate-spin" /> Saving live...
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={brandingSaving}
+              onClick={async () => {
+                setBrandingSaving(true);
+                const success = await updateData({
+                  homepage: {
+                    ...data.homepage,
+                    productsHeaderStyles: (data.homepage as any)?.productsHeaderStyles || {},
+                  },
+                } as any);
+                setBrandingSaving(false);
+                if (success) {
+                  setBrandingSuccess(true);
+                  setTimeout(() => setBrandingSuccess(false), 3000);
+                }
+              }}
+              className="px-5 py-2 bg-[#1c3c24] hover:bg-[#2c5e37] text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <Save className="w-3.5 h-3.5" /> Save & Publish Branding
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

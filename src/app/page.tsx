@@ -309,16 +309,70 @@ export default function Homepage() {
     setIsMessageEdited(true);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const [submittingContact, setSubmittingContact] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+
+  const handleResetContactForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      inquiryType: "",
+      title: "",
+      message: "",
+    });
+    setIsTitleEdited(false);
+    setIsMessageEdited(false);
+    setContactSuccess(false);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name?.trim()) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (!formData.email?.trim()) {
+      alert("Please enter your email address.");
+      return;
+    }
     if (!formData.inquiryType) {
       alert("Please select an inquiry type.");
       return;
     }
+    if (!formData.message?.trim()) {
+      alert("Please enter your message details.");
+      return;
+    }
+
+    setSubmittingContact(true);
+
+    try {
+      // 1. Save real lead into CMS database
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          inquiryType: formData.inquiryType.trim(),
+          title: formData.title?.trim() || formData.inquiryType.trim(),
+          message: formData.message.trim(),
+        }),
+      });
+
+      window.dispatchEvent(new CustomEvent("cms-updated"));
+    } catch (err) {
+      console.error("Failed to store contact lead:", err);
+    } finally {
+      setSubmittingContact(false);
+    }
+
+    // 2. Open WhatsApp draft
     const phoneNumber = data?.contact?.whatsappNumber || "917207208419";
     const text = `*Name:* ${encodeURIComponent(formData.name || "N/A")}%0A*Email:* ${encodeURIComponent(formData.email || "N/A")}%0A*Inquiry Type:* ${encodeURIComponent(formData.inquiryType)}%0A*Title:* ${encodeURIComponent(formData.title || "N/A")}%0A*Message:* ${encodeURIComponent(formData.message || "N/A")}`;
     
     window.open(`https://wa.me/${phoneNumber}?text=${text}`, "_blank");
+    setContactSuccess(true);
   };
 
   return (
@@ -516,23 +570,29 @@ export default function Homepage() {
           </div>
         </section>
 
-        {/* PRODUCTS SECTION - Asymmetrical Layout Diversity Grid */}
-        <section id="products" className="py-24 bg-white border-t border-b border-[#e6e4dc] px-6" style={getSectionStyles(productsHeaderStyles)}>
+        {/* PRODUCTS SECTION - Dynamic Catalog Grid */}
+        <section id="products" className="py-24 border-t border-b border-[#e6e4dc] px-6 transition-all duration-300" style={{ backgroundColor: "#ffffff", ...getSectionStyles(productsHeaderStyles) }}>
           <div className="max-w-7xl mx-auto">
             
             <div className="text-center mb-16 relative">
-              <span className="text-xs text-[#4e8c4a] font-mono uppercase tracking-widest block mb-1 font-bold">
+              <span 
+                className="text-xs font-mono uppercase tracking-widest block mb-1 font-bold"
+                style={{ color: productsHeaderStyles?.iconColor || "#4e8c4a" }}
+              >
                 {(data?.homepage as any)?.productsSectionBadge || "Product Catalog"}
               </span>
               <h2 
-                className="font-display text-3xl md:text-4xl font-black tracking-tight text-[#1c3c24] font-sans"
+                className="font-display text-3xl md:text-4xl font-black tracking-tight text-[#1c3c24]"
                 style={getHeadingStyles(productsHeaderStyles)}
               >
                 {(data?.homepage as any)?.productsSectionTitle || "Professional Spawn Categories"}
               </h2>
-              <div className="w-12 h-1 bg-[#4e8c4a] mx-auto mt-4 rounded-full" />
+              <div 
+                className="w-12 h-1 mx-auto mt-4 rounded-full" 
+                style={{ backgroundColor: productsHeaderStyles?.iconColor || productsHeaderStyles?.buttonColor || "#4e8c4a" }}
+              />
               <p 
-                className="text-gray-500 text-xs sm:text-sm mt-3 max-w-xl mx-auto font-medium font-sans"
+                className="text-gray-500 text-xs sm:text-sm mt-3 max-w-xl mx-auto font-medium"
                 style={getParagraphStyles(productsHeaderStyles)}
               >
                 {(data?.homepage as any)?.productsSectionSubtitle || "Explore our certified spawn selection. Select any category to view technical data sheets, storage values, and application guides."}
@@ -545,55 +605,125 @@ export default function Homepage() {
               {/* Row 1: Liquid Spawn & Grain Spawn */}
               <div className="flex flex-col lg:flex-row gap-8 items-stretch">
                 {/* Liquid Spawn Broth */}
-                <div className="w-full lg:w-2/3 bg-[#f2f7f2]/50 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-8 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div 
+                  className="w-full lg:w-2/3 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-8 shadow-sm hover:shadow-md transition-all duration-300 group"
+                  style={{
+                    backgroundColor: productsHeaderStyles?.cardBgColor || "rgba(242, 247, 242, 0.5)",
+                    borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc",
+                    borderRadius: productsHeaderStyles?.cardBorderRadius !== undefined ? `${productsHeaderStyles.cardBorderRadius}px` : productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                    fontFamily: productsHeaderStyles?.fontFamily,
+                  }}
+                >
                   <div className="space-y-4 max-w-lg">
                     <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
-                      <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">{(productsList[0] || PRODUCTS[0]).category}</span>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
+                      <span className="text-[10px] font-mono block uppercase font-bold tracking-wider opacity-75" style={{ color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.textColor || "#666666" }}>
+                        {(productsList[0] || PRODUCTS[0]).category}
+                      </span>
                     </div>
-                    <h4 className="text-[#1c3c24] font-display font-extrabold text-xl md:text-2xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                    <h4 
+                      className="font-display font-extrabold text-xl md:text-2xl leading-snug transition-colors"
+                      style={{ 
+                        color: productsHeaderStyles?.headingColor || productsHeaderStyles?.cardTextColor || "#1c3c24",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[0] || PRODUCTS[0]).name}
                     </h4>
-                    <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                    <p 
+                      className="text-xs sm:text-sm font-semibold leading-relaxed opacity-90"
+                      style={{ 
+                        color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.paragraphColor || productsHeaderStyles?.textColor || "#4b5563",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[0] || PRODUCTS[0]).desc}
                     </p>
                     <div className="pt-4">
                       <Link
                         href={(productsList[0] || PRODUCTS[0]).href}
-                        className="inline-flex items-center justify-center px-6 py-3 bg-[#1c3c24] hover:bg-[#4e8c4a] rounded-full text-[10px] font-bold uppercase tracking-wider text-white transition-all"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm hover:opacity-90"
+                        style={{
+                          backgroundColor: productsHeaderStyles?.buttonColor || "#1c3c24",
+                          color: productsHeaderStyles?.buttonTextColor || "#ffffff",
+                          fontSize: productsHeaderStyles?.buttonTextSize ? `${productsHeaderStyles.buttonTextSize}px` : undefined,
+                          borderRadius: productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                          fontFamily: productsHeaderStyles?.fontFamily,
+                        }}
                       >
                         View Specifications &rarr;
                       </Link>
                     </div>
                   </div>
                   {/* Canvas block */}
-                  <div className="w-48 h-48 rounded-2xl bg-white border border-[#e6e4dc] relative overflow-hidden shrink-0 shadow-sm flex items-center justify-center">
+                  <div 
+                    className="w-48 h-48 rounded-2xl border border-[#e6e4dc] relative overflow-hidden shrink-0 shadow-sm flex items-center justify-center"
+                    style={{ 
+                      backgroundColor: productsHeaderStyles?.backgroundColor || "#ffffff",
+                      borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc" 
+                    }}
+                  >
                     <LiquidSpawnBottleCanvas hideSidebar={true} />
                   </div>
                 </div>
 
                 {/* Grain Spawn Jars/Bags */}
-                <div className="w-full lg:w-1/3 bg-[#f4f5f0]/50 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div 
+                  className="w-full lg:w-1/3 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group"
+                  style={{
+                    backgroundColor: productsHeaderStyles?.cardBgColor || "rgba(244, 245, 240, 0.5)",
+                    borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc",
+                    borderRadius: productsHeaderStyles?.cardBorderRadius !== undefined ? `${productsHeaderStyles.cardBorderRadius}px` : productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                    fontFamily: productsHeaderStyles?.fontFamily,
+                  }}
+                >
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
-                      <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">{(productsList[1] || PRODUCTS[1]).category}</span>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
+                      <span className="text-[10px] font-mono block uppercase font-bold tracking-wider opacity-75" style={{ color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.textColor || "#666666" }}>
+                        {(productsList[1] || PRODUCTS[1]).category}
+                      </span>
                     </div>
-                    <h4 className="text-[#1c3c24] font-display font-extrabold text-xl md:text-2xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                    <h4 
+                      className="font-display font-extrabold text-xl md:text-2xl leading-snug transition-colors"
+                      style={{ 
+                        color: productsHeaderStyles?.headingColor || productsHeaderStyles?.cardTextColor || "#1c3c24",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[1] || PRODUCTS[1]).name}
                     </h4>
-                    <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                    <p 
+                      className="text-xs sm:text-sm font-semibold leading-relaxed opacity-90"
+                      style={{ 
+                        color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.paragraphColor || productsHeaderStyles?.textColor || "#4b5563",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[1] || PRODUCTS[1]).desc}
                     </p>
                   </div>
                   {/* Canvas block or CTA */}
                   <div className="mt-6 flex flex-col gap-4">
-                    <div className="w-full h-32 rounded-xl bg-white border border-[#e6e4dc] relative overflow-hidden flex items-center justify-center">
+                    <div 
+                      className="w-full h-32 rounded-xl border border-[#e6e4dc] relative overflow-hidden flex items-center justify-center"
+                      style={{ 
+                        backgroundColor: productsHeaderStyles?.backgroundColor || "#ffffff",
+                        borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc" 
+                      }}
+                    >
                       <GrainJarCanvas hideSidebar={true} />
                     </div>
                     <Link
                       href={(productsList[1] || PRODUCTS[1]).href}
-                      className="inline-flex items-center justify-center w-full px-6 py-3 bg-[#1c3c24] hover:bg-[#4e8c4a] rounded-full text-[10px] font-bold uppercase tracking-wider text-white transition-all text-center"
+                      className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all text-center shadow-sm hover:opacity-90"
+                      style={{
+                        backgroundColor: productsHeaderStyles?.buttonColor || "#1c3c24",
+                        color: productsHeaderStyles?.buttonTextColor || "#ffffff",
+                        fontSize: productsHeaderStyles?.buttonTextSize ? `${productsHeaderStyles.buttonTextSize}px` : undefined,
+                        borderRadius: productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                        fontFamily: productsHeaderStyles?.fontFamily,
+                      }}
                     >
                       View Specifications &rarr;
                     </Link>
@@ -604,23 +734,52 @@ export default function Homepage() {
               {/* Row 2: Mother Culture & Commercial Spawn */}
               <div className="flex flex-col lg:flex-row gap-8 items-stretch">
                 {/* Mother Culture Slants */}
-                <div className="w-full lg:w-1/3 bg-white border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div 
+                  className="w-full lg:w-1/3 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group"
+                  style={{
+                    backgroundColor: productsHeaderStyles?.cardBgColor || "#ffffff",
+                    borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc",
+                    borderRadius: productsHeaderStyles?.cardBorderRadius !== undefined ? `${productsHeaderStyles.cardBorderRadius}px` : productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                    fontFamily: productsHeaderStyles?.fontFamily,
+                  }}
+                >
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
-                      <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">{(productsList[2] || PRODUCTS[2]).category}</span>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
+                      <span className="text-[10px] font-mono block uppercase font-bold tracking-wider opacity-75" style={{ color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.textColor || "#666666" }}>
+                        {(productsList[2] || PRODUCTS[2]).category}
+                      </span>
                     </div>
-                    <h4 className="text-[#1c3c24] font-display font-extrabold text-xl md:text-2xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                    <h4 
+                      className="font-display font-extrabold text-xl md:text-2xl leading-snug transition-colors"
+                      style={{ 
+                        color: productsHeaderStyles?.headingColor || productsHeaderStyles?.cardTextColor || "#1c3c24",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[2] || PRODUCTS[2]).name}
                     </h4>
-                    <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                    <p 
+                      className="text-xs sm:text-sm font-semibold leading-relaxed opacity-90"
+                      style={{ 
+                        color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.paragraphColor || productsHeaderStyles?.textColor || "#4b5563",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[2] || PRODUCTS[2]).desc}
                     </p>
                   </div>
                   <div className="pt-6">
                     <Link
                       href={(productsList[2] || PRODUCTS[2]).href}
-                      className="inline-flex items-center justify-center w-full px-6 py-3 bg-transparent border border-[#e6e4dc] text-[#1c3c24] hover:bg-[#1c3c24] hover:text-white rounded-full text-[10px] font-bold uppercase tracking-wider transition-all text-center"
+                      className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all text-center shadow-sm hover:opacity-90"
+                      style={{
+                        backgroundColor: productsHeaderStyles?.buttonColor || "#1c3c24",
+                        color: productsHeaderStyles?.buttonTextColor || "#ffffff",
+                        fontSize: productsHeaderStyles?.buttonTextSize ? `${productsHeaderStyles.buttonTextSize}px` : undefined,
+                        borderRadius: productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                        fontFamily: productsHeaderStyles?.fontFamily,
+                      }}
                     >
                       View Specifications &rarr;
                     </Link>
@@ -628,30 +787,65 @@ export default function Homepage() {
                 </div>
 
                 {/* Commercial Spawn Packs */}
-                <div className="w-full lg:w-2/3 bg-[#fcfbfa] border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-8 shadow-sm hover:shadow-md transition-all duration-300 group">
+                <div 
+                  className="w-full lg:w-2/3 border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-8 shadow-sm hover:shadow-md transition-all duration-300 group"
+                  style={{
+                    backgroundColor: productsHeaderStyles?.cardBgColor || "#fcfbfa",
+                    borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc",
+                    borderRadius: productsHeaderStyles?.cardBorderRadius !== undefined ? `${productsHeaderStyles.cardBorderRadius}px` : productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                    fontFamily: productsHeaderStyles?.fontFamily,
+                  }}
+                >
                   <div className="space-y-4 max-w-lg">
                     <div className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
-                      <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">{(productsList[3] || PRODUCTS[3]).category}</span>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
+                      <span className="text-[10px] font-mono block uppercase font-bold tracking-wider opacity-75" style={{ color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.textColor || "#666666" }}>
+                        {(productsList[3] || PRODUCTS[3]).category}
+                      </span>
                     </div>
-                    <h4 className="text-[#1c3c24] font-display font-extrabold text-xl md:text-2xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                    <h4 
+                      className="font-display font-extrabold text-xl md:text-2xl leading-snug transition-colors"
+                      style={{ 
+                        color: productsHeaderStyles?.headingColor || productsHeaderStyles?.cardTextColor || "#1c3c24",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[3] || PRODUCTS[3]).name}
                     </h4>
-                    <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                    <p 
+                      className="text-xs sm:text-sm font-semibold leading-relaxed opacity-90"
+                      style={{ 
+                        color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.paragraphColor || productsHeaderStyles?.textColor || "#4b5563",
+                        fontFamily: productsHeaderStyles?.fontFamily 
+                      }}
+                    >
                       {(productsList[3] || PRODUCTS[3]).desc}
                     </p>
                     <div className="pt-4">
                       <Link
                         href={(productsList[3] || PRODUCTS[3]).href}
-                        className="inline-flex items-center justify-center px-6 py-3 bg-[#1c3c24] hover:bg-[#4e8c4a] rounded-full text-[10px] font-bold uppercase tracking-wider text-white transition-all"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all shadow-sm hover:opacity-90"
+                        style={{
+                          backgroundColor: productsHeaderStyles?.buttonColor || "#1c3c24",
+                          color: productsHeaderStyles?.buttonTextColor || "#ffffff",
+                          fontSize: productsHeaderStyles?.buttonTextSize ? `${productsHeaderStyles.buttonTextSize}px` : undefined,
+                          borderRadius: productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                          fontFamily: productsHeaderStyles?.fontFamily,
+                        }}
                       >
                         View Specifications &rarr;
                       </Link>
                     </div>
                   </div>
                   {/* Decorative placeholder block or canvas */}
-                  <div className="w-48 h-32 rounded-xl bg-white border border-[#e6e4dc] relative overflow-hidden shrink-0 flex items-center justify-center">
-                    <Leaf className="w-12 h-12 text-[#4e8c4a]/20" />
+                  <div 
+                    className="w-48 h-32 rounded-xl border border-[#e6e4dc] relative overflow-hidden shrink-0 flex items-center justify-center"
+                    style={{ 
+                      backgroundColor: productsHeaderStyles?.backgroundColor || "#ffffff",
+                      borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc" 
+                    }}
+                  >
+                    <Leaf className="w-12 h-12 opacity-35" style={{ color: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
                   </div>
                 </div>
               </div>
@@ -662,26 +856,51 @@ export default function Homepage() {
                   {productsList.slice(4).map((product: any, idx: number) => (
                     <div
                       key={product.id || `product-extra-${idx}`}
-                      className="bg-white border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group"
+                      className="border border-[#e6e4dc] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 group"
+                      style={{
+                        backgroundColor: productsHeaderStyles?.cardBgColor || "#ffffff",
+                        borderColor: productsHeaderStyles?.cardBorderColor || "#e6e4dc",
+                        borderRadius: productsHeaderStyles?.cardBorderRadius !== undefined ? `${productsHeaderStyles.cardBorderRadius}px` : productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                        fontFamily: productsHeaderStyles?.fontFamily,
+                      }}
                     >
                       <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#4e8c4a]" />
-                          <span className="text-[10px] text-gray-500 font-mono block uppercase font-bold tracking-wider">
+                          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: productsHeaderStyles?.iconColor || "#4e8c4a" }} />
+                          <span className="text-[10px] font-mono block uppercase font-bold tracking-wider opacity-75" style={{ color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.textColor || "#666666" }}>
                             {product.category || "Certified Spawn"}
                           </span>
                         </div>
-                        <h4 className="text-[#1c3c24] font-display font-extrabold text-xl leading-snug group-hover:text-[#4e8c4a] transition-colors">
+                        <h4 
+                          className="font-display font-extrabold text-xl leading-snug transition-colors"
+                          style={{ 
+                            color: productsHeaderStyles?.headingColor || productsHeaderStyles?.cardTextColor || "#1c3c24",
+                            fontFamily: productsHeaderStyles?.fontFamily 
+                          }}
+                        >
                           {product.name}
                         </h4>
-                        <p className="text-gray-600 text-xs sm:text-sm font-semibold leading-relaxed">
+                        <p 
+                          className="text-xs sm:text-sm font-semibold leading-relaxed opacity-90"
+                          style={{ 
+                            color: productsHeaderStyles?.cardTextColor || productsHeaderStyles?.paragraphColor || productsHeaderStyles?.textColor || "#4b5563",
+                            fontFamily: productsHeaderStyles?.fontFamily 
+                          }}
+                        >
                           {product.desc}
                         </p>
                       </div>
                       <div className="pt-6">
                         <Link
                           href={product.href || `/spawn/${product.id}`}
-                          className="inline-flex items-center justify-center w-full px-6 py-3 bg-[#1c3c24] hover:bg-[#4e8c4a] rounded-full text-[10px] font-bold uppercase tracking-wider text-white transition-all text-center"
+                          className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all text-center shadow-sm hover:opacity-90"
+                          style={{
+                            backgroundColor: productsHeaderStyles?.buttonColor || "#1c3c24",
+                            color: productsHeaderStyles?.buttonTextColor || "#ffffff",
+                            fontSize: productsHeaderStyles?.buttonTextSize ? `${productsHeaderStyles.buttonTextSize}px` : undefined,
+                            borderRadius: productsHeaderStyles?.borderRadius !== undefined ? `${productsHeaderStyles.borderRadius}px` : undefined,
+                            fontFamily: productsHeaderStyles?.fontFamily,
+                          }}
                         >
                           View Specifications &rarr;
                         </Link>
@@ -784,15 +1003,30 @@ export default function Homepage() {
 
                     {/* Title & Tag */}
                     <div className="space-y-1.5">
-                      <span className="text-[8px] font-mono font-bold tracking-widest text-[#4e8c4a] uppercase block">
+                      <span 
+                        className="text-[8px] font-mono font-bold tracking-widest uppercase block"
+                        style={{ color: whyChooseUsStyles?.iconColor || "#4e8c4a" }}
+                      >
                         {val.tag}
                       </span>
-                      <h4 className="text-[#1c3c24] font-display font-extrabold text-base md:text-lg leading-tight group-hover:text-[#1c3c24] font-sans">
+                      <h4 
+                        className="font-display font-extrabold text-base md:text-lg leading-tight"
+                        style={{ 
+                          color: whyChooseUsStyles?.headingColor || whyChooseUsStyles?.cardTextColor || "#1c3c24",
+                          fontFamily: whyChooseUsStyles?.fontFamily 
+                        }}
+                      >
                         {val.title}
                       </h4>
                     </div>
 
-                    <p className="text-gray-500 text-xs sm:text-sm font-semibold leading-relaxed font-sans">
+                    <p 
+                      className="text-xs sm:text-sm font-semibold leading-relaxed"
+                      style={{ 
+                        color: whyChooseUsStyles?.cardTextColor || whyChooseUsStyles?.paragraphColor || whyChooseUsStyles?.textColor || "#6b7280",
+                        fontFamily: whyChooseUsStyles?.fontFamily 
+                      }}
+                    >
                       {val.desc}
                     </p>
                   </div>
@@ -1237,9 +1471,18 @@ export default function Homepage() {
               
               {/* Left Column - Form */}
               <div className="bg-white border border-[#e6e4dc] p-8 rounded-[2rem] shadow-sm">
+                {contactSuccess && (
+                  <div className="mb-4 p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2 animate-fadeIn">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Inquiry saved to admin inbox & opening WhatsApp!</span>
+                  </div>
+                )}
+
                 <form className="space-y-5" onSubmit={handleContactSubmit}>
                   <div className="space-y-1.5">
-                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Your Name</label>
+                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                      Your Name <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="text"
                       value={formData.name}
@@ -1251,7 +1494,9 @@ export default function Homepage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Email Address</label>
+                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="email"
                       value={formData.email}
@@ -1263,7 +1508,9 @@ export default function Homepage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Inquiry Type</label>
+                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                      Inquiry Type <span className="text-red-500">*</span>
+                    </label>
                     <select
                       value={formData.inquiryType}
                       onChange={(e) => handleInquiryTypeChange(e.target.value)}
@@ -1280,7 +1527,9 @@ export default function Homepage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Inquiry Title</label>
+                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                      Inquiry Title <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="text"
                       value={formData.title}
@@ -1292,7 +1541,9 @@ export default function Homepage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Message Details</label>
+                    <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                      Message Details <span className="text-red-500">*</span>
+                    </label>
                     <textarea
                       rows={5}
                       value={formData.message}
@@ -1303,12 +1554,28 @@ export default function Homepage() {
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 bg-[#1c3c24] text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-[#4e8c4a] transition-all shadow-md shadow-[#1c3c24]/5 flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <ClipboardList className="w-3.5 h-3.5" /> Send Message via WhatsApp
-                  </button>
+                  <div className="flex items-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={handleResetContactForm}
+                      className="px-4 py-3.5 bg-[#f0f5ef] hover:bg-gray-200 border border-[#d2e4d0] text-[#1c3c24] text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" /> Reset
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={submittingContact}
+                      className="flex-1 py-3.5 bg-[#1c3c24] text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-[#4e8c4a] transition-all shadow-md shadow-[#1c3c24]/5 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      {submittingContact ? (
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <ClipboardList className="w-3.5 h-3.5" /> Send Message via WhatsApp
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </form>
               </div>
 

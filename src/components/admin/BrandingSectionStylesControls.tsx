@@ -487,6 +487,7 @@ export default function BrandingSectionStylesControls({
   const [fontSearch, setFontSearch] = useState("");
   const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [appliedNotification, setAppliedNotification] = useState<string | null>(null);
 
   // Dynamically load Google Fonts stylesheet when panel opens
   useEffect(() => {
@@ -525,6 +526,8 @@ export default function BrandingSectionStylesControls({
       delete updated.bold;
       delete updated.italic;
       onChange(updated);
+      setAppliedNotification("Typography reset to default!");
+      setTimeout(() => setAppliedNotification(null), 3000);
     }
   };
 
@@ -542,12 +545,16 @@ export default function BrandingSectionStylesControls({
       delete updated.cardTextColor;
       delete updated.cardBorderColor;
       onChange(updated);
+      setAppliedNotification("Colors reset to default!");
+      setTimeout(() => setAppliedNotification(null), 3000);
     }
   };
 
   const clearStyles = () => {
     if (window.confirm(`Reset all styling customizations to original defaults for ${sectionName}?`)) {
       onChange({});
+      setAppliedNotification("Custom styles cleared & restored to defaults!");
+      setTimeout(() => setAppliedNotification(null), 3000);
     }
   };
 
@@ -559,11 +566,23 @@ export default function BrandingSectionStylesControls({
         allDefaults[k] = isNaN(Number(val)) ? val : parseInt(val);
       });
       onChange(allDefaults);
+      setAppliedNotification("All default styles applied!");
+      setTimeout(() => setAppliedNotification(null), 3000);
     }
   };
 
   const applyTheme = (theme: SuggestedTheme) => {
     onChange({ ...styles, ...theme.styles });
+    setAppliedNotification(`Theme "${theme.name}" applied & published live!`);
+    setTimeout(() => setAppliedNotification(null), 3000);
+  };
+
+  const isThemeActive = (theme: SuggestedTheme) => {
+    if (!styles || Object.keys(styles).length === 0) return false;
+    const bgMatch = !theme.styles.backgroundColor || styles.backgroundColor?.toLowerCase() === theme.styles.backgroundColor.toLowerCase();
+    const cardMatch = !theme.styles.cardBgColor || styles.cardBgColor?.toLowerCase() === theme.styles.cardBgColor.toLowerCase();
+    const btnMatch = !theme.styles.buttonColor || styles.buttonColor?.toLowerCase() === theme.styles.buttonColor.toLowerCase();
+    return Boolean(bgMatch && cardMatch && btnMatch);
   };
 
   const filteredFonts = useMemo(() => {
@@ -603,6 +622,14 @@ export default function BrandingSectionStylesControls({
 
       {isOpen && (
         <div className="p-5 space-y-4">
+          {/* Real-time Notification Banner */}
+          {appliedNotification && (
+            <div className="px-4 py-2.5 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2 animate-fadeIn shadow-xs">
+              <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>{appliedNotification}</span>
+            </div>
+          )}
+
           <div className="flex border-b border-[#e2e8e0] gap-1 pb-1 overflow-x-auto">
             {[
               { id: "suggestions", label: "Smart Suggestions (3 Themes)", icon: Sparkles },
@@ -637,7 +664,7 @@ export default function BrandingSectionStylesControls({
                 <span className="text-[10px] font-bold text-[#2c5e37] uppercase tracking-wider">
                   Smart Suggestions Tailored for {sectionName}
                 </span>
-                <span className="text-[10px] font-mono text-gray-400">1-Click Instant Apply</span>
+                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 font-bold">1-Click Live Publish</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -648,19 +675,30 @@ export default function BrandingSectionStylesControls({
                   const btn = (t.styles.buttonColor as string) || "#1c3c24";
                   const btnTxt = (t.styles.buttonTextColor as string) || "#ffffff";
                   const font = (t.styles.fontFamily as string) || "Outfit";
+                  const isActive = isThemeActive(t);
 
                   return (
                     <div
                       key={t.id}
-                      className="border border-[#e2e8e0] bg-[#f9fbf8] rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-[#4e8c4a] transition-all shadow-sm group"
+                      className={`border rounded-2xl p-4 flex flex-col justify-between space-y-3 transition-all shadow-sm group relative ${
+                        isActive
+                          ? "border-[#4e8c4a] bg-emerald-50/40 ring-2 ring-[#4e8c4a]/30"
+                          : "border-[#e2e8e0] bg-[#f9fbf8] hover:border-[#4e8c4a]"
+                      }`}
                     >
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between">
+                      {isActive && (
+                        <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-[#1c3c24] text-white text-[9px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-xs">
+                          <Check className="w-2.5 h-2.5 text-[#52b788]" /> Active
+                        </div>
+                      )}
+
+                      <div className="space-y-1 pr-14">
+                        <div className="flex items-center gap-2">
                           <h4 className="text-xs font-bold text-[#1c3c24] group-hover:text-[#4e8c4a] transition-colors">
                             {t.name}
                           </h4>
                           <span
-                            className="px-2 py-0.5 rounded-md text-[9px] font-bold border border-gray-200"
+                            className="px-1.5 py-0.5 rounded-md text-[8px] font-bold border border-gray-200"
                             style={{ fontFamily: font, backgroundColor: bg, color: txt }}
                           >
                             Aa
@@ -714,9 +752,21 @@ export default function BrandingSectionStylesControls({
                       <button
                         type="button"
                         onClick={() => applyTheme(t)}
-                        className="w-full py-2 bg-white border border-[#d2e4d0] hover:bg-[#1c3c24] hover:text-white text-[#2c5e37] text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 shadow-2xs"
+                        className={`w-full py-2 text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer transition-all flex items-center justify-center gap-1.5 shadow-2xs ${
+                          isActive
+                            ? "bg-[#1c3c24] text-white border border-[#1c3c24]"
+                            : "bg-white border border-[#d2e4d0] hover:bg-[#1c3c24] hover:text-white text-[#2c5e37]"
+                        }`}
                       >
-                        <Sparkles className="w-3.5 h-3.5" /> Apply Theme
+                        {isActive ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-[#52b788]" /> Re-Apply Theme
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-3.5 h-3.5" /> Apply Theme
+                          </>
+                        )}
                       </button>
                     </div>
                   );

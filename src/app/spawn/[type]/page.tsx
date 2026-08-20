@@ -338,7 +338,9 @@ export default function SpawnPage({ params }: PageProps) {
   const { type } = use(params);
   const { data } = useCMS();
   
-  const cmsProduct = data?.products?.find((p: any) => p.id === type);
+  const cmsProduct = data?.products?.find(
+    (p: any) => p.id === type || p.href === `/spawn/${type}` || p.href?.endsWith(`/${type}`)
+  );
   const productStyles = cmsProduct?.styles;
   
   // Merge CMS edits onto the complete record. This keeps a partial CMS export

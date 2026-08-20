@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useCMS } from "@/lib/cms-context";
-import { Save, CheckCircle2, Menu, Plus, Trash2, Sliders } from "lucide-react";
+import { Save, CheckCircle2, Menu, Plus, Trash2, Sliders, Leaf } from "lucide-react";
 import BrandingSectionStylesControls from "@/components/admin/BrandingSectionStylesControls";
 
 export default function HeaderCMSPage() {
@@ -179,6 +179,102 @@ export default function HeaderCMSPage() {
             className="mt-4 flex items-center gap-2 px-4 py-2 bg-[#f0f5ef] border border-[#d2e4d0] text-[#1c3c24] hover:bg-[#1c3c24] hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Add Navigation Link
+          </button>
+        </div>
+
+        {/* Products Dropdown Subcategories Configuration */}
+        <div className="border-t border-[#e2e8e0] pt-4">
+          <div className="mb-4">
+            <h2 className="text-base font-bold text-[#1c3c24] flex items-center gap-2">
+              <Leaf className="w-4 h-4 text-[#4e8c4a]" /> Products Dropdown Menu Subcategories
+            </h2>
+            <p className="text-xs text-gray-500 mt-0.5 font-medium">
+              Configure the subcategories and links that appear in the dropdown when hovering over the "Products" menu.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {(headerForm.productsDropdown || [
+              { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
+              { name: "Grain Spawn", href: "/spawn/grain-spawn" },
+              { name: "Mother Culture", href: "/spawn/mother-culture" },
+              { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+            ]).map((p: any, idx: number) => (
+              <div
+                key={idx}
+                className="flex items-center gap-3 bg-[#f8faf7] border border-[#e2e8e0] p-3 rounded-2xl"
+              >
+                <span className="w-6 text-center text-xs font-mono font-bold text-[#2c5e37]">
+                  #{idx + 1}
+                </span>
+                <input
+                  type="text"
+                  value={p.name || ""}
+                  onChange={(e) => {
+                    const list = [...(headerForm.productsDropdown || [
+                      { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
+                      { name: "Grain Spawn", href: "/spawn/grain-spawn" },
+                      { name: "Mother Culture", href: "/spawn/mother-culture" },
+                      { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+                    ])];
+                    list[idx].name = e.target.value;
+                    setHeaderForm({ ...headerForm, productsDropdown: list });
+                  }}
+                  placeholder="Subcategory Name"
+                  className="w-1/3 px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-bold"
+                />
+                <input
+                  type="text"
+                  value={p.href || ""}
+                  onChange={(e) => {
+                    const list = [...(headerForm.productsDropdown || [
+                      { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
+                      { name: "Grain Spawn", href: "/spawn/grain-spawn" },
+                      { name: "Mother Culture", href: "/spawn/mother-culture" },
+                      { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+                    ])];
+                    list[idx].href = e.target.value;
+                    setHeaderForm({ ...headerForm, productsDropdown: list });
+                  }}
+                  placeholder="Target URL Path"
+                  className="w-1/2 px-3 py-2 bg-white border border-[#dce4da] rounded-xl text-[#1c3c24] text-xs font-mono font-semibold"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const list = (headerForm.productsDropdown || [
+                      { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
+                      { name: "Grain Spawn", href: "/spawn/grain-spawn" },
+                      { name: "Mother Culture", href: "/spawn/mother-culture" },
+                      { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+                    ]).filter((_: any, i: number) => i !== idx);
+                    setHeaderForm({ ...headerForm, productsDropdown: list });
+                  }}
+                  className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              const list = [
+                ...(headerForm.productsDropdown || [
+                  { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
+                  { name: "Grain Spawn", href: "/spawn/grain-spawn" },
+                  { name: "Mother Culture", href: "/spawn/mother-culture" },
+                  { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+                ]),
+                { name: "New Subcategory", href: "/spawn/new-category" },
+              ];
+              setHeaderForm({ ...headerForm, productsDropdown: list });
+            }}
+            className="mt-4 flex items-center gap-2 px-4 py-2 bg-[#f0f5ef] border border-[#d2e4d0] text-[#1c3c24] hover:bg-[#1c3c24] hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+          >
+            <Plus className="w-4 h-4" /> Add Products Dropdown Subcategory
           </button>
         </div>
 

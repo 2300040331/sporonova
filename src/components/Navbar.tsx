@@ -11,7 +11,8 @@ export default function Navbar() {
   const { data } = useCMS();
   const header = data?.header;
   const [isOpen, setIsOpen] = useState(false);
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
+  const [desktopProductsOpen, setDesktopProductsOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,15 +24,36 @@ export default function Navbar() {
   }, []);
 
   const defaultProducts = [
-    { name: "Liquid Spawn", href: "/spawn/liquid-spawn" },
-    { name: "Grain Spawn", href: "/spawn/grain-spawn" },
-    { name: "Mother Culture", href: "/spawn/mother-culture" },
-    { name: "Commercial Spawn", href: "/spawn/commercial-spawn" },
+    { id: "liquid-spawn", name: "Liquid Spawn", category: "Industrial Inoculant", desc: "Active vegetative mycelium cells suspended in sterilized liquid sugar broth, optimized for bioreactor inoculation.", href: "/spawn/liquid-spawn" },
+    { id: "grain-spawn", name: "Grain Spawn", category: "Commercial Inoculant", desc: "High-energy hydrated whole grain matrices colonized with second-generation (G2) rhizomorphic fungal mycelium.", href: "/spawn/grain-spawn" },
+    { id: "mother-culture", name: "Mother Culture", category: "Genomic Stock", desc: "Pure agar slant isolates maintained under cryogenic refrigeration to safeguard strain genomics and vigor.", href: "/spawn/mother-culture" },
+    { id: "commercial-spawn", name: "Commercial Spawn", category: "Fruiting Substrate", desc: "Pre-colonized, bulk production mycelium ready for immediate farm expansion and high-yield commercial flushes.", href: "/spawn/commercial-spawn" },
   ];
 
-  const productsList = header?.productsDropdown && header.productsDropdown.length > 0
-    ? header.productsDropdown
+  const productsList = (data?.products && data.products.length > 0)
+    ? data.products
     : defaultProducts;
+
+  const defaultNavLinks = [
+    { name: "Home", href: "/" },
+    { name: "Products", href: "/#products" },
+    { name: "Production Process", href: "/process" },
+    { name: "About Us", href: "/about" },
+    { name: "Why Choose Us", href: "/#why-choose-us" },
+    { name: "Knowledge Center", href: "/knowledge" },
+  ];
+
+  // Strictly navigation data only: filter out any individual product (/spawn/*) or stage records if mistakenly passed
+  const navLinks = (header?.navLinks && header.navLinks.length > 0
+    ? header.navLinks
+    : defaultNavLinks
+  ).filter((link: any) => {
+    if (!link || !link.name || !link.href) return false;
+    // Exclude individual product detail URLs from top navigation bar
+    const href = link.href.toLowerCase().trim();
+    if (href.startsWith("/spawn/") && href !== "/spawn") return false;
+    return true;
+  });
 
   return (
     <>
@@ -58,19 +80,91 @@ export default function Navbar() {
           className="hidden lg:flex items-center gap-7 xl:gap-8 text-xs xl:text-[13px] font-extrabold uppercase tracking-wider text-[#1c3c24]"
           style={{ fontFamily: header?.styles?.fontFamily || undefined }}
         >
-          {(() => {
-            const rawLinks = header?.navLinks && header.navLinks.length > 0
-              ? header.navLinks
-              : [
-                  { name: "Home", href: "/" },
-                  { name: "Products", href: "/#products" },
-                  { name: "Production Process", href: "/process" },
-                  { name: "About Us", href: "/about" },
-                  { name: "Why Choose Us", href: "/#why-choose-us" },
-                  { name: "Knowledge Center", href: "/knowledge" },
-                ];
+          {navLinks.map((link: any) => {
+            const isProductsLink =
+              link.name.toLowerCase().trim() === "products" ||
+              link.href === "/#products" ||
+              link.href === "/products" ||
+              link.name.toLowerCase().includes("product");
 
-            return rawLinks.map((link: any) => (
+            if (isProductsLink) {
+              return (
+                <div
+                  key={link.name}
+                  className="relative py-2"
+                  onMouseEnter={() => setDesktopProductsOpen(true)}
+                  onMouseLeave={() => setDesktopProductsOpen(false)}
+                >
+                  <Link 
+                    href={link.href} 
+                    className="hover:text-[#4e8c4a] transition-colors py-2 flex items-center gap-1 cursor-pointer"
+                    style={{ color: header?.styles?.textColor || undefined }}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 text-[#4e8c4a] transition-transform duration-200 ${
+                        desktopProductsOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </Link>
+
+                  {/* Rich Dropdown Menu On Hover */}
+                  {desktopProductsOpen && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[400px] z-50 animate-fadeIn">
+                      <div className="bg-white border border-[#e2e8e0] rounded-3xl shadow-2xl p-4 space-y-2.5 backdrop-blur-md">
+                        <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-[#2c5e37] font-bold block">
+                            Certified Spawn Categories
+                          </span>
+                          <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">
+                            Lab Formulations
+                          </span>
+                        </div>
+                        
+                        <div className="space-y-1.5 max-h-[420px] overflow-y-auto pr-1">
+                          {productsList.map((prod: any) => (
+                            <Link
+                              key={prod.id || prod.name}
+                              href={prod.href || `/spawn/${prod.id}`}
+                              className="flex items-start gap-3 p-3 rounded-2xl hover:bg-[#f0f5ef] border border-transparent hover:border-[#d2e4d0] transition-all group/item"
+                            >
+                              <div className="w-9 h-9 rounded-xl bg-[#f9faf7] border border-[#e6e4dc] flex items-center justify-center shrink-0 group-hover/item:border-[#4e8c4a] group-hover/item:bg-white transition-all shadow-2xs mt-0.5">
+                                <Leaf className="w-4 h-4 text-[#4e8c4a]" />
+                              </div>
+                              <div className="flex-1 min-w-0 space-y-0.5">
+                                <div className="flex items-center justify-between gap-1">
+                                  <span className="text-xs font-extrabold text-[#1c3c24] group-hover/item:text-[#4e8c4a] block transition-colors truncate">
+                                    {prod.name}
+                                  </span>
+                                  <span className="text-[9px] font-mono font-bold text-gray-400 uppercase shrink-0">
+                                    {prod.category || "Inoculant"}
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed font-medium">
+                                  {prod.desc || "High-potency laboratory certified mushroom spawn formulation."}
+                                </p>
+                              </div>
+                            </Link>
+                          ))}
+                        </div>
+
+                        <div className="pt-2 border-t border-gray-100">
+                          <Link
+                            href="/#products"
+                            className="flex items-center justify-between px-4 py-2.5 bg-[#f0f5ef] hover:bg-[#1c3c24] hover:text-white rounded-2xl text-[11px] font-bold uppercase tracking-wider text-[#2c5e37] transition-all group/cta"
+                          >
+                            <span>Explore Full Spawn Catalog</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-0.5 transition-transform" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
               <Link 
                 key={link.name} 
                 href={link.href} 
@@ -79,8 +173,8 @@ export default function Navbar() {
               >
                 {link.name}
               </Link>
-            ));
-          })()}
+            );
+          })}
         </nav>
  
         {/* Action Button & Contact Info */}
@@ -106,20 +200,66 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-[#e6e4dc] shadow-md py-6 px-6 space-y-4 animate-slideDown">
-          {(() => {
-            const rawLinks = header?.navLinks && header.navLinks.length > 0
-              ? header.navLinks
-              : [
-                  { name: "Home", href: "/" },
-                  { name: "Products", href: "/#products" },
-                  { name: "Production Process", href: "/process" },
-                  { name: "About Us", href: "/about" },
-                  { name: "Why Choose Us", href: "/#why-choose-us" },
-                  { name: "Knowledge Center", href: "/knowledge" },
-                ];
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-[#e6e4dc] shadow-md py-6 px-6 space-y-4 animate-slideDown max-h-[85vh] overflow-y-auto">
+          {navLinks.map((link: any) => {
+            const isProductsLink =
+              link.name.toLowerCase() === "products" ||
+              link.href === "/#products" ||
+              link.href === "/products";
 
-            return rawLinks.map((link: any) => (
+            if (isProductsLink) {
+              return (
+                <div key={link.name} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="block text-[11px] font-bold uppercase tracking-wider text-[#333333] hover:text-[#4e8c4a]"
+                    >
+                      {link.name}
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
+                      className="p-1 text-gray-500 hover:text-[#1c3c24]"
+                    >
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform duration-200 ${
+                          mobileProductsOpen ? "rotate-180 text-[#4e8c4a]" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  {mobileProductsOpen && (
+                    <div className="pl-3 space-y-2 border-l-2 border-[#4e8c4a]/30 my-2 animate-fadeIn">
+                      {productsList.map((prod: any) => (
+                        <Link
+                          key={prod.id || prod.name}
+                          href={prod.href || `/spawn/${prod.id}`}
+                          onClick={() => setIsOpen(false)}
+                          className="block p-2 rounded-xl hover:bg-[#f0f5ef] space-y-0.5 transition-colors"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-[#1c3c24] block">
+                              {prod.name}
+                            </span>
+                            <span className="text-[9px] font-mono text-gray-400">
+                              {prod.category || "Inoculant"}
+                            </span>
+                          </div>
+                          <p className="text-[10px] text-gray-500 line-clamp-1">
+                            {prod.desc}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
               <Link
                 key={link.name}
                 href={link.href}
@@ -128,8 +268,8 @@ export default function Navbar() {
               >
                 {link.name}
               </Link>
-            ));
-          })()}
+            );
+          })}
           
           <Link
             href={header?.ctaLink || "/contact"}

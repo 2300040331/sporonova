@@ -140,16 +140,71 @@ function ContactContent() {
     setIsMessageEdited(true);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleResetForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      inquiryType: "",
+      title: "",
+      message: "",
+    });
+    setIsTitleEdited(false);
+    setIsMessageEdited(false);
+    setSubmitSuccess(false);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name?.trim()) {
+      alert("Please enter your name.");
+      return;
+    }
+    if (!formData.email?.trim()) {
+      alert("Please enter your email address.");
+      return;
+    }
     if (!formData.inquiryType) {
       alert("Please select an inquiry type.");
       return;
     }
+    if (!formData.message?.trim()) {
+      alert("Please enter your message details.");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      // 1. Save real copy into CMS Admin Contacts database
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          inquiryType: formData.inquiryType.trim(),
+          title: formData.title?.trim() || formData.inquiryType.trim(),
+          message: formData.message.trim(),
+        }),
+      });
+
+      // Dispatch event to update admin in real-time if open
+      window.dispatchEvent(new CustomEvent("cms-updated"));
+    } catch (err) {
+      console.error("Failed to store contact lead:", err);
+    } finally {
+      setSubmitting(false);
+    }
+
+    // 2. Open WhatsApp draft
     const phoneNumber = data?.contact?.whatsappNumber || "917207208419";
     const text = `*Name:* ${encodeURIComponent(formData.name || "N/A")}%0A*Email:* ${encodeURIComponent(formData.email || "N/A")}%0A*Inquiry Type:* ${encodeURIComponent(formData.inquiryType)}%0A*Title:* ${encodeURIComponent(formData.title || "N/A")}%0A*Message:* ${encodeURIComponent(formData.message || "N/A")}`;
 
     window.open(`https://wa.me/${phoneNumber}?text=${text}`, "_blank");
+    setSubmitSuccess(true);
   };
 
   return (
@@ -270,9 +325,18 @@ function ContactContent() {
               borderRadius: data?.contact?.styles?.cardBorderRadius !== undefined ? `${data?.contact?.styles.cardBorderRadius}px` : undefined,
             }}
           >
+            {submitSuccess && (
+              <div className="mb-4 p-3 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-xl text-xs font-bold flex items-center gap-2 animate-fadeIn">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Inquiry saved to admin inbox & opening WhatsApp!</span>
+              </div>
+            )}
+
             <form className="space-y-5" onSubmit={handleContactSubmit}>
               <div className="space-y-1.5">
-                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Your Name</label>
+                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                  Your Name <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   value={formData.name}
@@ -284,7 +348,9 @@ function ContactContent() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Email Address</label>
+                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                  Email Address <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="email"
                   value={formData.email}
@@ -296,7 +362,9 @@ function ContactContent() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Inquiry Type</label>
+                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                  Inquiry Type <span className="text-red-500">*</span>
+                </label>
                 <select
                   value={formData.inquiryType}
                   onChange={(e) => handleInquiryTypeChange(e.target.value)}
@@ -313,7 +381,9 @@ function ContactContent() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Inquiry Title</label>
+                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                  Inquiry Title <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
                   value={formData.title}
@@ -325,7 +395,9 @@ function ContactContent() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">Message Details</label>
+                <label className="text-[9px] text-gray-500 uppercase font-mono font-bold block">
+                  Message Details <span className="text-red-500">*</span>
+                </label>
                 <textarea
                   rows={5}
                   value={formData.message}
@@ -336,13 +408,29 @@ function ContactContent() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-[#1c3c24] text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-[#4e8c4a] transition-all shadow-md shadow-[#1c3c24]/5 flex items-center justify-center gap-2 cursor-pointer"
-                style={getButtonStyles(data?.contact?.styles)}
-              >
-                <ClipboardList className="w-3.5 h-3.5" /> Send Message via WhatsApp
-              </button>
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleResetForm}
+                  className="px-4 py-3.5 bg-[#f0f5ef] hover:bg-gray-200 border border-[#d2e4d0] text-[#1c3c24] text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" /> Reset
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 py-3.5 bg-[#1c3c24] text-white text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-[#4e8c4a] transition-all shadow-md shadow-[#1c3c24]/5 flex items-center justify-center gap-2 cursor-pointer"
+                  style={getButtonStyles(data?.contact?.styles)}
+                >
+                  {submitting ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <ClipboardList className="w-3.5 h-3.5" /> Send Message via WhatsApp
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </div>
 
