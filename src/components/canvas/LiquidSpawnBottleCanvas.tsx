@@ -331,8 +331,8 @@ export default function LiquidSpawnBottleCanvas({ hideSidebar = false }: { hideS
   }, []);
 
   return (
-    <div className="w-full h-full relative">
-      <div ref={containerRef} className="w-full h-full cursor-pointer" />
+    <div className="w-full h-[480px] min-h-[450px] relative">
+      <div ref={containerRef} className="w-full h-full min-h-[450px] cursor-pointer" />
     </div>
   );
 }

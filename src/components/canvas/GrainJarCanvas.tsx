@@ -284,12 +284,12 @@ export default function GrainJarCanvas({ hideSidebar = false }: { hideSidebar?: 
   }, []);
 
   return (
-    <div className="w-full h-full relative group">
+    <div className="w-full h-[480px] min-h-[450px] relative group">
       {/* Click Viewport to toggle cross-section split */}
       <div
         ref={containerRef}
         onClick={() => setIsCrossSection((prev) => !prev)}
-        className="w-full h-full cursor-pointer"
+        className="w-full h-full min-h-[450px] cursor-pointer"
       />
       
       {/* HUD Info panel absolute overlays */}
