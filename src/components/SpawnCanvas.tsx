@@ -56,13 +56,15 @@ interface SpawnCanvasProps {
 }
 
 export default function SpawnCanvas({ type }: SpawnCanvasProps) {
-  if (type === "liquid-spawn") {
+  const norm = (type || "").toLowerCase().trim();
+
+  if (norm.includes("liquid") || norm.includes("bottle") || norm.includes("broth")) {
     return <LiquidSpawnBottleCanvas />;
   }
-  if (type === "grain-spawn") {
+  if (norm.includes("grain") || norm.includes("jar") || norm.includes("cereal") || norm.includes("bag")) {
     return <GrainJarCanvas />;
   }
-  if (type === "mother-culture") {
+  if (norm.includes("mother") || norm.includes("culture") || norm.includes("slant") || norm.includes("agar") || norm.includes("mushroom")) {
     return <MushroomStructureCanvas hideSidebar={true} />;
   }
   return <SpawnMorphCanvas />;

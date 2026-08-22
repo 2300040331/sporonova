@@ -441,21 +441,13 @@ export default function SpawnPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Interactive 3D Model Display Column or Product Image */}
-            <div className="w-full lg:w-[450px] min-h-[400px] lg:aspect-square bg-white border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-center justify-center shadow-sm p-6 hover:scale-[1.01] transition-transform duration-500">
-              {cmsProduct?.thumbnail ? (
-                <img
-                  src={cmsProduct.thumbnail}
-                  alt={displayTitle}
-                  className="w-full h-full max-h-[380px] object-contain"
-                />
-              ) : (
-                <SpawnCanvas type={normalizedType} />
-              )}
+            {/* Interactive 3D Model Display Column */}
+            <div className="w-full lg:w-[450px] min-h-[530px] lg:min-h-0 lg:aspect-square bg-[#f9faf7] border border-[#e6e4dc] rounded-[2rem] overflow-hidden relative flex flex-col items-stretch lg:flex-row lg:items-center lg:justify-center shadow-sm p-3 hover:scale-[1.01] transition-transform duration-500">
+              <SpawnCanvas type={normalizedType} />
               
               <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#e6e4dc] pointer-events-none text-[9px] font-mono font-bold text-[#4e8c4a] select-none z-10 flex items-center gap-1.5 shadow-sm">
                 <span className="w-1.5 h-1.5 bg-[#4e8c4a] rounded-full animate-ping" />
-                Verified Pure Specimen
+                Bioluminescent 3D Render
               </div>
             </div>
 
